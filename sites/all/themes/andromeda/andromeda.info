@@ -1,0 +1,32 @@
+; Theme Information
+name         = Andromeda
+description  = Theme for DSI Andromeda
+core         = 6.x
+version      = 0.1
+engine       = phptemplate
+screenshot   = screenshot.png
+base theme   = ninesixty
+  
+; Regions
+regions[region_main_menu]     = Main menu region
+regions[region_sub_menu]      = Sub menu region
+regions[region_content_left]  = Content Left
+regions[region_content_right] = Content Right
+regions[footer]               = Footer
+
+; Styles
+stylesheets[all][] = styles/typography.css
+stylesheets[all][] = styles/layout.css
+stylesheets[all][] = styles/blocks.css
+stylesheets[print][] = styles/print.css
+stylesheets[handheld][] = styles/mobile.css
+
+; Debug styles
+;stylesheets[all] = styles/debug.css
+    
+; Theme Features
+features[] = logo
+features[] = name
+features[] = favicon
+features[] = primary_links
+features[] = secondary_links

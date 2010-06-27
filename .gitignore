@@ -1,0 +1,6 @@
+sites/default
+sites/default/files
+sites/default/settings.php
+nbproject/
+*~
+*.patch

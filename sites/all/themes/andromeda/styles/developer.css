@@ -1,0 +1,137 @@
+.clearfix:after {content:"."; display:block; height:0;
+                 clear:both; visibility:hidden; }
+.clearfix       {display:inline-block;}
+/* Hide from IE Mac */
+.clearfix       {display:block;}
+/* End hide from IE Mac */
+
+/* Menu settings and header*/
+#header {
+  height: 190px;
+}
+
+#header ul {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+#header li {
+  padding: 0px;
+  display: inline;
+}
+
+#header a {
+  color: blue;
+}
+
+#header li a:hover {
+  color: black;
+}
+
+#header #region-secondary-menu div {
+  float: right;
+  margin-bottom: 10px;
+}
+
+#header #region-secondary-menu li a {
+  padding: 2px;
+}
+
+#header #region-secondary-menu li {
+  margin-left: 20px;
+}
+
+#header #main-menus {
+  border: 1px solid #BBB;
+  height: 96px;
+}
+
+#header #main-menus h1 {
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+#header #main-menus #region-city-menu {
+  position: absolute;
+  right: -1px;
+  bottom: 4px;
+}
+
+#header #main-menus #region-main-menu {
+  position: absolute;
+  bottom: -24px;
+  left: -1px;
+}
+
+#header #main-menus #region-city-menu li a,
+#header #main-menus #region-main-menu li a {
+  border: 1px solid #BBB;
+}
+
+#header #main-menus #region-city-menu li a.active,
+#header #main-menus #region-main-menu li a.active {
+  background-color: #FFF;
+}
+
+#header #main-menus #region-city-menu li a,
+#header #main-menus #region-main-menu li a {
+  background-color: #EEE;
+  padding: 5px 10px 5px 10px;
+}
+
+#main-content #region-title-menu h1 {
+  float: left;
+  width: 300px;
+}
+
+#main-content #region-title-menu ul {
+  padding-top: 10px;
+}
+
+#main-content #region-title-menu li {
+  display: inline;
+  margin-left: 10px;
+}
+
+/* Main content */
+#main-content #news-top-news,
+#main-content #news-top-region-news,
+#main-content #news-related-stories,
+#main-content #news-list,
+#main-content #news-list-taxonomy {
+  border: 1px dashed #BBB;
+  padding: 10px 10px 0px 10px;
+}
+
+#main-content #events-top-event,
+#main-content #events-list-global,
+#main-content #events-region-topevents {
+  border: 1px dashed #BBB;
+  padding: 10px 10px 0px 10px;
+}
+
+#main-content #events-practical-information table {
+  width: 300px;
+}
+
+#main-content #events-practical-information table td {
+  border: 1px solid #BBB;
+  padding: 4px;
+}
+
+#main-content #events-practical-information table td.label {
+  width: 25%;
+}
+
+#main-content #related-news-stories {
+  margin-top: 20px;
+}
+
+/* secondary-content */
+#secondary-content {
+}
+
+#footer {
+  background-color: #EEE;
+}
