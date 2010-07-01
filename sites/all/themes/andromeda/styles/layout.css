@@ -1,3 +1,111 @@
 .clear {
   clear: both;
 }
+
+body {
+  height: 100%;
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+#page {
+  background: #EEE none repeat scroll 0 0;
+  border: 1px solid black;
+  margin-top: 20px;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+  -webkit-border-radius-topleft: 8px;
+  -webkit-border-radius-topright: 8px;
+  -moz-border-radius-bottomleft: 8px;
+  -moz-border-radius-bottomright: 8px;
+  -webkit-border-radius-bottomleft: 8px;
+  -webkit-border-radius-bottomright: 8px;
+}
+
+#page #site-header {
+  background: none repeat scroll 0 0 #8CA8E6;
+  height: 60px;
+  -moz-border-radius-topleft: 8px;
+  -moz-border-radius-topright: 8px;
+  -webkit-border-radius-topleft: 8px;
+  -webkit-border-radius-topright: 8px;
+  margin-bottom: 0px;
+}
+
+#page #site-header #branding {
+  background: #3364CA none repeat scroll 0 0;
+  width: 500px;
+  -moz-border-radius-topleft: 8px;
+  -webkit-border-radius-topleft: 8px;
+}
+
+#page #site-header #branding img {
+  width: 500px;
+  height: 60px;
+  padding-left: 8px;
+}
+
+
+#page #site-menu ul {
+  background: #003399 none repeat scroll 0 0;
+  padding-left: 17.5em;
+}
+
+#page #site-menu ul {
+  background: #003399 none repeat scroll 0 0;
+  padding-top: 0.5em;
+  padding-left: 232px;
+}
+
+#page #site-menu li {
+  display: inline;
+  padding-left: 1em;
+  color: #FFF;
+  font-weight: bold;
+}
+
+#page #site-menu li a {
+  color: #FFF;
+  font-weight: bold;
+  font-size: 110%;
+  text-decoration: none;
+  padding-right: 1em;
+}
+
+#page #site-menu li a:hover {
+  text-decoration: underline;
+}
+
+#page #site-menu #block-menu-primary-links {
+  margin-bottom: 0px;
+}
+
+#page #main .tabs {
+  background: #FFF none repeat scroll 0 0;
+  padding-top: 2px;
+}
+
+#page #left {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#main-content {
+  border-left: 1px solid #AAA;
+  background: #FFF none repeat scroll 0 0;
+  width: 699px;
+  display: inline;
+  float: left;
+  padding: 10px;
+  min-height: 500px;
+}
+
+#page #footer {
+  background: #8CA8E6 none repeat scroll 0 0;
+  -moz-border-radius-bottomleft: 8px;
+  -moz-border-radius-bottomright: 8px;
+  -webkit-border-radius-bottomleft: 8px;
+  -webkit-border-radius-bottomright: 8px;
+  padding: 0.5em 1em 0.5em 1em;
+  border-top: 1px solid #000;
+}

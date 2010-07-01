@@ -8,11 +8,9 @@ screenshot   = screenshot.png
 base theme   = ninesixty
   
 ; Regions
-regions[region_main_menu]     = Main menu region
-regions[region_sub_menu]      = Sub menu region
-regions[region_content_left]  = Content Left
-regions[region_content_right] = Content Right
-regions[footer]               = Footer
+regions[menu]   = Menu
+regions[left]   = Content Left
+regions[footer] = Footer
 
 ; Styles
 stylesheets[all][] = styles/typography.css
@@ -29,4 +27,3 @@ features[] = logo
 features[] = name
 features[] = favicon
 features[] = primary_links
-features[] = secondary_links

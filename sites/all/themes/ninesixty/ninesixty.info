@@ -11,7 +11,7 @@ base theme = mothership
 stylesheets[all][] = styles/framework/reset.css
 stylesheets[all][] = styles/framework/text.css
 stylesheets[all][] = styles/framework/960.css
-;stylesheets[all][] = styles/framework/debug.css
+stylesheets[all][] = styles/framework/debug.css
 
 ; Theme specific styles. Any sub-themes should override this.
 stylesheets[all][] = styles/styles.css
