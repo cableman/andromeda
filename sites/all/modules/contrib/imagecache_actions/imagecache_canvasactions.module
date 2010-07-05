@@ -167,7 +167,7 @@ function imageapi_image_overlay(&$image, &$layer, $x, $y, $alpha = 100, $reverse
  * to replace the old image resource with the new one.
  * @return bool success
  */
-function imageapi_gd_image_overlay(&$image, &$layer, $x, $y, $alpha = 100, $reverse = FALSE) {
+function imageapi_gd_image_overlay(&$image, $layer, $x, $y, $alpha = 100, $reverse = FALSE) {
   if (empty($layer->resource)) {
     trigger_error("Invalid input to ". __FUNCTION__ . " 'layer' is not a valid resource");
     #dpm($layer);
