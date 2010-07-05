@@ -100,6 +100,11 @@ body {
   min-height: 500px;
 }
 
+#main-content .imagecache-static_pages_image {
+  margin: 10px;
+  margin-left: 15px;
+}
+
 #page #footer {
   background: #8CA8E6 none repeat scroll 0 0;
   -moz-border-radius-bottomleft: 8px;
