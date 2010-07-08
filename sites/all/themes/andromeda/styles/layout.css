@@ -35,6 +35,7 @@ body {
 #page #site-header #branding {
   background: #3364CA none repeat scroll 0 0;
   width: 500px;
+  height: 60px;
   -moz-border-radius-topleft: 8px;
   -webkit-border-radius-topleft: 8px;
 }
