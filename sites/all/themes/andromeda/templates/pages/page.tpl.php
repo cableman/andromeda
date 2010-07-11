@@ -31,6 +31,7 @@
     <!-- Main content -->
     <div id="main" class="clear-block">      
       <div id="left" class="grid-3 alpha omega">
+        &nbsp;
         <?php print $left; ?>
       </div>
       <div id="main-content">

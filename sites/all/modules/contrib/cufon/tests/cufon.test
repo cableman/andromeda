@@ -1,0 +1,42 @@
+<?php
+//$Id: cufon.test,v 1.1 2009/07/16 21:34:42 eads Exp $
+
+/**
+ * @file
+ * Tests for Cufon.module.
+ */
+class CufonTestCase extends DrupalWebTestCase {
+
+  function getInfo() {
+    return array(
+      'name' => t('Cufon tests'),
+      'description' => t('Test basic Cufon module funcitonality.'),
+      'group' => 'Cufon',
+    );
+  }
+
+  function setUp() {
+    parent::setUp('cufon');
+
+    $permissions = array('administer cufon');
+
+    // User to set up google_analytics.
+    $user = $this->drupalCreateUser($permissions);
+    $this->drupalLogin($user);
+
+  }
+
+  function testCufonGetFonts() {
+    $cases = array(
+      'My_Font.font.js' => 'My Font',
+      'mY_FoNt.font.js' => 'mY FoNt',
+      'My_Font_300.font.js' => 'My Font',
+      'My_Font_300-My_Font_600.font.js' => 'My Font',
+    );
+    foreach ($cases as $filename => $family) {
+      $cufon_family = _cufon_get_font_family($filename);
+      $this->assertEqual($family, $cufon_family, t('Cufon resolved filename as @cufon_family (correct family name: @family).', array('@cufon_family' => $cufon_family, '@family' => $family)));
+    }
+  }
+
+}

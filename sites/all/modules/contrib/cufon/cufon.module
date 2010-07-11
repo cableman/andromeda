@@ -1,0 +1,113 @@
+<?php
+// $Id: cufon.module,v 1.6 2009/08/26 21:33:54 eads Exp $
+/**
+ * @file
+ * Adds simple Cufón support to Drupal. 
+ *
+ * Please read README.txt for installation and configuration instructions.
+ */
+
+/**
+ * Implementation of hook_perm().
+ */
+function cufon_perm() {
+  return array('administer cufon');
+}
+
+/**
+ * Implementation of hook_init().
+ */
+function cufon_init() {
+  $js = drupal_get_path('module', 'cufon') .'/js';
+  if (!file_exists($js .'/cufon-yui.js')) {
+    drupal_set_message(t('<strong>Cufón:</strong> You must download <a href="http://cufon.shoqolate.com/js/cufon-yui.js">cufon-yui.js</a> and install it to <code>@js</code>.', array('@js' => $js)));
+    return;
+  }
+  drupal_add_js($js .'/cufon-yui.js', 'module');
+  drupal_add_js($js .'/cufon-drupal.js', 'module', 'footer');
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function cufon_menu() {
+  $items = array();
+  $items['admin/settings/cufon'] = array(
+    'title' => 'Cufón Settings',
+    'description' => 'Adds cufon support to Drupal',
+    'access arguments' => array('administer cufon'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cufon_admin'),
+    'file' => 'cufon.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * _cufon_discover_fonts().
+ *
+ * Discover fonts according to the simple algorithm laid out at the top of
+ * this file.  
+ */
+function _cufon_discover_fonts() {
+  $fonts = array();
+  $pattern = '.*\.font\.js$';
+  $files = file_scan_directory('./sites/all/libraries/cufon-fonts', $pattern);
+  $files += file_scan_directory('./'. conf_path() .'/libraries/cufon-fonts', $pattern);
+  $files += file_scan_directory('./'. path_to_theme(), $pattern);
+  foreach ($files as $filename => $file) {
+    // Strip off './'
+    $filename = substr($file->filename, 2);
+    // Resolve font family
+    $fonts[$filename] = _cufon_get_font_family($file->basename);
+  }
+  return $fonts;
+}
+
+/**
+ * _cufon_resolve_font_familes().
+ *
+ * Takes a list of files, such as the one returned by file_scan_directory, and 
+ * returns an array of font file -> font family name values.
+ */
+function _cufon_get_font_family($filename) {
+
+  $family = str_replace('.font.js', '', $filename);
+
+  // Split on hyphen
+  if (($hyphen_pos = strpos($family, '-')) && ($hyphen_pos !== FALSE)) {
+    $family = substr($family, 0, $hyphen_pos);
+  }
+
+  // Split on last underscore and see if its numeric
+  $suffix_pos = strrpos($family, '_');
+  $suffix = substr($family, $suffix_pos + 1);
+  if (is_numeric($suffix)) {
+    $family = substr($family, 0, $suffix_pos);
+  }
+
+  // Remove remaining hyphens and add to our array
+  $family = str_replace('_', ' ', $family);
+
+  return $family;
+}
+
+
+/**
+ * Implementation of template_preprocess_page().
+ *
+ * We can't call _cufon_discover_fonts from hook_init, lest we run the risk of
+ * improperly resolving the theme path.  To get around this, we add the 
+ * Javascript settings to the page preprocessor and re-render the 'scripts'
+ * variable.
+ */
+function cufon_preprocess_page(&$vars) {
+  foreach (_cufon_discover_fonts() as $filename => $name) {
+    drupal_add_js($filename, 'module');
+  }
+  $selectors = variable_get('cufon_selectors', array());
+  drupal_add_js(array('cufonSelectors' => $selectors), 'setting');
+
+  $vars['scripts'] = drupal_get_js();
+  $vars['closure'] = theme('closure'); 
+}

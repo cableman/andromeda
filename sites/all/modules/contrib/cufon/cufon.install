@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * Implementation of hook_install().
+ */
+function cufon_install() {
+  // Increase module weight to ensure scripts are handled relatively late in 
+  // the page rendering process.
+  $sql = "UPDATE {system}
+          SET weight = 100
+          WHERE name = 'cufon'";
+  db_query($sql);
+}
+
+function cufon_update_6000() {
+  // Ensure late execution
+  $sql = "UPDATE {system}
+          SET weight = 100
+          WHERE name = 'cufon'";
+  db_query($sql);
+}
