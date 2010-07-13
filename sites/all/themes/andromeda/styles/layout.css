@@ -4,8 +4,6 @@
 
 body {
   height: 100%;
-  font-family: sans-serif;
-  font-size: 14px;
 }
 
 #page {
@@ -104,6 +102,18 @@ body {
 #main-content .imagecache-static_pages_image {
   margin: 10px;
   margin-left: 15px;
+}
+
+#main-content .imagecache-static_pages_image {
+  display: inline-block;
+  border: solid 1px #000;
+  overflow: hidden;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, .4);
+  -moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, .4);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, .4);
 }
 
 #page #footer {

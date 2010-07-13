@@ -1,0 +1,27 @@
+
+body {
+  font-family: Arial, helvetica,sans-serif;
+  font-size: 14px;
+}
+
+#main .content h1 {
+  font-size: 32px;
+  margin-bottom: 0px;
+  color: #003399;
+}
+
+#main .content h2 {
+  font-size: 24px;
+  margin-bottom: 0px;
+  color: #003399;
+}
+
+#main .content h3 {
+  font-size: 16px;
+  margin-bottom: 0px;
+  color: #003399;
+}
+
+#main .content p {
+  margin-bottom: 0.5em;
+}

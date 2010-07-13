@@ -15,9 +15,8 @@ regions[footer] = Footer
 ; Styles
 stylesheets[all][] = styles/typography.css
 stylesheets[all][] = styles/layout.css
-stylesheets[all][] = styles/blocks.css
+stylesheets[all][] = styles/developer.css
 stylesheets[print][] = styles/print.css
-stylesheets[handheld][] = styles/mobile.css
 
 ; Debug styles
 ;stylesheets[all] = styles/debug.css
