@@ -153,3 +153,28 @@ body {
   color: white;
   padding: 0 4px 0 4px;
 }
+
+#main #left #block-views-News-block_1 {
+  border-top: 1px solid #AAA;
+  border-bottom: 1px solid #AAA;
+  width: 220px;
+  position: relative;
+  left: -10px;
+  background-color: white;
+  padding: 10px;
+}
+
+#main #left #block-views-News-block_1 .views-row {
+  margin-bottom: 12px;
+}
+
+#main #left #block-views-News-block_1 .views-field-title h3 {
+  font-size: 14px;
+}
+
+#main #left #block-views-News-block_1 .views-field-created {
+  color: #888;
+  font-size: 12px;
+  float: left;
+  margin-right: 5px;
+}
