@@ -1,4 +1,4 @@
-// $Id: imce_set_inline.js,v 1.4 2010/03/17 20:55:38 ufku Exp $
+// $Id: imce_set_inline.js,v 1.4.2.1 2010/06/02 08:32:34 ufku Exp $
 
 (function($) {
 
@@ -21,7 +21,7 @@ ii.initiate = function() {
 
 //function to be executed when imce loads.
 ii.load = function(win) {
-  win.imce.setSendTo(Drupal.t('Send to @app', {'@app': Drupal.t('textarea')}), ii.insert);
+  win.imce.setSendTo(Drupal.t('Insert file'), ii.insert);
   $(window).unload(function() {
     if (ii.pop && !ii.pop.closed) ii.pop.close();
   });

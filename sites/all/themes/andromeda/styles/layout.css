@@ -75,7 +75,7 @@ body {
   text-decoration: underline;
 }
 
-#page #site-menu #block-menu-primary-links {
+#page #site-menu #block-menu_block-2 {
   margin-bottom: 0px;
 }
 
@@ -124,4 +124,9 @@ body {
   -webkit-border-radius-bottomright: 8px;
   padding: 0.5em 1em 0.5em 1em;
   border-top: 1px solid #000;
+}
+
+#page #main #edit-name-wrapper {
+  border-top: 1px solid #AAA;
+  padding-top: 20px;
 }

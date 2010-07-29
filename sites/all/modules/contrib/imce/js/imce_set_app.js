@@ -1,11 +1,11 @@
-// $Id: imce_set_app.js,v 1.4.2.1 2010/04/03 16:06:29 ufku Exp $
+// $Id: imce_set_app.js,v 1.4.2.3 2010/07/22 11:36:27 ufku Exp $
 /*
  * IMCE Integration by URL
  * Ex-1: http://example.com/imce?app=XEditor|url@urlFieldId|width@widthFieldId|height@heightFieldId
- * Creates "Send to XEditor" operation tab, which fills the specified fields with url, width, height properties
+ * Creates "Insert file" operation tab, which fills the specified fields with url, width, height properties
  * of the selected file in the parent window
  * Ex-2: http://example.com/imce?app=XEditor|sendto@functionName
- * "Send to XEditor" operation calls parent window's functionName(file, imceWindow)
+ * "Insert file" operation calls parent window's functionName(file, imceWindow)
  * Ex-3: http://example.com/imce?app=nomatter|imceload@functionName
  * Parent window's functionName(imceWindow) is called as soon as IMCE UI is ready. Send to operation
  * needs to be set manually. See imce.setSendTo() method in imce.js
@@ -82,7 +82,7 @@ var isFunc = function(str, scope) {
   var obj = scope || appWindow;
   var parts = str.split('.'), len = parts.length;
   for (var i = 0; i < len && (obj = obj[parts[i]]); i++);
-  return i == len && $.isFunction(obj) ? obj : false;
+  return obj && i == len && typeof obj != 'string' && !obj.nodeName && obj.constructor != Array && /^[\s[]?function/.test(obj + '') ? obj : false;
 }
 
 })(jQuery);

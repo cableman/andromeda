@@ -1,5 +1,5 @@
 <?php
-// $Id: imce.module,v 1.24.2.6 2010/05/29 08:27:24 ufku Exp $
+// $Id: imce.module,v 1.24.2.8 2010/06/02 08:33:21 ufku Exp $
 
 /**
  * @file
@@ -89,7 +89,7 @@ function imce_theme() {
  * Implementation of hook_file_download().
  */
 function imce_file_download($file) {
-  $serve = variable_get('file_downloads', '') == FILE_DOWNLOADS_PRIVATE && !variable_get('imce_settings_disable_private', 0) && ($path = file_create_path($file)) && file_exists($path);
+  $serve = variable_get('file_downloads', '') == FILE_DOWNLOADS_PRIVATE && !variable_get('imce_settings_disable_private', 0) && ($path = file_create_path($file)) && file_exists($path) && strpos(basename($path), '.');
   if ($serve) {
     if ($result = db_result(db_query("SELECT filemime FROM {files} WHERE filepath = '%s'", $path))) {
       $type = $result;
@@ -200,7 +200,7 @@ function imce_user_page_access($account, $user = FALSE) {
     global $user;
   }
 
-  return $account->uid == $user->uid && ($profile = imce_user_profile($user)) && $profile['usertab'];
+  return ($user->uid == 1 || $account->uid == $user->uid) && ($profile = imce_user_profile($account)) && $profile['usertab'];
 }
 
 /**
