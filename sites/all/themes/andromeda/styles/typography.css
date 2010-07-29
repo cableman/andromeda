@@ -29,3 +29,43 @@ body {
 #main .content p {
   margin-bottom: 0.5em;
 }
+
+#main .content ol,
+#main .content ul {
+  padding-left: 30px;
+}
+
+/* Personal page*/
+#main-content .view-Personale .views-row {
+  margin-bottom: 40px;
+  clear: both;
+}
+
+#main-content .view-Personale ul {
+  padding-left: 0px;
+}
+
+#main-content .view-Personale ul li {
+  list-style: none;
+  margin-left: 0px;
+}
+
+#main-content .views-field-title {
+  font-weight: bold;
+}
+
+#main-content .views-label-field-telefon-value {
+  font-weight: bold;
+}
+
+#main-content .views-label-field-email-email {
+  font-weight: bold;
+}
+
+#main-content .view-Personale .imagecache-personale_image {
+  float: right;
+  margin-left: 25px;
+  margin-bottom: 25px;
+  margin-right: 10px;
+}
+

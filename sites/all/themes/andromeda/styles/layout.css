@@ -126,7 +126,12 @@ body {
   border-top: 1px solid #000;
 }
 
+/* Contact page */
 #page #main #edit-name-wrapper {
   border-top: 1px solid #AAA;
   padding-top: 20px;
+}
+
+#page #main .number {
+  padding-left: 20px;
 }
