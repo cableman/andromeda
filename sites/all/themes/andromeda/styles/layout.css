@@ -135,3 +135,13 @@ body {
 #page #main .number {
   padding-left: 20px;
 }
+
+/* News pages */
+#page #main-content .field-field-teaser {
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+#main-content .view-News .views-row {
+  margin-bottom: 25px;
+}
