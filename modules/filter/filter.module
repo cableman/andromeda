@@ -1,5 +1,5 @@
 <?php
-// $Id: filter.module,v 1.204.2.15 2010/05/28 14:40:02 goba Exp $
+// $Id: filter.module,v 1.204.2.16 2010/08/06 11:20:12 goba Exp $
 
 /**
  * @file
@@ -188,7 +188,7 @@ function filter_filter_tips($delta, $format, $long = FALSE) {
 <p>This site allows HTML content. While learning all of HTML may feel intimidating, learning how to use a very small number of the most basic HTML "tags" is very easy. This table provides examples for each tag that is enabled on this site.</p>
 <p>For more information see W3C\'s <a href="http://www.w3.org/TR/html/">HTML Specifications</a> or use your favorite search engine to find other sites that explain HTML.</p>');
               $tips = array(
-                'a' => array( t('Anchors are used to make links to other pages.'), '<a href="'. $base_url .'">'. variable_get('site_name', 'Drupal') .'</a>'),
+                'a' => array( t('Anchors are used to make links to other pages.'), '<a href="'. $base_url .'">'. variable_get('site_name', 'Pressflow') .'</a>'),
                 'br' => array( t('By default line break tags are automatically added, so use this tag to add additional ones. Use of this tag is different because it is not used with an open/close pair like all the others. Use the extra " /" inside the tag to maintain XHTML 1.0 compatibility'), t('Text with <br />line break')),
                 'p' => array( t('By default paragraph tags are automatically added, so use this tag to add additional ones.'), '<p>'. t('Paragraph one.') .'</p> <p>'. t('Paragraph two.') .'</p>'),
                 'strong' => array( t('Strong'), '<strong>'. t('Strong') .'</strong>'),
@@ -965,23 +965,30 @@ function filter_xss_admin($string) {
 }
 
 /**
- * Filters XSS. Based on kses by Ulf Harnhammar, see
- * http://sourceforge.net/projects/kses
+ * Filters an HTML string to prevent cross-site-scripting (XSS) vulnerabilities.
  *
- * For examples of various XSS attacks, see:
- * http://ha.ckers.org/xss.html
+ * Based on kses by Ulf Harnhammar, see http://sourceforge.net/projects/kses.
+ * For examples of various XSS attacks, see http://ha.ckers.org/xss.html.
  *
  * This code does four things:
- * - Removes characters and constructs that can trick browsers
- * - Makes sure all HTML entities are well-formed
- * - Makes sure all HTML tags and attributes are well-formed
- * - Makes sure no HTML tags contain URLs with a disallowed protocol (e.g. javascript:)
+ * - Removes characters and constructs that can trick browsers.
+ * - Makes sure all HTML entities are well-formed.
+ * - Makes sure all HTML tags and attributes are well-formed.
+ * - Makes sure no HTML tags contain URLs with a disallowed protocol (e.g.
+ *   javascript:).
  *
  * @param $string
- *   The string with raw HTML in it. It will be stripped of everything that can cause
- *   an XSS attack.
+ *   The string with raw HTML in it. It will be stripped of everything that can
+ *   cause an XSS attack.
  * @param $allowed_tags
  *   An array of allowed tags.
+ *
+ * @return
+ *   An XSS safe version of $string, or an empty string if $string is not
+ *   valid UTF-8.
+ *
+ * @see drupal_validate_utf8()
+ * @ingroup sanitization
  */
 function filter_xss($string, $allowed_tags = array('a', 'em', 'strong', 'cite', 'code', 'ul', 'ol', 'li', 'dl', 'dt', 'dd')) {
   // Only operate on valid UTF-8 strings. This is necessary to prevent cross
