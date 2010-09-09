@@ -15,9 +15,7 @@
     <!-- Header -->
     <div id="site-header" class="clear-block">
       <div id="branding" class="grid-12 alpha clear-block">
-      <?php if ($linked_logo_img): ?>
-        <?php print $linked_logo_img; ?>
-      <?php endif; ?>
+	<?php print $logo; ?>
       </div>
     </div>
 
