@@ -10,7 +10,7 @@
 </head>
 
 <body class="<?php print $body_classes; ?> show-grid">
-  <div id="page" class="container-12 clear-block">
+  <div id="page" class="container-12 clear-block curvycorners">
 
     <!-- Header -->
     <div id="site-header" class="clear-block">
