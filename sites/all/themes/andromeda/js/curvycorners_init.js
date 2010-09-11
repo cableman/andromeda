@@ -14,7 +14,14 @@ $(document).ready(function () {
     antiAlias: true
   }
 
+  var foot_lr = {
+    bl: {radius: 8},
+    br: {radius: 8},
+    antiAlias: true
+  }
+
   curvyCorners(all, "#page");
   curvyCorners(top_lr, "#site-header");
   curvyCorners({tl: {radius: 8}, antiAlias: true}, "#branding");
+  curvyCorners(foot_lr, "#footer");
 });
