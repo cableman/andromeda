@@ -10,6 +10,7 @@ body {
   background: #EEE none repeat scroll 0 0;
   border: 1px solid black;
   margin-top: 20px;
+  margin-bottom: 20px;
   -moz-border-radius-topleft: 8px;
   -moz-border-radius-topright: 8px;
   -webkit-border-radius-topleft: 8px;
