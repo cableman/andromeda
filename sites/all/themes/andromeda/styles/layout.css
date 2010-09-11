@@ -108,8 +108,6 @@ body {
   display: inline-block;
   border: solid 1px #000;
   overflow: hidden;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
   border-radius: 10px;
   -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, .4);
   -moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, .4);
@@ -144,6 +142,20 @@ body {
 
 #main-content .view-News .views-row {
   margin-bottom: 25px;
+}
+
+#main-content .view-News .views-row .views-field-title {
+  padding-bottom: 5px;
+}
+
+#main-content .view-News .views-row .views-field-field-titleimage-fid {
+  float: left;
+  padding-right: 10px;
+  clear: both;
+}
+
+#main-content .view-News .views-row .views-field-field-teaser-value {
+  min-height: 115px;
 }
 
 #main-content .view-News .views-row .views-field-created {
