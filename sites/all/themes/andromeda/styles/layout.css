@@ -61,7 +61,6 @@ body {
   display: inline;
   padding-left: 1em;
   color: #FFF;
-  font-weight: bold;
 }
 
 #page #site-menu li a {
@@ -69,15 +68,34 @@ body {
   font-weight: bold;
   font-size: 110%;
   text-decoration: none;
-  padding-right: 1em;
+  /*padding-right: 1em;*/
 }
 
 #page #site-menu li a:hover {
   text-decoration: underline;
 }
 
+#page #site-menu li a.active-trail {
+  text-decoration: underline;
+}
+
 #page #site-menu #block-menu_block-2 {
   margin-bottom: 0px;
+}
+
+#page #left .menu-name-primary-links a {
+  color: #000;
+  text-decoration: none;
+}
+
+#page #left .menu-name-primary-links a:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+#page #left .menu-name-primary-links a.active-trail {
+  text-decoration: underline;
+  font-weight: bold;
 }
 
 #page #main .tabs {
