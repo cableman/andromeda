@@ -23,5 +23,5 @@ $(document).ready(function () {
   curvyCorners(all, "#page");
   curvyCorners(top_lr, "#site-header");
   curvyCorners({tl: {radius: 8}, antiAlias: true}, "#branding");
-  curvyCorners(foot_lr, "#footer");
+  //curvyCorners(foot_lr, "#footer");
 });
