@@ -14,7 +14,6 @@ function andromeda_breadcrumb($breadcrumb) {
     $uri = check_plain(request_uri());
     $uri = split('/', $uri);
     if (!empty($uri) && $uri[1] == 'nyheder') { // Added news to breadcrumb
-      echo count($uri);
       if (count($uri) > 2) {
         $breadcrumb[2] = $breadcrumb[1];
         $breadcrumb[1] = l(t('News'), 'nyheder');
