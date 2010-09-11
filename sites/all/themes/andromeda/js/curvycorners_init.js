@@ -8,5 +8,5 @@ $(document).ready(function () {
     antiAlias: true
   }
 
-  curvyCorners(settings, "#page");
+  curvyCorners(settings, ".curvycorners");
 });

@@ -13,7 +13,7 @@
   <div id="page" class="container-12 clear-block curvycorners">
 
     <!-- Header -->
-    <div id="site-header" class="clear-block">
+    <div id="site-header" class="clear-block curvycorners">
       <div id="branding" class="grid-12 alpha clear-block">
 	<?php print $logo; ?>
       </div>
