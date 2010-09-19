@@ -23,6 +23,16 @@ function andromeda_breadcrumb($breadcrumb) {
       }
     }
 
+    if (!empty($uri) && $uri[1] == 'album') { // Added news to breadcrumb
+      if (count($uri) > 2) {
+        $breadcrumb[2] = $breadcrumb[1];
+        $breadcrumb[1] = l(t('Photoalbum'), 'album');
+      }
+      else {
+        $breadcrumb[1] = t('Photoalbum');
+      }
+    }
+
     return '<div class="breadcrumb">'. implode(' › ', $breadcrumb) .'</div>';
   }
 }

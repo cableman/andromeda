@@ -162,14 +162,17 @@ body {
   font-weight: bold;
 }
 
+#main-content .view-gallery .views-row,
 #main-content .view-News .views-row {
   margin-bottom: 25px;
 }
 
+#main-content .view-gallery .views-row .views-field-title
 #main-content .view-News .views-row .views-field-title {
   padding-bottom: 5px;
 }
 
+#main-content .view-gallery .views-row .views-field-field-list-image-fid,
 #main-content .view-News .views-row .views-field-field-titleimage-fid {
   float: left;
   padding-right: 10px;
@@ -178,6 +181,15 @@ body {
 
 #main-content .view-News .views-row .views-field-field-teaser-value {
   min-height: 115px;
+}
+
+#main-content .view-gallery li {
+  list-style-type: none;
+  margin-left: 0px;
+}
+
+#main-content .view-gallery .views-row .views-field-field-album-description-value {
+  min-height: 100px;
 }
 
 #main-content .view-News .views-row .views-field-created {

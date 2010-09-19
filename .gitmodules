@@ -1,3 +1,0 @@
-[submodule "sites/all/modules/panels_slug"]
-	path = sites/all/modules/panels_slug
-	url = git://github.com/cableman/panels_slug.git
