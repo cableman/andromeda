@@ -211,8 +211,7 @@ body {
 #main-content .view-News .views-row .views-field-created {
   float: left;
   margin-right: 5px;
-  background-color: #003399;
-  color: white;
+  color: #666;
   padding: 0 4px 0 4px;
 }
 
