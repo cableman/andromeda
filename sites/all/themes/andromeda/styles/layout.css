@@ -173,7 +173,7 @@ body {
 }
 
 #main-content .view-gallery .views-row .views-field-field-list-image-fid,
-#main-content .view-News .views-row .views-field-field-titleimage-fid {
+#main-content .view-News .views-row .views-field-field-list-image-fid {
   float: left;
   padding-right: 10px;
   clear: both;
