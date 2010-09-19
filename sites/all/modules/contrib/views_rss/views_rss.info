@@ -4,9 +4,9 @@ description = "Provides views plugin for that allows RSS Feeds from Views to be 
 package = "Views Bonus Pack"
 dependencies[] = views
 core = "6.x"
-; Information added by drupal.org packaging script on 2010-04-08
-version = "6.x-1.0-beta4"
+; Information added by drupal.org packaging script on 2010-09-10
+version = "6.x-1.0-beta5"
 core = "6.x"
 project = "views_rss"
-datestamp = "1270736412"
+datestamp = "1284147112"
 

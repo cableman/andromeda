@@ -1,5 +1,5 @@
 <?php
-// $Id: views_rss_views_fields.theme.inc,v 1.1.2.8 2010/03/25 21:18:34 alexb Exp $
+// $Id: views_rss_views_fields.theme.inc,v 1.1.2.12 2010/08/26 20:38:04 davidg Exp $
 
 /**
  * Template preprocessor for views-view-views-rss-fields.tpl.php.
@@ -8,7 +8,16 @@ function template_preprocess_views_view_views_rss_fields(&$vars) {
   $view = $vars['view'];
 
   // Set basic info - title, description - about the feed
-  $vars['viewtitle'] = check_plain(variable_get('site_name', array()) . ' | ' . $view->display[$view->current_display]->display_title);
+  if ($view->display_handler->get_option('sitename_title')) {
+    $title = variable_get('site_name', 'Drupal');
+    if ($slogan = variable_get('site_slogan', '')) {
+      $title .= ' - ' . $slogan;
+    }
+  }
+  else {
+    $title = $view->get_title();
+  }
+  $vars['viewtitle'] = check_plain($title);
 
   if ($view->style_options['description']['feed_description']) {
     $description = $view->style_options['description']['feed_description'];
@@ -28,11 +37,15 @@ function template_preprocess_views_view_views_rss_fields(&$vars) {
   $items = $view->style_plugin->map_rows($vars['rows']);
   foreach($items as $item) {
     // Special handling for GeoRSS.
-    if (isset($item['lat']) && isset($item['lon'])) {
+    if (is_numeric($item['lat']) && is_numeric($item['lon'])) {
       $item['georss:point'] = $item['lat'] .' '.  $item['lon'];
+    }
+    if(isset($item['featureName'])) {
+      $item['georss:featureName'] = $item['featureName'];
     }
     unset($item['lat']);
     unset($item['lon']);
+    unset($item['featureName']);
     $rows .= theme('views_rss_fields_item', $item);
     foreach ($item as $k => $v) {
       $elements[$k] = $k;
@@ -44,7 +57,7 @@ function template_preprocess_views_view_views_rss_fields(&$vars) {
       $namespaces[] = "xmlns:{$namespace['local']}=\"{$namespace['namespace']}\"";
     }
   }
-  $vars['namespaces'] = implode(' ', $namespaces);
+  $vars['namespaces'] = implode(' ', array_unique($namespaces));
 
   // Set Headers
   drupal_set_header('Content-Type: application/rss+xml; charset=utf-8');
@@ -56,18 +69,11 @@ function template_preprocess_views_view_views_rss_fields(&$vars) {
 function template_preprocess_views_rss_fields_item(&$vars) {
   $item = $vars['item'];
 
-  // GeoRSS
-  if (isset($item['lat']) && isset($item['lon'])) {
-    $item['georss:point'] = check_plain($item['lat'] . ' ' .  $item['lon']);
-    unset($item['lat']);
-    unset($item['lon']);
-  }
-
   // Loop through key=>value pairs
   $row = '';
   foreach ($item as $key => $value) {
     if ($value) {
-      $row .= "<$key>". check_plain($value) ."</$key>\n";
+      $row .= "<$key>". check_plain(htmlspecialchars_decode($value)) ."</$key>\n";
     }
   }
 

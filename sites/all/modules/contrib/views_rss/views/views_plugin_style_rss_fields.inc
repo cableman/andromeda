@@ -1,5 +1,5 @@
 <?php
-// $Id: views_plugin_style_rss_fields.inc,v 1.1.2.6 2010/03/21 22:59:45 alexb Exp $
+// $Id: views_plugin_style_rss_fields.inc,v 1.1.2.9 2010/08/25 20:04:30 davidg Exp $
 
 /**
  * Extend the view_plugin_style class to provide an RSS view style.
@@ -12,9 +12,62 @@ class views_plugin_style_rss_fields extends views_plugin_style {
    * feed image link.
    */
   function attach_to($display_id, $path, $title) {
-    $url_options = array('html' => true);
-    $image = theme('image', $this->feed_image);
-    $this->view->feed_icon .= l($image, $path, $url_options);
+    $display = $this->view->display[$display_id]->handler;
+    $url_options = array();
+    $input = $this->view->get_exposed_input();
+    if ($input) {
+      $url_options['query'] = $input;
+    }
+
+    $url = url($this->view->get_url(NULL, $path), $url_options);
+    if ($display->has_path()) {
+      if (empty($this->preview)) {
+        drupal_add_feed($url, $title);
+      }
+    }
+    else {
+      if (empty($this->view->feed_icon)) {
+        $this->view->feed_icon = '';
+      }
+
+      $this->view->feed_icon .= theme('feed_icon', $url, $title);
+      drupal_add_link(array(
+        'rel' => 'alternate',
+        'type' => 'application/rss+xml',
+        'title' => $title,
+        'href' => $url
+      ));
+    }
+  }
+  
+  
+  function option_definition() {
+    $options = parent::option_definition();
+
+    $options['description'] = array(
+      'contains' => array(
+        'feed_description' => array('default' => ''),
+      ),
+    );
+    
+    $field_options = array();
+    foreach ($this->xml_fields() as $k => $option) {
+      $field_options[$k] = array('default' => '');
+    }
+    
+    $options['fields'] = array(
+      'contains' => $field_options,
+    );
+    
+    $options['georss'] = array(
+      'contains' => array(
+        'lat' => array('default' => ''),
+        'lon' => array('default' => ''),
+        'featureName' => array('default' => ''),
+      ),
+    );
+    
+    return $options;
   }
 
   /**
@@ -50,7 +103,7 @@ class views_plugin_style_rss_fields extends views_plugin_style {
         '#description' => t('Description for this feed.  If left blank, the default site mission will be used'),
       );
       // Field Chooser
-      $field_names[$field] = array('' => '--');
+      $field_names = array('' => '--');
       foreach ($handlers as $field => $handler) {
         if ($label = $handler->label()) {
           $field_names[$field] = $label;
@@ -96,6 +149,12 @@ class views_plugin_style_rss_fields extends views_plugin_style {
         '#title' => t('Longitude'),
         '#options' => $field_names,
         '#default_value' => $this->options['georss']['lon'],
+      );
+      $form['georss']['featureName'] = array(
+        '#type' => 'select',
+        '#title' => t('Feature Name'),
+        '#options' => $field_names,
+        '#default_value' => $this->options['georss']['featureName'],
       );
     }
   }
