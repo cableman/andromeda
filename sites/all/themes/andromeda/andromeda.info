@@ -22,8 +22,7 @@ stylesheets[print][] = "styles/print.css"
 ;stylesheets[all] = "styles/debug.css"
 
 ; Javascript
-scripts[] = "js/curvycorners.js"
-scripts[] = "js/curvycorners_init.js"
+;scripts[] = "js/curvycorners.js"
 
 ; Theme Features
 features[] = logo
