@@ -4,7 +4,7 @@
 
 body {
   height: 100%;
-  background-image:url('../images/andromeda_dk_bg.jpg');
+  background-image:url('../images/andromeda_dk_bg.png');
   background-repeat: repeat-x;
   background-position: 0 0;
 }
@@ -128,7 +128,7 @@ body {
 
 #main-content .imagecache-static_pages_image {
   display: inline-block;
-  border: solid 1px #000;
+/*  border: solid 1px #000;*/
   overflow: hidden;
   border-radius: 10px;
   -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, .4);
@@ -238,4 +238,8 @@ body {
   font-size: 12px;
   float: left;
   margin-right: 5px;
+}
+
+.view-display-id-block_1 .view-content .views-field-title a {
+  color: #000;
 }
