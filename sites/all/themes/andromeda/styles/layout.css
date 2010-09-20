@@ -242,4 +242,10 @@ body {
 
 .view-display-id-block_1 .view-content .views-field-title a {
   color: #000;
+  text-decoration: none;
 }
+
+.view-display-id-block_1 .view-content .views-field-title a:hover {
+  text-decoration: underline;
+}
+
