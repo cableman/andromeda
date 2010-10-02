@@ -33,6 +33,11 @@ function andromeda_breadcrumb($breadcrumb) {
       }
     }
 
+    /** XXX remove extra frontpage link **/
+    if (strstr($breadcrumb[0], 'Forsiden')) {
+	unset($breadcrumb[0]);
+    }
+
     return '<div class="breadcrumb">'. implode(' › ', $breadcrumb) .'</div>';
   }
 }
