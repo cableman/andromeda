@@ -34,7 +34,7 @@ function andromeda_breadcrumb($breadcrumb) {
     }
 
     /** XXX remove extra frontpage link **/
-    if (strstr($breadcrumb[0], 'Forsiden')) {
+    if (strstr($breadcrumb[0], 'Forsiden') && strstr($breadcrumb[1], 'Forsiden')) {
 	unset($breadcrumb[0]);
     }
 
