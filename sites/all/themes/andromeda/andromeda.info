@@ -2,20 +2,31 @@
 name         = Andromeda
 description  = Theme for DSI Andromeda
 core         = 6.x
-version      = 0.2
+version      = 2.0
 engine       = phptemplate
 screenshot   = screenshot.png
 base theme   = ninesixty
   
 ; Regions
-regions[menu]   = Menu
-regions[left]   = Content Left
-regions[footer] = Footer
+regions[region_header] 		= Header
+regions[region_main_menu] 	= Main menu
+regions[region_secondary_menu] 	= Secondary menu
+
+regions[region_top] 		= Top Content
+regions[region_top_secondary] 	= Top secondary Content
+
+regions[region_content]         = Content
+regions[region_middle_left]     = Content Left
+regions[region_middle_center]   = Content Middle
+regions[region_middle_right]    = Content Right
+
+regions[footer_1]           = Footer Left
+regions[footer_2]           = Footer Middle Left
+regions[footer_3]           = Footer Middle Right
+regions[footer_4]           = Footer Right
 
 ; Styles
-stylesheets[all][] = "styles/typography.css"
 stylesheets[all][] = "styles/layout.css"
-stylesheets[all][] = "styles/developer.css"
 stylesheets[print][] = "styles/print.css"
 
 ; Debug styles
@@ -24,8 +35,3 @@ stylesheets[print][] = "styles/print.css"
 ; Javascript
 ;scripts[] = "js/curvycorners.js"
 
-; Theme Features
-features[] = logo
-features[] = name
-features[] = favicon
-features[] = primary_links
