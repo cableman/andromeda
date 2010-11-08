@@ -1,0 +1,33 @@
+.clear {
+  clear: both;
+}
+
+/* Header*/
+#header {
+  clear: both;
+}
+
+#header #logo-title {
+  font-size: 24px;
+  padding-left: 10px;
+}
+
+/* Menus */
+#region-secondary-menu,
+#region-main-menu {
+  clear: both;
+}
+
+#page .menu-name-secondary-links {  
+  width: 100%;
+}
+
+#region-secondary-menu .menu-name-secondary-links ul {
+  float: right;
+}
+
+#region-main-menu .menu-name-primary-links ul li,
+#region-secondary-menu .menu-name-secondary-links ul li {
+  float: left;
+  list-style: none;
+}
