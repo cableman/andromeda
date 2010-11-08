@@ -1,0 +1,3 @@
+[submodule "sites/all/modules/nodeasblock"]
+	path = sites/all/modules/nodeasblock
+	url = git@github.com:cableman/nodeasblock.git
