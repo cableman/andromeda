@@ -25,6 +25,7 @@ regions[footer_4] = Footer Right
 
 ; Styles
 stylesheets[all][] = "styles/layout.css"
+stylesheets[all][] = "styles/typography.css"
 stylesheets[print][] = "styles/print.css"
 
 ; Debug styles

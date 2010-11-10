@@ -24,7 +24,7 @@
             <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
           </a>
         <?php endif; ?>
-        <?php print $site_slogan; ?>
+        <p><?php print $site_slogan; ?></p>
       </div> <!-- /logo-title -->
 
       <?php if (!empty($search_box)): ?>

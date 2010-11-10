@@ -5,14 +5,22 @@
 /* Header*/
 #header {
   clear: both;
+  position: relative;
 }
 
-#header #logo-title {
+#header p {
   font-size: 24px;
-  padding-left: 10px;
+  font-weight: bold;
+  position: absolute;
+  top: 38px;
+  left: 230px;
 }
 
 /* Menus */
+#region-main-menu {
+  padding: 10px 0 10px 0;
+}
+
 #region-secondary-menu,
 #region-main-menu {
   clear: both;
@@ -30,4 +38,19 @@
 #region-secondary-menu .menu-name-secondary-links ul li {
   float: left;
   list-style: none;
+}
+
+/* Footer */
+#footer .block {
+  background-color: #eee;
+  min-height: 250px;
+  border: 1px solid black;
+}
+
+#footer .block h2 {
+  padding: 10px 10px 0 10px;
+}
+
+#footer .block .content {
+  padding: 10px;
 }
