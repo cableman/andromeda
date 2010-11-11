@@ -40,6 +40,18 @@
   list-style: none;
 }
 
+/* News */
+#main-content .news-listing ul {
+  width: 900px;
+  clear: both;
+}
+
+#main-content .news-listing ul li {
+  width: 300px;
+  list-style: none;
+  float: left;
+}
+
 /* Footer */
 #footer .block {
   background-color: #eee;
