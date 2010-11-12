@@ -34,3 +34,5 @@ stylesheets[print][] = "styles/print.css"
 ; Javascript
 ;scripts[] = "js/curvycorners.js"
 
+; Panels layouts.
+plugins[panels][layouts] = layouts

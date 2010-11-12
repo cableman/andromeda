@@ -41,16 +41,23 @@
 }
 
 /* News */
-#main-content .news-listing ul {
-  width: 900px;
+#main-content .news-listing .view-content ul {
   clear: both;
 }
 
-#main-content .news-listing ul li {
-  width: 300px;
+#main-content .news-listing .view-content ul li {
+  width: 280px;
   list-style: none;
   float: left;
+  padding-bottom: 25px;
 }
+
+#main-content .news-listing ul.pager {
+  float: right;
+}
+
+/* Content */
+
 
 /* Footer */
 #footer .block {
@@ -60,6 +67,7 @@
 }
 
 #footer .block h2 {
+  font-size: 18px;
   padding: 10px 10px 0 10px;
 }
 
