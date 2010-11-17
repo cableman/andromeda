@@ -1,3 +1,6 @@
 [submodule "sites/all/modules/nodespotbox"]
 	path = sites/all/modules/nodespotbox
 	url = git@github.com:cableman/nodespotbox.git
+[submodule "sites/all/modules/panels_gmap"]
+	path = sites/all/modules/panels_gmap
+	url = git@github.com:cableman/panels_gmap.git
