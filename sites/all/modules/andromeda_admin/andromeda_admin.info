@@ -1,0 +1,7 @@
+; $Id:$
+name = Andromeda admin
+description = Andromeda related settings
+package = andromeda
+core = 6.x
+version = 0.1-dev
+dependencies[] = mailchimp
