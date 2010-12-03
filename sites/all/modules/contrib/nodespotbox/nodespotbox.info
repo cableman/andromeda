@@ -1,0 +1,14 @@
+; $Id: nodespotbox.info,v 1.1 2010/12/03 19:16:43 cableman0408 Exp $
+name = Nodespotbox
+description = Create spotboxes (blocks) from nodes using views from displaying.
+package = Content
+core = 6.x
+version = 0.1-dev
+dependencies[] = views
+
+; Information added by drupal.org packaging script on 2010-12-03
+version = "6.x-1.0"
+core = "6.x"
+project = "nodespotbox"
+datestamp = "1291406582"
+
