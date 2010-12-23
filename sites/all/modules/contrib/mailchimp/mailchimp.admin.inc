@@ -6,6 +6,8 @@
 function mailchimp_admin_settings() {
   module_load_include('php', 'mailchimp', 'MCAPI.class');
 
+  $form = array();
+
   $form['mailchimp_account_info'] = array(
       '#type'       => 'fieldset',
       '#collapsible' => TRUE,
@@ -34,9 +36,9 @@ function mailchimp_admin_settings() {
             '#title'      => 'MailChimp Subscription Lists',
             '#tree'         => TRUE
         );
+        $saved_lists = variable_get('mailchimp_lists', NULL);
         foreach ($lists as $list) {
-          $saved_list = unserialize(variable_get('mailchimp_lists', NULL));
-          $saved_list = $saved_list[$list['id']];
+          $saved_list = $saved_lists[$list['id']];
 
           $form['mailchimp_lists']['mailchimp_list_'. $list['id']] = array(
               '#type'       => 'fieldset',
@@ -109,6 +111,7 @@ function mailchimp_admin_settings() {
                     '#type'           => 'select',
                     '#title'          => $mergevar['name'],
                     '#options'        => $mergeoptions,
+                    '#required'       => is_bool($mergevar['req']) ? $mergevar['req'] : FALSE,
                     '#default_value'  => $saved_list ? $saved_list->mergevars[$mergevar['tag']] : ''
                 );
               }
@@ -132,17 +135,6 @@ function mailchimp_admin_settings() {
             '#title'          => t('Subscription Failure Message'),
             '#default_value'  => variable_get('mailchimp_subscription_failure_message', t('We were unable to subscribe you at this time. Please try again later.'))
         );
-        $form['mailchimp_messages']['mailchimp_unsubscription_success_message'] = array(
-            '#type'           => 'textarea',
-            '#title'          => t('Unsubscription Success Message'),
-            '#default_value'  => variable_get('mailchimp_unsubscription_success_message', t('Thank you, you have been successfully unsubscribed.'))
-        );
-        $form['mailchimp_messages']['mailchimp_unsubscription_failure_message'] = array(
-            '#type'           => 'textarea',
-            '#title'          => t('Unsubscription Failure Message'),
-            '#default_value'  => variable_get('mailchimp_unsubscription_failure_message', t('We were unable to unsubscribe you at this time. Please try again later.'))
-        );
-
         $form['mailchimp_user_register'] = array(
             '#type'           => 'checkbox',
             '#title'          => t('Show subscription options on the user registration form.'),
@@ -167,7 +159,10 @@ function mailchimp_admin_settings() {
           '#title' => t('Mailchimp Cron'),
         );
         $form['cron']['info'] = array(
-          '#value' => t('Updates to Mailchimp can be done when the user is added or edited, or deferred until the next cron run. Deferring these updates to cron will speed up the user interface when editing users. You need to ensure cron is running correctly, and that it keeping up with the number of user edits on your site.<br /><strong>There are currently !count users with pending updates in the queue.</strong>', array('!count'=>db_result(db_query('SELECT COUNT(*) FROM {mailchimp_user} WHERE status = \'%s\'', MAILCHIMP_USERSTATUS_PENDING)))),
+          '#value' => t('Updates to Mailchimp can be done when the user is added or edited, or deferred until the next cron run. Deferring these updates to cron will speed up the user interface when accounts are added, edited, or deleted. You need to ensure cron is running correctly, and that it keeping up with the number of user edits on your site. You may need to !rebuild when switching to cron processing. There are currently !count users with pending updates in the queue.', 
+          array(
+            '!count' => '<strong>' . db_result(db_query('SELECT COUNT(*) FROM {mailchimp_user} WHERE status = \'%s\'', MAILCHIMP_USERSTATUS_PENDING)) . '</strong>',
+            '!rebuild' => l('rebuild the MailChimp User table', 'admin/settings/mailchimp/rebuild'))),
         );
         $form['cron']['mailchimp_cron'] = array(
             '#type'           => 'checkbox',
@@ -215,23 +210,21 @@ function mailchimp_admin_settings() {
         }
   }
 
-  $form['#validate'][] = 'mailchimp_admin_settings_validate';
+  $form['#submit'][] = 'mailchimp_admin_settings_submit';
 
   return system_settings_form($form);
 }
 
 /**
- * validate the admin settings and serialize the saved lists into objects
- *
- * @param <type> $form
- * @param <type> $form_state
+ * Serialize the saved lists and notify users of the need to rebuild the user's table.
  */
-function mailchimp_admin_settings_validate($form, &$form_state) {
+function mailchimp_admin_settings_submit($form, &$form_state) {
   // no lists selected or first time here
   if(empty($form_state['values']['mailchimp_lists'])){
     return;
   }
-
+  
+  $required = FALSE;
   $lists = array();
   foreach ($form_state['values']['mailchimp_lists'] as $form_list) {
     $list = new stdClass();
@@ -243,9 +236,17 @@ function mailchimp_admin_settings_validate($form, &$form_state) {
     $list->doublein = $form_list['doublein'];
     $list->mergevars  = $form_list['mergevars'];
     $lists[$form_list['list_id']] = $list;
+    
+    $required = ($form_list['listtype'] == MAILCHIMP_LISTTYPE_REQUIRED && $form_state['values']['mailchimp_cron']);
   }
-
-  // remove lists from the form_state
+  
+  // remove lists from the form_state so they are not saved twice
   unset($form_state['values']['mailchimp_lists']);
-  variable_set('mailchimp_lists', serialize($lists));
+  variable_set('mailchimp_lists', $lists);
+  
+  // let users know they may need to rebuild the user's table
+  if ($required) {
+    drupal_set_message(t('At least one list is marked as required and updates are handled via cron. You may need to !rebuild.', 
+      array('!rebuild' => l('rebuid the MailChimp users table', 'admin/settings/mailchimp/rebuild'))));
+  }  
 }
