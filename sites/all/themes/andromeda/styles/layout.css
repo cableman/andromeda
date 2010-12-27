@@ -59,6 +59,25 @@
 /* Content */
 
 
+/* Personale */
+.page-personale .view-Personale li {
+  list-style: none;
+  margin: 0;
+  clear: left;
+}
+
+.page-personale .view-Personale li h2 {
+  padding-top: 20px;
+}
+
+.page-personale .view-Personale .profile-picture {
+  float: left;
+}
+
+.page-personale .view-Personale .profile-content {
+  margin-left: 220px;
+}
+
 /* Footer */
 #footer .block {
   background-color: #eee;
