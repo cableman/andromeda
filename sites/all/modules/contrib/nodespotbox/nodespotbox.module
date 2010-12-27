@@ -1,5 +1,5 @@
 <?php
-// $Id: nodespotbox.module,v 1.1 2010/12/03 19:16:43 cableman0408 Exp $
+// $Id: nodespotbox.module,v 1.1.2.1 2010/12/27 19:23:35 cableman0408 Exp $
 
 /**
  * @file
@@ -200,6 +200,12 @@ function nodespotbox_nodeapi(&$node, $op, $teaser, $page) {
         db_query('DELETE FROM {nodespotbox} WHERE nid = %d', $node->nid);
         if (isset($node->nodespotbox['available']) && $node->nodespotbox['available']) {
           db_query('INSERT INTO {nodespotbox} VALUES (%d, "%s", "%s")', $node->nid, $node->type, $node->nodespotbox['display']);
+
+          // Clear context modules cache (or it will not be available in the drop down).
+          if (function_exists('context_invalidate_cache')) {
+            // Only some off the cache needs to be cleared, so don't call context_invalidate_cache
+            cache_clear_all('context', 'cache', TRUE);
+          }
         }
         drupal_set_message(t('Spotbox configuration has been saved.'));
       }

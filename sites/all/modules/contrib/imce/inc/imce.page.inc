@@ -1,5 +1,5 @@
 <?php
-// $Id: imce.page.inc,v 1.1.2.7 2010/08/16 21:09:49 ufku Exp $
+// $Id: imce.page.inc,v 1.1.2.8 2010/11/08 04:24:45 ufku Exp $
 
 /**
  * @file
@@ -618,7 +618,7 @@ function imce_validate_all(&$file, $imce) {
   //and scaling it may exploit system memory.
   $errors = imce_validate_filesize($file, $imce['filesize']);
   //image resolution validation
-  if (empty($errors)) {
+  if (empty($errors) && imce_image_info($file->filepath)) {
     $errors = array_merge($errors, file_validate_image_resolution($file, $imce['dimensions']));
   }
   //directory quota validation
