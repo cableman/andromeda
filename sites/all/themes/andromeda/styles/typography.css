@@ -1,5 +1,5 @@
 
-#page h1, #page h2, #page h3 {
+h1, h2, h3  {
+  font-family: "museo-sans-1","museo-sans-2", arial, sans-serif;
   margin-bottom: 5px;
 }
-
