@@ -8,6 +8,8 @@
   <?php print $styles; ?>
   <?php print $scripts; ?>
   <script type="text/javascript"><?php /* Needed to avoid Flash of Unstyled Content in IE */ ?> </script>
+  <script type="text/javascript" src="http://use.typekit.com/nyl0lxy.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 </head>
 <body class="<?php print $body_classes; ?> show-grid">
   <div id="page" class="container-12">
