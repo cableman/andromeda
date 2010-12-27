@@ -4,3 +4,6 @@
 [submodule "sites/all/modules/panels_gmap"]
 	path = sites/all/modules/panels_gmap
 	url = git@github.com:cableman/panels_gmap.git
+[submodule "sites/all/modules/context_filter"]
+	path = sites/all/modules/context_filter
+	url = git@github.com:cableman/context_filter.git
