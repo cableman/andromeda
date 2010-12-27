@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function context_filter_uninstall() {
+  variable_del('context_filter_block_types');
+}

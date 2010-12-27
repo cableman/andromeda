@@ -1,0 +1,78 @@
+<?php
+// $Id: context_filter.module,v 1.1 2010/12/24 13:13:57 cableman0408 Exp $
+
+
+/**
+ * Implements hook_perm().
+ */
+function context_filter_perm() {
+  $perm['access context filter'] = array(
+    'title' => t('Administer Context filter.'),
+  );
+  return array_keys($perm);
+}
+
+/**
+ * Implementation of hook_menu, which sets the path admin/build/context/filter
+ * for administrate the selections.
+ * 
+ * @return array $items
+ */
+function context_filter_menu() {
+  $items = array();
+  $items['admin/build/context/filter'] = array(
+    'title' => 'Context filter',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('context_filter_admin_form'),
+    'description' => 'Select which blocks should be avaliable in the context drop down.',
+    'access arguments' => array('access context filter'),
+  );
+
+  return $items;
+}
+
+/**
+ * The administration form, which lists modules that implements hook_block.
+ *
+ * @param array $form_state
+ * @return array $form
+ */
+function context_filter_admin_form(&$form_state) {
+  $form = array();
+
+  // Find all modules that implements hook_block
+  $options = array();
+  foreach (module_implements('block') as $module) {
+    $options[$module] = $module;
+  }
+
+  // Build admin form
+  $form['context_filter_block_types'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Context drop down types'),
+    '#options' => $options,
+    '#default_value' => variable_get('context_filter_block_types', $options),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Override "Context" preprocess function to limit the selections.
+ *
+ * @param array $vars
+ */
+function context_filter_preprocess_context_block_browser(&$vars) {
+  // Load selected modules list
+  $selected = array_filter(variable_get('context_filter_block_types', array()));
+
+  // Only change the list, if selections have be made in the admin interface
+  if (!empty($selected)) {
+    // Only display selected modules
+    $vars['categories']['#options'] = array_merge(array(0 => '<'. t('Choose a category') .'>'), $selected);
+  }
+  else {
+    drupal_set_message(t('You have not yet configured "Context filter". Click <a href="@link">here</a> to configure it.',
+            array('@link' => url('admin/build/context/filter'))));
+  }
+}
