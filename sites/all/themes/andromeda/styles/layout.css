@@ -58,6 +58,34 @@
 
 /* Content */
 
+/* Photo album */
+.page-album .view-gallery .col-1 .grid-item {
+  padding: 10px 10px 10px 0;
+}
+
+.page-album .view-gallery .col-2 .grid-item {
+  padding: 10px;
+}
+
+.node-type-photo-album .view-gallery .album-thumb {
+  width: 620px;
+}
+
+.node-type-photo-album .view-gallery .album-thumb img {
+  border: 1px solid #000;
+}
+
+.node-type-photo-album .view-gallery .album-thumb .field-item {
+  float: left;
+  padding: 10px;
+  background-color: #eee;
+  border: 1px solid #000;
+  margin: 5px;
+}
+
+.node-type-photo-album .field-field-album-description {
+  margin-left: 640px;
+}
 
 /* Personale */
 .page-personale .view-Personale li {
