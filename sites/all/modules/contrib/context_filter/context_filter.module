@@ -1,13 +1,15 @@
 <?php
-// $Id: context_filter.module,v 1.1 2010/12/24 13:13:57 cableman0408 Exp $
-
+// $Id: context_filter.module,v 1.1.2.3 2011/01/02 18:54:20 cableman0408 Exp $
 
 /**
  * Implements hook_perm().
  */
 function context_filter_perm() {
-  $perm['access context filter'] = array(
+  $perm['administer context filter'] = array(
     'title' => t('Administer Context filter.'),
+  );
+  $perm['administer context filter regions'] = array(
+    'title' => t('Administer Context filter regions.'),
   );
   return array_keys($perm);
 }
@@ -24,8 +26,16 @@ function context_filter_menu() {
     'title' => 'Context filter',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('context_filter_admin_form'),
-    'description' => 'Select which blocks should be avaliable in the context drop down.',
-    'access arguments' => array('access context filter'),
+    'description' => 'Select which options should be avaliable in the context drop-down based on modules.',
+    'access arguments' => array('administer context filter'),
+  );
+
+  $items['admin/build/context/regions'] = array(
+    'title' => 'Context filter regions',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('context_filter_regions_admin_form'),
+    'description' => 'Select which regions that should be avaliable in edited mode.',
+    'access arguments' => array('administer context filter regions'),
   );
 
   return $items;
@@ -58,6 +68,59 @@ function context_filter_admin_form(&$form_state) {
 }
 
 /**
+ * Administration form to select the regions editable in context 
+ * 
+ * @param array $form_state
+ * @return array $form
+ */
+function context_filter_regions_admin_form(&$form_state) {
+  $form = array();
+  $form['#tree'] = TRUE;
+
+  // Get list of themes
+  $themes = list_themes();
+  foreach ($themes as $key => $theme) {
+    if ($theme->status) {
+      $theme_key = $theme->name;
+
+      // Set a fieldset for each theme
+      $form['context_filter_regions_' . $theme_key] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Regions for "@theme"', array('@theme' => $theme->info['name'])),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      );
+
+      // Build options array
+      $options = array();
+      $default = array();
+      $regions = $theme->info['regions'];
+      foreach ($regions as $key => $region) {
+        $options[$key] = $region;
+        $default[$key] = $key;
+      }
+
+      // Build default values
+      $default = variable_get('context_filter_regions_' . $theme_key, $default);
+      if (isset($default['enabled_regions'])) {
+        $default = $default['enabled_regions'];
+      }
+
+      // Build checkboxes for each theme
+      $form['context_filter_regions_' . $theme_key]['enabled_regions'] = array(
+        '#type' => 'checkboxes',
+        '#title' => t('Available regions'),
+        '#options' => $options,
+        '#default_value' => $default,
+      );
+    }
+  }
+
+  return system_settings_form($form);
+}
+
+
+/**
  * Override "Context" preprocess function to limit the selections.
  *
  * @param array $vars
@@ -74,5 +137,31 @@ function context_filter_preprocess_context_block_browser(&$vars) {
   else {
     drupal_set_message(t('You have not yet configured "Context filter". Click <a href="@link">here</a> to configure it.',
             array('@link' => url('admin/build/context/filter'))));
+  }
+}
+
+
+/**
+ * Filter editable regions for the current theme by using preprocess functions.
+ *
+ * @global string $theme_key
+ * @param array $vars
+ */
+function context_filter_preprocess_context_block_editable_region(&$vars) {
+  if (!empty($vars['editable'])) {
+    // Get current theme name and regions
+    global $theme_key;
+    $regions = system_region_list($theme_key);
+
+    // Load context filter enabled regions
+    $editable_regions = variable_get('context_filter_regions_' . $theme_key, NULL);
+
+    if (isset($editable_regions)) {
+      $editable_regions = array_filter($editable_regions['enabled_regions']);
+
+      if (!in_array($vars['region'], $editable_regions)) {
+        $vars['editable'] = false;
+      }
+    }
   }
 }
