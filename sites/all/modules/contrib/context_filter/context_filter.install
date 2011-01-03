@@ -4,5 +4,6 @@
  * Implementation of hook_uninstall().
  */
 function context_filter_uninstall() {
-  variable_del('context_filter_block_types');
+  // Remove all settings
+  db_query("DELETE FROM {variable} WHERE name LIKE '%context_filter_%'");
 }
