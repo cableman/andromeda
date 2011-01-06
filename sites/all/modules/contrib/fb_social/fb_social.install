@@ -1,0 +1,10 @@
+<?php
+
+//$Id: fb_social.install,v 1.1.2.1 2010/11/21 04:42:23 ferdi Exp $
+
+function fb_social_unistall(){
+  $vars = db_query("SELECT * FROM {variable} WHERE name LIKE 'fb_social_%'");
+  while ($var = db_fetch_object($vars)) {
+    variable_del($var->name);
+  }
+}

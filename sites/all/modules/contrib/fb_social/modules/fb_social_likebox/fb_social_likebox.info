@@ -1,0 +1,14 @@
+;$Id: fb_social_likebox.info,v 1.1.2.2 2010/07/11 01:46:54 ferdi Exp $
+name = fb social like box
+description = fb social like box
+dependencies[] = fb_social
+package = "Facebook Social"
+core = 6.x
+
+
+; Information added by drupal.org packaging script on 2010-11-21
+version = "6.x-1.0-beta5"
+core = "6.x"
+project = "fb_social"
+datestamp = "1290317507"
+
