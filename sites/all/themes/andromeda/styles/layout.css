@@ -93,6 +93,33 @@ html {
 }
 
 /* Content */
+#main-content .view-frontpage-slider {
+  position: relative;
+}
+
+#main-content .view-frontpage-slider h2 {
+  position: absolute;
+  top: 135px;
+  padding-left: 10px;
+  color: #FFF;
+  z-index: 10;
+}
+
+#main-content .view-frontpage-slider h2 a {
+  color: #FFF;
+  text-decoration: none;
+}
+
+#main-content .view-frontpage-slider .slideshow-description {
+  position: absolute;
+  height: 100px;
+  width: 600px;
+  background-color: #188DDC;
+  top: 130px;
+  padding-top: 40px;
+  padding-left: 10px;
+  color: #FFF;
+}
 
 /* Photo album */
 .page-album .view-gallery .col-1 .grid-item {
