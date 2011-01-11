@@ -12,21 +12,20 @@
   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 </head>
 <body class="<?php print $body_classes; ?> show-grid">
-  <div id="page" class="container-12">
+  <div id="page" class="container-12 clear-fix">
 
     <div id="region-secondary-menu">
       <?php print $region_secondary_menu; ?>
     </div>
 
     <!-- header -->
-    <div id="header"  class="container-12">
+    <div id="header"  class="container-12 clear-fix">
       <div id="logo-title">
         <?php if (!empty($logo)): ?>
           <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
             <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
           </a>
         <?php endif; ?>
-        <p><?php print $site_slogan; ?></p>
       </div> <!-- /logo-title -->
 
       <?php if (!empty($search_box)): ?>
@@ -97,9 +96,11 @@
     </div>
     <!-- /Secondary content -->
 
-    <!-- footer -->
+  </div> <!-- /page -->
+  <div id="footer-outer" class="clear-fix">
+        <!-- footer -->
     <div id="footer" class="clear">
-      <div id="footer-inner" class="container-12 clear">
+      <div id="footer-inner" class="container-12 clear-fix">
         <?php if ($footer_1): ?>
           <div class="region grid-3">
             <?php print $footer_1; ?>
@@ -123,8 +124,7 @@
       </div>
     </div>
     <!-- /footer -->
-
-  </div> <!-- /page -->
+  </div>
   <?php print $closure; ?>
 </body>
 </html>
