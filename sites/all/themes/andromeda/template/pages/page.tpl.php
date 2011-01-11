@@ -99,29 +99,27 @@
   </div> <!-- /page -->
   <div id="footer-outer" class="clear-fix">
         <!-- footer -->
-    <div id="footer" class="clear">
-      <div id="footer-inner" class="container-12 clear-fix">
-        <?php if ($footer_1): ?>
-          <div class="region grid-3">
-            <?php print $footer_1; ?>
-          </div>
-        <?php endif; ?>
-        <?php if ($footer_2): ?>
-          <div class="region grid-3">
-            <?php print $footer_2; ?>
-          </div>
-        <?php endif; ?>
-        <?php if ($footer_3): ?>
-          <div class="region grid-3">
-            <?php print $footer_3; ?>
-          </div>
-        <?php endif; ?>
-        <?php if ($footer_4): ?>
-          <div class="region grid-3">
-            <?php print $footer_4; ?>
-          </div>
-        <?php endif; ?>
-      </div>
+    <div id="footer" class="clear container-12">
+      <?php if ($footer_1): ?>
+        <div class="region grid-3">
+          <?php print $footer_1; ?>
+        </div>
+      <?php endif; ?>
+      <?php if ($footer_2): ?>
+        <div class="region grid-3">
+          <?php print $footer_2; ?>
+        </div>
+      <?php endif; ?>
+      <?php if ($footer_3): ?>
+        <div class="region grid-3">
+          <?php print $footer_3; ?>
+        </div>
+      <?php endif; ?>
+      <?php if ($footer_4): ?>
+        <div class="region grid-3">
+          <?php print $footer_4; ?>
+        </div>
+      <?php endif; ?>
     </div>
     <!-- /footer -->
   </div>
