@@ -11,25 +11,25 @@
   <script type="text/javascript" src="http://use.typekit.com/nyl0lxy.js"></script>
   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 </head>
-<body class="<?php print $body_classes; ?> show-grid">
+<body class="<?php print $body_classes; ?>">
   <div id="page" class="container-12 clear-fix">
 
-    <div id="region-secondary-menu">
-      <?php print $region_secondary_menu; ?>
-    </div>
+
 
     <!-- header -->
-    <div id="header"  class="container-12 clear-fix">
-      <div id="logo-title">
-        <?php if (!empty($logo)): ?>
-          <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-            <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
-          </a>
-        <?php endif; ?>
-      </div> <!-- /logo-title -->
+    <div id="header"  class="grid-12">
+      <div id="region-secondary-menu">
+        <?php print $region_secondary_menu; ?>
+      </div>
+        
+      <?php if (!empty($logo)): ?>
+        <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+          <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
+        </a>
+      <?php endif; ?><!-- /logo -->
 
       <?php if (!empty($search_box)): ?>
-        <div id="search-box"><?php print $search_box; ?></div>
+      <div id="search-box"><?php print $search_box; ?></div>
       <?php endif; ?>
 
       <?php if (!empty($region_header)): ?>
@@ -58,18 +58,19 @@
       <?php endif; ?>
       <!-- /top content -->
 
-      <?php if ($tabs): ?>
-        <div class="tabs"><?php print $tabs; ?></div>
-      <?php endif; ?>
-      <?php print $messages; ?>
+            <?php print $messages; ?>
       <?php print $help; ?>
         <div id="main-content" class="grid-12 region">
           <?php print $content; ?>
+          <?php if ($tabs): ?>
+          <div class="tabs"><?php print $tabs; ?></div>
+          <?php endif; ?>
         </div>
     </div>
     <!-- /content -->
 
     <!-- Middle content -->
+    <?php if ($region_middle_left || $region_middle_center || $region_middle_right || $region_bottom): ?>
     <div id="secondary-content" class="clear">
       <div id="secondary-content-inner" class="container-12">
         <?php if ($region_middle_left): ?>
@@ -94,10 +95,11 @@
         <?php endif; ?>
       </div>
     </div>
+    <?php endif; ?>
     <!-- /Secondary content -->
 
   </div> <!-- /page -->
-  <div id="footer-outer" class="clear-fix">
+  <div id="footer-outer">
         <!-- footer -->
     <div id="footer" class="clear container-12">
       <?php if ($footer_1): ?>

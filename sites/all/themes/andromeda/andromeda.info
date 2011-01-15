@@ -2,7 +2,7 @@
 name         = Andromeda
 description  = Theme for DSI Andromeda
 core         = 6.x
-version      = 2.0
+version      = 2.0-dev
 engine       = phptemplate
 screenshot   = screenshot.png
 base theme   = ninesixty
@@ -27,6 +27,7 @@ regions[footer_4] = Footer Right
 stylesheets[all][] = "styles/layout.css"
 stylesheets[all][] = "styles/typography.css"
 stylesheets[print][] = "styles/print.css"
+stylesheets[all][] = "styles/text.css"
 
 ; Debug styles
 ;stylesheets[all] = "styles/debug.css"

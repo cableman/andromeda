@@ -1,5 +1,85 @@
+body {
+  font-family: "Helvetica Neue", arial, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
+  margin-bottom: 5px;
+}
 
 h1, h2, h3  {
   font-family: "museo-sans-1","museo-sans-2", arial, sans-serif;
   margin-bottom: 5px;
+  font-weight: normal;
+  color: #333;
+}
+
+h2 {
+  font-size: 22px;
+  line-height: 1.4em;
+  margin-bottom: 0.2em;
+}
+
+#footer h2 {
+  font-size: 18px;
+}
+
+h3 {
+  font-size: 18px;
+  line-height: 20px;
+  margin-bottom: 0.5em;
+}
+
+
+a {
+  -moz-transition: background 0.3s linear 0.1s;
+  -webkit-transition: background 0.3s linear 0.1s;
+  -o-transition: background 0.3s linear 0.1s;
+  transition: background 0.3s linear 0.1s;
+  -moz-transition: color 0.3s linear 0;
+  -webkit-transition: color 0.3s linear 0;
+  -o-transition: color 0.3s linear 0;
+  transition: color 0.3s linear 0;
+}
+
+a:link {
+  color: #188DDC;
+  text-decoration: underline;
+}
+
+a:visited {
+  text-decoration: underline;
+}
+
+a:hover,
+a:active {
+  text-decoration: none;
+}
+
+h3 a:link,
+h3 a:visited {
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px dotted #333;
+  display: inline-block;
+
+}
+
+h3 a:hover,
+h3 a:focus {
+  border: none;
+  outline: none;
+  padding: 3px;
+  margin: -3px -3px -2px;
+  background: #188DDC;
+  background: rgba(24,141,220,0.8);
+  color: #fff;
+}
+
+.slideshow-description {
+  font-family: "museo-sans-1","museo-sans-2", arial, sans-serif;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;  
 }
