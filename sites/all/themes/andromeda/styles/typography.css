@@ -64,7 +64,7 @@ a {
 }
 
 a:link {
-  color: #188DDC;
+  color: #1469a2;
   text-decoration: underline;
 }
 
@@ -123,9 +123,10 @@ h3 a:focus {
 
 .menu-sidebar .active-trail a:link,
 .menu-sidebar .active-trail a:visited {
-  font-weight: bold;
+/*
   color: #fff;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+*/
 }
 
 /* ----- / Slideshow ----- */

@@ -146,7 +146,8 @@ body {
   clear: both;
 }
 
-.field-field-content img {
+.field-field-content img,
+img.imagecache-news_listing {
 /*   border: 1px solid #ccc; -> Flyt til lt ie 9 stylesheet */ 
   padding: 8px;
   background: #fff;
