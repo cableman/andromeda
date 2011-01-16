@@ -10,7 +10,7 @@ function andromeda_preprocess_node(&$vars) {
 
   // Submitted for news
   if ($node->type == 'news') {
-    $date = andromeda_date_format(date_make_date($vars['created'], NULL, DATE_UNIX), 'd. F Y');
+    $date = andromeda_date_format($vars['created'], 'd. F Y');
     $vars['submitted'] = t('Written d. !date by !author', array('!date' => $date, '!author' => $node->name));
   }
 }
@@ -24,5 +24,6 @@ function andromeda_preprocess_node(&$vars) {
  * @return string
  */
 function andromeda_date_format($date, $format, $lang = 'da') {
+  $date = date_make_date($date, NULL, DATE_UNIX);
   return date_format_date($date, 'custom', $format, $lang);
 }
