@@ -34,8 +34,7 @@ body {
   float: left;
 }
 
-
-/* Menus */
+/* ----- / Menus ----- */
 #header .menu {
   float: right;
   text-transform: uppercase;
@@ -50,24 +49,6 @@ body {
 #region-secondary-menu .menu>li {
   float: left;
   list-style: none;
-}
-
-#header .menu a {
-  text-decoration: none;
-  color: #333;
-
-}
-
-
-#header a.active-trail {
-  color: #FFF;
-  background-color: #188DDC;
-}
-
-#header .menu a:hover {
-  background: #188DDC;
-  background: rgba(24,141,220,0.8);
-  color: #fff;
 }
 
 /* ----- / Secondary Menu ----- */
@@ -96,6 +77,50 @@ body {
   padding: 8px;
 }
 
+/* ----- / Sidebar menu ----- */
+
+.menu-sidebar {
+  padding: 22px 0 0;
+  background: transparent url(../images/back-sidebarmenu-top.png) left top no-repeat;
+  position: relative;
+}
+
+.menu-sidebar .pane-content {
+  padding: 0 0 26px;
+  background: transparent url(../images/back-sidebarmenu-bottom.png) left bottom no-repeat;
+}
+
+.menu-sidebar ul.menu {
+  padding: 0;
+  margin: 0;
+  background: transparent url(../images/back-sidebarmenu.png) left top repeat-y;
+}
+
+.menu-sidebar .menu>li {
+  list-style: none none outside;
+  list-style-position: outside;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-sidebar .menu>li a {
+  background: transparent url(../images/back-sidebarmenu-default.png) left top repeat-x;
+}
+
+.menu-sidebar .menu>li.active-trail a:link,
+.menu-sidebar .menu>li.active-trail a:visited,
+.menu-sidebar .menu>li a:hover {
+  background: transparent url(../images/back-sidebarmenu-active.png) left top no-repeat;
+}
+
+ 
+
+.menu-sidebar .menu>li>a {
+  display: block;
+  padding: 4px 10px 2px;
+  line-height: 26px;
+  height: 26px;
+}
 
 /* News */
 #main-content .news-listing .view-content ul {
@@ -113,21 +138,7 @@ body {
   float: right;
 }
 
-/* ----- / Sidebar menu ----- */
-#main-content .panel-col-left .menu {
-  padding-left: 8px;
-}
 
-#main-content .panel-col-left .menu>li {
-  list-style: none none outside;
-  list-style-position: outside;
-  padding: 0 0 3px;
-}
-
-li.leaf,
-ul.menu li {
-
-}
 
 
 /* ----- / Content ----- */
@@ -136,7 +147,7 @@ ul.menu li {
 }
 
 .field-field-content img {
-  /* border: 1px solid #ccc; */
+/*   border: 1px solid #ccc; -> Flyt til lt ie 9 stylesheet */ 
   padding: 8px;
   background: #fff;
   margin-bottom: 8px;
@@ -147,11 +158,11 @@ ul.menu li {
 }
 
 .field-field-content img[style*="float: left;"] {
- margin-right: 8px;
+ margin-right: 16px;
 }
 
 .field-field-content img[style*="float: right;"] {
- margin-left: 8px;
+ margin-left: 16px;
 }
 
 /* ----- / Slideshow ----- */
@@ -162,19 +173,13 @@ ul.menu li {
 #main-content .view-frontpage-slider h2 {
   position: absolute;
   top: 191px;
-  padding: 19px 145px 0 15px;
-  color: #FFF;
+  padding: 14px 145px 0 15px;
   z-index: 10;
   width: 455px;
   height: 100px;
   background: transparent url(../images/back-slider-title.png) left top repeat;
   background: rgba(12,79,136,0.7);
 
-}
-
-#main-content .view-frontpage-slider h2 a {
-  color: #FFF;
-  text-decoration: none;
 }
 
 #main-content .view-frontpage-slider .slideshow-description {
@@ -184,7 +189,6 @@ ul.menu li {
   top: 233px;
   width: 455px;
   padding: 10px 0 0 15px;
-  color: #FFF;
   z-index: 20;
 }
 
@@ -239,6 +243,12 @@ ul.menu li {
   height: 10px;
   text-indent: -999em;
   background: transparent url(../images/graphic-slider-dots-default.png) left top no-repeat;
+}
+
+.views_slideshow_singleframe_pager .pager-item a:active,
+.views_slideshow_singleframe_pager .pager-item a:focus {
+  outline: none;
+  border: 1px dotted 
 }
 
 .views_slideshow_singleframe_pager .activeSlide a {
@@ -320,7 +330,7 @@ ul.menu li {
 #footer-outer {
   background: #dedfdc url('../images/back-body-footer.png') left top repeat;
   padding-top: 40px;
-  margin-top: 25px;
+  margin-top: 40px;
 }
 
 #footer {

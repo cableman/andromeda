@@ -14,8 +14,6 @@
 <body class="<?php print $body_classes; ?>">
   <div id="page" class="container-12 clear-fix">
 
-
-
     <!-- header -->
     <div id="header"  class="grid-12">
       <div id="region-secondary-menu">
@@ -58,14 +56,19 @@
       <?php endif; ?>
       <!-- /top content -->
 
-            <?php print $messages; ?>
+      <?php print $messages; ?>      
       <?php print $help; ?>
+        
         <div id="main-content" class="grid-12 region">
+          <?php if ($title): ?>
+            <h1><?php print $title; ?></h1>
+          <?php endif; ?>
           <?php print $content; ?>
           <?php if ($tabs): ?>
           <div class="tabs"><?php print $tabs; ?></div>
           <?php endif; ?>
         </div>
+    
     </div>
     <!-- /content -->
 

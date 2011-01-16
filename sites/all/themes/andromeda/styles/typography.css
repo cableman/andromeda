@@ -1,24 +1,46 @@
+/* ----- / Basic font styling ----- */
 body {
-  font-family: "Helvetica Neue", arial, sans-serif;
-  font-size: 13px;
-  line-height: 18px;
+  font: 13px/18px "Helvetica Neue",Arial,sans-serif;  
+  color: #222;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4); 
 }
 
 p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
   margin-bottom: 5px;
 }
 
+
+/* ----- / Headlines ----- */
 h1, h2, h3  {
-  font-family: "museo-sans-1","museo-sans-2", arial, sans-serif;
-  margin-bottom: 5px;
+  font-family: "Helvetica Neue", arial, sans-serif;
   font-weight: normal;
   color: #333;
+}
+
+h1.page-title {
+  margin-bottom: 0.6em;
 }
 
 h2 {
   font-size: 22px;
   line-height: 1.4em;
-  margin-bottom: 0.2em;
+  margin-bottom: 0.3em;
+}
+
+.pane-content h2 {
+  font-size: 18px;
+  margin: 1.5em 0 0.3em;
+}
+
+.views_slideshow_main h2 {
+  font-size: 22px;
+  margin: 0;
+}
+
+.pane-content h3 {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 1em 0 0.3em;
 }
 
 #footer h2 {
@@ -32,15 +54,13 @@ h3 {
 }
 
 
+/* ----- / Links ----- */
 a {
-  -moz-transition: background 0.3s linear 0.1s;
-  -webkit-transition: background 0.3s linear 0.1s;
-  -o-transition: background 0.3s linear 0.1s;
-  transition: background 0.3s linear 0.1s;
-  -moz-transition: color 0.3s linear 0;
-  -webkit-transition: color 0.3s linear 0;
-  -o-transition: color 0.3s linear 0;
-  transition: color 0.3s linear 0;
+  -moz-transition: background 0.3s linear, color 0.2s linear;
+  -webkit-transition: background 0.3s linear, color 0.2s linear;
+  -o-transition: background 0.3s linear, color 0.2s linear;
+  transition: background 0.3s linear, color 0.2s linear;
+
 }
 
 a:link {
@@ -77,9 +97,55 @@ h3 a:focus {
   color: #fff;
 }
 
+/* ----- / Menus ----- */
+#header .menu a {
+  text-decoration: none;
+  color: #333;
+}
+
+#header a.active-trail,
+#header .menu a:hover {
+  color: #FFF;
+  background: #188DDC;
+  text-shadow: none;
+}
+
+#header .menu a:hover {
+  background: #188DDC;
+  background: rgba(24,141,220,0.8);
+}
+
+.menu-sidebar a:link,
+.menu-sidebar a:visited {
+  text-decoration: none;
+  color: #444;
+}
+
+.menu-sidebar .active-trail a:link,
+.menu-sidebar .active-trail a:visited {
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+/* ----- / Slideshow ----- */
+.view-frontpage-slider h2 a {
+  color: #FFF;
+  color: rgba(255,255,255,0.9);
+  text-decoration: none;
+  text-shadow: none;
+}
+
+.view-frontpage-slider h2 a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
 .slideshow-description {
-  font-family: "museo-sans-1","museo-sans-2", arial, sans-serif;
+  color: #fff;
+  color: rgba(255,255,255,0.9);
   font-weight: normal;
   font-size: 13px;
-  line-height: 18px;  
+  line-height: 18px;
+  text-shadow: none;  
 }
