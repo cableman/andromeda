@@ -1,0 +1,14 @@
+; $Id: semantic_cck.info,v 1.3 2010/06/15 00:46:09 rhache Exp $
+
+name = Semantic CCK
+description = "Provides semantic HTML output settings for each field type."
+dependencies[] = content
+package = CCK
+core = 6.x
+version = "6.x-dev"
+; Information added by drupal.org packaging script on 2011-01-11
+version = "6.x-1.3"
+core = "6.x"
+project = "semantic_cck"
+datestamp = "1294704364"
+
