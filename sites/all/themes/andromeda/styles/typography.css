@@ -78,16 +78,21 @@ a:active {
 }
 
 h3 a:link,
-h3 a:visited {
+h3 a:visited,
+h2 a:link,
+h2 a:visited {
   color: #333;
   text-decoration: none;
   border-bottom: 1px dotted #333;
   display: inline-block;
+  line-height: 1em;
 
 }
 
 h3 a:hover,
-h3 a:focus {
+h3 a:focus,
+h2 a:hover,
+h2 a:focus {
   border: none;
   outline: none;
   padding: 3px;
@@ -95,6 +100,17 @@ h3 a:focus {
   background: #188DDC;
   background: rgba(24,141,220,0.8);
   color: #fff;
+  text-shadow: none;
+}
+
+.views_slideshow_main h2 a:link,
+.views_slideshow_main h2 a:visited {
+  border: none;
+}
+
+.views_slideshow_main h2 a:hover,
+.views_slideshow_main h2 a:active {
+  background: none;
 }
 
 /* ----- / Menus ----- */

@@ -113,8 +113,6 @@ body {
   background: transparent url(../images/back-sidebarmenu-active.png) left top no-repeat;
 }
 
- 
-
 .menu-sidebar .menu>li>a {
   display: block;
   padding: 4px 10px 2px;
@@ -122,35 +120,181 @@ body {
   height: 26px;
 }
 
-/* News */
-#main-content .news-listing .view-content ul {
-  clear: both;
-}
-
-#main-content .news-listing .view-content ul li {
-  width: 280px;
-  list-style: none;
-  float: left;
-  padding-bottom: 25px;
-}
-
-#main-content .news-listing ul.pager {
-  float: right;
-}
-
-
-
-
 /* ----- / Content ----- */
 #main-content>.tabs {
   clear: both;
 }
 
+.page-title {
+  padding: 0 8px;
+}
+
+.panel-col-right .content,
+.panel-col-left .content {
+  padding: 0 8px;
+}
+
+.grid-9.panel-col-left .content {
+  padding-right: 88px;
+}
+
+/* ----- / News ----- */
+#main-content .news-listing .view-content ul {
+  clear: both;
+}
+
+#main-content .news-listing .view-content ul li {
+  list-style: none;
+  padding: 0 8px 25px;
+  width: 284px;
+}
+
+#main-content a.imagecache-news_listing {
+  margin: 8px 0 0;
+  display: block;
+}
+
+#main-content a.imagecache-news_listing:hover {
+  opacity: 0.7;
+}
+
+.view-content .post-date {
+  background: transparent url(../images/back-sidebarmenu-default.png) left top repeat-x;
+  padding: 5px 8px 3px;
+  margin: 4px -8px 0;
+  color: #555;
+}
+
+.view-content .post-date + .teaser {
+  background: transparent url(../images/back-sidebarmenu-default.png) left top repeat-x;
+  padding: 8px;
+  margin: 0 -8px; 
+}
+
+.meta .submitted {
+  background: transparent url(../images/back-sidebarmenu-default.png) left top repeat-x;
+  padding: 5px 8px 3px;
+  margin: 4px 0 0;
+  color: #555;
+  display: block;
+}
+
+.meta + .content {
+  background: transparent url(../images/back-sidebarmenu-default.png) left top repeat-x;
+  padding: 16px 8px;
+}
+
+/* ----- / Pagers ----- */
+
+
+.news-listing ul.pager {
+}
+
+.item-list .pager {
+  margin: 0;
+  padding: 0 8px;
+  clear: both;
+}
+
+.item-list .pager li {
+  float: left;
+  padding: 0 10px 0 0;
+  margin: 0;
+}
+
+.item-list ul.pager li {
+  background: transparent url(../images/back-pager.png) left top repeat-x;
+}
+
+
+.item-list .pager a {
+  display: inline-block;
+  text-align: center;
+  line-height: 34px;
+  height: 34px;
+  padding: 0 0 0 14px;
+  text-decoration: none;
+  background: transparent url(../images/back-pager-default.png) left top repeat-y;
+}
+
+
+.item-list .pager .pager-current {
+  text-align: center;
+  line-height: 34px;
+  height: 34px;
+  background: transparent url(../images/back-pager-default.png) left top repeat-y;
+}
+
+.item-list ul.pager li.first {
+  background: transparent url(../images/back-pager-first.png) left top no-repeat;
+  padding-left: 16px;
+}
+
+.item-list .pager .first a{
+  background: none;
+}
+
+
+.item-list ul.pager li.last {
+  background: transparent url(../images/back-pager-last.png) right top no-repeat;
+  padding-right: 16px;
+}
+
+
+
+/*
+.item-list .pager a,
+.item-list .pager-current {
+  display: inline-block;
+  text-align: center;
+  line-height: 31px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 16px;
+  background: transparent url() center center no-repeat; 
+  background: rgba(0,0,0,0.15);
+  -moz-border-radius: 16px;
+  -webkit-border-radius: 16px;
+  -o-border-radius: 16px;
+  border-radius: 16px;
+  text-decoration: none;
+}
+
+.item-list .pager a:hover {
+  background: transparent url() center center no-repeat; 
+  background: rgba(0,0,0,0.3);  
+}
+
+.item-list .pager-item a {
+  padding: 0;
+}
+
+.item-list .pager-current {
+  background: #eee;
+  background: transparent url() center center no-repeat; 
+  background: rgba(255,255,255,0.7);
+*/ 
+
+/*
+  background: #777;
+  background: rgba(0,0,0,0.2);
+  -moz-border-radius: 16px;
+  border-radius: 16px; 
+  text-align: center;
+  line-height: 32px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 16px;
+*/
+}
+
+/* ----- / Content Images ----- */
 .field-field-content img,
 img.imagecache-news_listing {
 /*   border: 1px solid #ccc; -> Flyt til lt ie 9 stylesheet */ 
   padding: 8px;
   background: #fff;
+  background: rgba(255,255,255,0.7);
   margin-bottom: 8px;
   -moz-box-shadow: 0px 1px 2px #aaaaaa;
   -o-box-shadow: 0px 1px 2px #aaaaaa;
@@ -180,7 +324,6 @@ img.imagecache-news_listing {
   height: 100px;
   background: transparent url(../images/back-slider-title.png) left top repeat;
   background: rgba(12,79,136,0.7);
-
 }
 
 #main-content .view-frontpage-slider .slideshow-description {
@@ -347,9 +490,9 @@ img.imagecache-news_listing {
 
 #footer .block h2 {
   font-size: 18px;
-  padding: 10px 10px 0 10px;
+  padding: 8px 8px 0;
 }
 
 #footer .block .content {
-  padding: 10px;
+  padding: 8px;
 }
