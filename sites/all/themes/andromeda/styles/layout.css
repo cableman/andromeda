@@ -190,21 +190,25 @@ body {
 .news-listing ul.pager {
 }
 
+
 .item-list .pager {
   margin: 0;
   padding: 0 8px;
   clear: both;
 }
 
+
 .item-list .pager li {
   float: left;
-  padding: 0 10px 0 0;
+  padding: 0 8px 0 0;
   margin: 0;
 }
 
+/*
 .item-list ul.pager li {
   background: transparent url(../images/back-pager.png) left top repeat-x;
 }
+
 
 
 .item-list .pager a {
@@ -239,10 +243,9 @@ body {
   background: transparent url(../images/back-pager-last.png) right top no-repeat;
   padding-right: 16px;
 }
+*/
 
 
-
-/*
 .item-list .pager a,
 .item-list .pager-current {
   display: inline-block;
@@ -253,27 +256,30 @@ body {
   padding: 0 16px;
   background: transparent url() center center no-repeat; 
   background: rgba(0,0,0,0.15);
+/*
   -moz-border-radius: 16px;
   -webkit-border-radius: 16px;
   -o-border-radius: 16px;
   border-radius: 16px;
+*/
   text-decoration: none;
 }
 
 .item-list .pager a:hover {
   background: transparent url() center center no-repeat; 
-  background: rgba(0,0,0,0.3);  
-}
+  background: rgba(24,141,220,0.6);}
 
 .item-list .pager-item a {
   padding: 0;
 }
 
-.item-list .pager-current {
-  background: #eee;
-  background: transparent url() center center no-repeat; 
-  background: rgba(255,255,255,0.7);
-*/ 
+.item-list li.pager-current {
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4); 
+  background: #188DDC;
+  background: rgba(24,141,220,0.8);
+  margin-right: 8px;
+  padding: 0;
 
 /*
   background: #777;
