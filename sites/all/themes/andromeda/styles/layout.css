@@ -125,7 +125,8 @@ body {
   clear: both;
 }
 
-.page-title {
+.page-title,
+#main-content>h1 {
   padding: 0 8px;
 }
 
@@ -296,7 +297,8 @@ body {
 
 /* ----- / Content Images ----- */
 .field-field-content img,
-img.imagecache-news_listing {
+img.imagecache-news_listing,
+.album-thumb .field-item {
 /*   border: 1px solid #ccc; -> Flyt til lt ie 9 stylesheet */ 
   padding: 8px;
   background: #fff;
@@ -418,15 +420,9 @@ img.imagecache-news_listing {
   width: 620px;
 }
 
-.node-type-photo-album .view-gallery .album-thumb img {
-  border: 1px solid #000;
-}
 
 .node-type-photo-album .view-gallery .album-thumb .field-item {
   float: left;
-  padding: 10px;
-  background-color: #FFF;
-  border: 1px solid #000;
   margin: 5px;
 }
 
