@@ -205,48 +205,6 @@ body {
   margin: 0;
 }
 
-/*
-.item-list ul.pager li {
-  background: transparent url(../images/back-pager.png) left top repeat-x;
-}
-
-
-
-.item-list .pager a {
-  display: inline-block;
-  text-align: center;
-  line-height: 34px;
-  height: 34px;
-  padding: 0 0 0 14px;
-  text-decoration: none;
-  background: transparent url(../images/back-pager-default.png) left top repeat-y;
-}
-
-
-.item-list .pager .pager-current {
-  text-align: center;
-  line-height: 34px;
-  height: 34px;
-  background: transparent url(../images/back-pager-default.png) left top repeat-y;
-}
-
-.item-list ul.pager li.first {
-  background: transparent url(../images/back-pager-first.png) left top no-repeat;
-  padding-left: 16px;
-}
-
-.item-list .pager .first a{
-  background: none;
-}
-
-
-.item-list ul.pager li.last {
-  background: transparent url(../images/back-pager-last.png) right top no-repeat;
-  padding-right: 16px;
-}
-*/
-
-
 .item-list .pager a,
 .item-list .pager-current {
   display: inline-block;
@@ -257,12 +215,6 @@ body {
   padding: 0 16px;
   background: transparent url() center center no-repeat; 
   background: rgba(0,0,0,0.15);
-/*
-  -moz-border-radius: 16px;
-  -webkit-border-radius: 16px;
-  -o-border-radius: 16px;
-  border-radius: 16px;
-*/
   text-decoration: none;
 }
 
@@ -281,24 +233,13 @@ body {
   background: rgba(24,141,220,0.8);
   margin-right: 8px;
   padding: 0;
-
-/*
-  background: #777;
-  background: rgba(0,0,0,0.2);
-  -moz-border-radius: 16px;
-  border-radius: 16px; 
-  text-align: center;
-  line-height: 32px;
-  min-width: 32px;
-  height: 32px;
-  padding: 0 16px;
-*/
 }
 
 /* ----- / Content Images ----- */
 .field-field-content img,
 img.imagecache-news_listing,
-.album-thumb .field-item {
+.album-thumb .field-item,
+img.imagecache-album_listing {
 /*   border: 1px solid #ccc; -> Flyt til lt ie 9 stylesheet */ 
   padding: 8px;
   background: #fff;
@@ -408,6 +349,22 @@ img.imagecache-news_listing,
 }
 
 /* Photo album */
+.page-album .view-gallery .view-content>ul>li {
+  float: left;
+  padding: 0 8px;
+  width: 444px;
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.page-album .view-gallery .view-content>ul>li.odd {
+  margin-right: 20px;
+}
+
+.page-album a.imagecache-album_listing {
+  margin: 0 -8px;
+}
+
 .page-album .view-gallery .col-1 .grid-item {
   padding: 10px 10px 10px 0;
 }
@@ -421,9 +378,13 @@ img.imagecache-news_listing,
 }
 
 
-.node-type-photo-album .view-gallery .album-thumb .field-item {
+.album-thumb .field-item {
   float: left;
-  margin: 5px;
+  margin: 0 8px 8px;
+}
+
+.album-thumb img {
+  display: block;
 }
 
 .node-type-photo-album .field-field-album-description {
@@ -497,4 +458,18 @@ img.imagecache-news_listing,
 
 #footer .block .content {
   padding: 8px;
+}
+
+/* ----- / Forms ----- */
+.block-mailchimp input[type=text],
+.block-mailchimp textarea { 
+  /* Flyt evt. styles over i generel styling af forms, når du har overblik over konsekvenserne */
+  border: none;
+  padding: 8px;
+  -moz-border-radius: 8px;
+  -o-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px
+  -moz-box-shadow: 
+
 }
