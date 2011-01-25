@@ -61,10 +61,10 @@
           <?php if ($title): ?>
             <h1><?php print $title; ?></h1>
           <?php endif; ?>
-          <?php print $content; ?>
           <?php if ($tabs): ?>
-          <div class="tabs"><?php print $tabs; ?></div>
+            <div class="tabs"><?php print $tabs; ?></div>
           <?php endif; ?>
+          <?php print $content; ?>
         </div>
     
     </div>

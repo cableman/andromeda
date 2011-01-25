@@ -236,6 +236,7 @@ body {
 }
 
 /* ----- / Content Images ----- */
+.profile-picture img.imagecache-personale_image,
 .field-field-content img,
 img.imagecache-news_listing,
 .album-thumb .field-item,
@@ -430,7 +431,7 @@ img.imagecache-album_listing {
 }
 
 .page-personale .view-Personale .profile-content {
-  margin-left: 220px;
+  margin-left: 235px;
 }
 
 /* ----- / Footer ----- */
@@ -463,7 +464,7 @@ img.imagecache-album_listing {
 /* ----- / Forms ----- */
 .block-mailchimp input[type=text],
 .block-mailchimp textarea { 
-  /* Flyt evt. styles over i generel styling af forms, nŒr du har overblik over konsekvenserne */
+  /* Flyt evt. styles over i generel styling af forms, nï¿½r du har overblik over konsekvenserne */
   border: none;
   padding: 8px;
   -moz-border-radius: 8px;
