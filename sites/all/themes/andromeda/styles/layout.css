@@ -252,11 +252,11 @@ img.imagecache-album_listing {
   box-shadow: 0px 1px 2px #aaaaaa;
 }
 
-.field-field-content img[style*="float: left;"] {
+.field-field-content img[style="float: left;"] {
  margin-right: 16px;
 }
 
-.field-field-content img[style*="float: right;"] {
+.field-field-content img[style="float: right;"] {
  margin-left: 16px;
 }
 
