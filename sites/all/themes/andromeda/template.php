@@ -50,7 +50,8 @@ function andromeda_menu_item_link($link) {
     $link['localized_options'] = array();
   }
 
-  if ($link['title'] == 'Søg') {
+  $url = $_GET['q'];
+  if ($link['href'] == 'search/apachesolr_search' && strstr($url, 'apachesolr_search')) {
     $link['localized_options']['attributes'] =  array('title' => t('Search'), 'class' => 'active-trail');
   }
   return l($link['title'], $link['href'], $link['localized_options']);
