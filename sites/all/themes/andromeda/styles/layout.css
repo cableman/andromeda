@@ -252,12 +252,14 @@ img.imagecache-album_listing {
   box-shadow: 0px 1px 2px #aaaaaa;
 }
 
-.field-field-content img[style="float: left;"] {
- margin-right: 16px;
+.field-field-content img[style*="float: left;"],
+.field-field-content img[class*="left"] { /* IE do not work on style */
+  margin-right: 16px;
 }
 
-.field-field-content img[style="float: right;"] {
- margin-left: 16px;
+.field-field-content img[style*="float: right;"],
+.field-field-content img[class*="right"] { /* IE do not work on style */
+  margin-left: 16px;
 }
 
 /* ----- / Slideshow ----- */
