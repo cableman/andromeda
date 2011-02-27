@@ -33,7 +33,7 @@ stylesheets[all][] = "styles/text.css"
 ;stylesheets[all] = "styles/debug.css"
 
 ; Javascript
-;scripts[] = "js/curvycorners.js"
+scripts[] = "js/fix_ei.js"
 
 ; Panels layouts.
 plugins[panels][layouts] = layouts
