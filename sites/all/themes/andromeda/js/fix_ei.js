@@ -1,5 +1,7 @@
 /* This is not a gode solution, but it works for now */
 $(document).ready(function () {
+  // Only fix in ei
+  if (!$.browser.msie) { return; }
 
   // Select all images on the page
   var imgs = $('#content .field-field-content img');
@@ -9,20 +11,15 @@ $(document).ready(function () {
   for (var i = 0; imgs.length > i; i++) {
     var img = $(imgs[i]);
 
-    // Get style attribute
-    var style = img.attr('style');
-
     // Add class to left float
-    if (style.indexOf('float: left;') > -1) {
+    if (img.css('float') == 'left') {
       img.addClass('left');
     }
 
     // Add class to right float
-    if (style.indexOf('float: right;') > -1) {
+    if (img.css('float') == 'right') {
       img.addClass('right');
     }
-
-    alert('test');
   }
 });
 
