@@ -1,0 +1,12 @@
+; $Id: keys.info,v 1.2 2008/12/10 18:02:00 greenskin Exp $
+name = Keys
+description = "API Key manager. Allows management of keys dependent on domain, modules can access the correct key based on the domain. Helpful when using a version control system."
+package = Keys
+core = 6.x
+
+; Information added by drupal.org packaging script on 2010-01-06
+version = "6.x-2.0"
+core = "6.x"
+project = "keys"
+datestamp = "1262800210"
+

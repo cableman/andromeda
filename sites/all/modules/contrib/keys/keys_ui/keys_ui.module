@@ -1,0 +1,147 @@
+<?php
+// $Id: keys_ui.module,v 1.2.2.3 2010/01/06 17:16:45 greenskin Exp $
+
+/**
+ * @file
+ * Provides a UI for managing API Keys.
+ *
+ * This module provides a user interface for creating/deleting API keys tied
+ * to different services and/or rules. This module uses methods provided by
+ * the Keys module.
+ *
+ * Written by greenSkin.
+ */
+
+/*******************************************************************************
+ * Hook Functions (Drupal)
+ ******************************************************************************/
+
+/**
+ * Implementation of hook_menu().
+ */
+function keys_ui_menu() {
+  $items = array();
+
+  $common = array(
+    'access arguments' => array('administer keys'),
+    'file' => 'keys_ui.admin.inc'
+  );
+
+  $items['admin/settings/keys'] = array(
+    'title' => 'Keys',
+    'description' => 'Manage API keys.',
+    'page callback' => 'keys_ui_list',
+    'type' => MENU_NORMAL_ITEM
+  ) + $common;
+  $items['admin/settings/keys/list'] = array(
+    'title' => 'List',
+    'page callback' => 'keys_ui_list',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10
+  ) + $common;
+  $items['admin/settings/keys/add'] = array(
+    'title' => 'Add',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('keys_ui_key_form'),
+    'type' => MENU_LOCAL_TASK
+  ) + $common;
+  $items['admin/settings/keys/%keys_key/edit'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('keys_ui_key_form', 3),
+    'type' => MENU_CALLBACK
+  ) + $common;
+  $items['admin/settings/keys/%keys_key/delete'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('keys_ui_key_delete_form', 3),
+    'type' => MENU_CALLBACK
+  ) + $common;
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function keys_ui_theme() {
+  return array(
+    'keys_ui_list' => array(
+      'arguments' => array('keys' => NULL)
+    ),
+    'keys_ui_key_form' => array(
+      'arguments' => array('form' => NULL)
+    )
+  );
+}
+
+/**
+ * Implementation of hook_block().
+ */
+function keys_ui_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      return array(
+        array('info' => t('Keys Debug'))
+      );
+    case 'view':
+      $block = array();
+      switch ($delta) {
+        case 0:
+          $block['subject'] = t('Debug keys');
+          $block['content'] = drupal_get_form('keys_ui_debug_form');
+          break;
+      }
+      return $block;
+  }
+}
+
+/*******************************************************************************
+ * Callback Functions, Forms, and Tables
+ ******************************************************************************/
+
+function keys_ui_debug_form() {
+  $options = array('select' => t("-- Select service --"));
+  foreach (keys_get_services() as $id => $service) {
+    $options[$service['id']] = $service['name'] . ((isset($service['description']) && !empty($service['description'])) ? ' ('. $service['description'] .')' : '');
+  }
+  $form = array();
+  $form['service'] = array(
+    '#type' => 'select',
+    '#title' => t('Service'),
+    '#options' => $options,
+    '#required' => TRUE
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit')
+  );
+  return $form;
+}
+
+function keys_ui_debug_form_validate($form, &$form_state) {
+  if ($form_state['values']['service'] == 'select') {
+    form_set_error('services', t('Select a service.'));
+  }
+}
+
+function keys_ui_debug_form_submit($form, &$form_state) {
+  $url = keys_get_url();
+  $key = keys_get_key($form_state['values']['service'], array('service', 'rule', 'api_key'), TRUE);
+  $message = array();
+  $message[] = t('Service: %service', array('%service' => $form_state['values']['service']));
+  $message[] = t('URL: %url', array('%url' => $url));
+  if (!empty($key)) {
+    $message[] = t('Rule: %rule', array('%rule' => $key->rule));
+    $message[] = t('API Key: %api_key', array('%api_key' => $key->api_key));
+    $type = 'status';
+  }
+  else {
+    $message = array_merge(array(t("Key doesn't exist.")), $message);
+    $type = 'warning';
+  }
+  $message = implode('<br />', $message);
+  drupal_set_message($message, $type);
+}
+
+/*******************************************************************************
+ * Module and Helper Functions
+ ******************************************************************************/

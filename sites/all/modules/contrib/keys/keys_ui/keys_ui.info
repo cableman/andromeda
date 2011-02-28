@@ -1,0 +1,13 @@
+; $Id: keys_ui.info,v 1.2 2008/12/10 18:02:01 greenskin Exp $
+name = Keys UI
+description = "User interface for managing API keys."
+dependencies[] = keys
+package = Keys
+core = 6.x
+
+; Information added by drupal.org packaging script on 2010-01-06
+version = "6.x-2.0"
+core = "6.x"
+project = "keys"
+datestamp = "1262800210"
+
