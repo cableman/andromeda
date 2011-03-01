@@ -394,6 +394,19 @@ img.imagecache-album_listing {
   margin-left: 640px;
 }
 
+.node-type-photo-album .fb-social-like-widget {
+  margin-left: 640px;
+  padding-top: 8px;
+  padding-left: 0px;
+}
+
+
+/* ----- / Facebook links ----- */
+
+.fb-social-like-widget {
+  padding-left: 8px;
+}
+
 /* ----- / Secondary Content ----- */
 
 #secondary-content {
