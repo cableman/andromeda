@@ -160,20 +160,20 @@ body {
 }
 
 .view-content .post-date {
-  background: transparent url(../images/back-sidebarmenu-default.png) left top repeat-x;
+  background: transparent url(../images/back-border-default.png) left top repeat-x;
   padding: 5px 8px 3px;
   margin: 4px -8px 0;
   color: #555;
 }
 
 .view-content .post-date + .teaser {
-  background: transparent url(../images/back-sidebarmenu-default.png) left top repeat-x;
+  background: transparent url(../images/back-border-default.png) left top repeat-x;
   padding: 8px;
   margin: 0 -8px; 
 }
 
 .meta .submitted {
-  background: transparent url(../images/back-sidebarmenu-default.png) left top repeat-x;
+  background: transparent url(../images/back-border-default.png) left top repeat-x;
   padding: 5px 8px 3px;
   margin: 4px 0 0;
   color: #555;
@@ -181,7 +181,7 @@ body {
 }
 
 .meta + .content {
-  background: transparent url(../images/back-sidebarmenu-default.png) left top repeat-x;
+  background: transparent url(../images/back-border-default.png) left top repeat-x;
   padding: 16px 8px;
 }
 
