@@ -51,6 +51,27 @@ function menutrails_init() {
 }
 
 /**
+* implementation of hook_ctools_render_alter
+*
+* When we use CTools Pagemanager, hook_nodeapi (view) is not being called, because ctools alters the
+* hook_menu and redirects the page callback to it's own function in node_view.inc Well, power_menu
+* never knows that a node is actually being displayed -> so we alter the ctools_render function and
+* start the normal power_menu_nodeapi procedure
+*
+* @param array $info
+* @param boolean $page
+* @param array $args
+* @param array $contexts
+* @param array $task
+* @param unknown_type $subtask
+*/
+function menutrails_ctools_render_alter($info, $page, $args, $contexts, $task, $subtask, $handler)  {
+  if ($task['admin path'] == 'node/%node' && $page) {
+    menutrails_nodeapi($contexts['argument_nid_1']->data, 'view', NULL, $page);
+  }
+}
+
+/**
  * Implementation of hook_enable().
  *
  * Default menutrails to run after core/og modules for fuller control.
