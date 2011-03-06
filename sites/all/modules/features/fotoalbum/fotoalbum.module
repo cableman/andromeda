@@ -1,0 +1,3 @@
+<?php
+
+include_once('fotoalbum.features.inc');
