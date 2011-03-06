@@ -1,74 +1,169 @@
-
+/* ----- / Basic font styling ----- */
 body {
-  font-family: Arial, helvetica,sans-serif;
+  font: 13px/18px "Helvetica Neue",Arial,sans-serif;  
+  color: #222;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4); 
+}
+
+p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
+  margin-bottom: 5px;
+}
+
+
+/* ----- / Headlines ----- */
+h1, h2, h3  {
+  font-family: "Helvetica Neue", arial, sans-serif;
+  font-weight: normal;
+  color: #333;
+}
+
+h1.page-title,
+#main-content>h1 {
+  margin-bottom: 0.6em;
+}
+
+h2 {
+  font-size: 22px;
+  line-height: 1.4em;
+  margin-bottom: 0.3em;
+}
+
+.pane-content h2 {
+  font-size: 18px;
+  margin: 1.5em 0 0.3em;
+}
+
+.views_slideshow_main h2 {
+  font-size: 22px;
+  margin: 0;
+}
+
+.pane-content h3 {
   font-size: 14px;
+  font-weight: bold;
+  margin: 1em 0 0.3em;
 }
 
-#main-content h1,
-#main .content h1 {
-  font-size: 28px;
-  margin-bottom: 0px;
-  color: #003399;
+#footer h2 {
+  font-size: 18px;
 }
 
-#main-content h2,
-#main .content h2 {
-  font-size: 20px;
-  margin-bottom: 0px;
-  color: #003399;
-}
-
-#main-content h3,
-#main .content h3 {
-  font-size: 16px;
-  margin-bottom: 0px;
-  color: #003399;
-}
-
-#main-content p,
-#main .content p {
+h3 {
+  font-size: 18px;
+  line-height: 20px;
   margin-bottom: 0.5em;
 }
 
-#main .content ol,
-#main .content ul {
-  padding-left: 30px;
+
+/* ----- / Links ----- */
+a {
+  -moz-transition: background 0.3s linear, color 0.2s linear;
+  -webkit-transition: background 0.3s linear, color 0.2s linear;
+  -o-transition: background 0.3s linear, color 0.2s linear;
+  transition: background 0.3s linear, color 0.2s linear;
+
 }
 
-#main-content .content ul li {  
-  list-style-type: disc;
+a:link {
+  color: #1469a2;
+  text-decoration: underline;
 }
 
-/* Personal page*/
-#main-content .view-Personale .views-row {
-  margin-bottom: 40px;
-  clear: both;
+a:visited {
+  text-decoration: underline;
 }
 
-#main-content .view-Personale ul {
-  padding-left: 0px;
+a:hover,
+a:active {
+  text-decoration: none;
 }
 
-#main-content .view-Personale ul li {
-  list-style: none;
-  margin-left: 0px;
+h3 a:link,
+h3 a:visited,
+h2 a:link,
+h2 a:visited {
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px dotted #333;
+  display: inline-block;
+  line-height: 1em;
+
 }
 
-#main-content .views-field-title {
-  font-weight: bold;
+h3 a:hover,
+h3 a:focus,
+h2 a:hover,
+h2 a:focus {
+  border: none;
+  outline: none;
+  padding: 3px;
+  margin: -3px -3px -2px;
+  background: #188DDC;
+  background: rgba(24,141,220,0.8);
+  color: #fff;
+  text-shadow: none;
 }
 
-#main-content .views-label-field-telefon-value {
-  font-weight: bold;
+.views_slideshow_main h2 a:link,
+.views_slideshow_main h2 a:visited {
+  border: none;
 }
 
-#main-content .views-label-field-email-email {
-  font-weight: bold;
+.views_slideshow_main h2 a:hover,
+.views_slideshow_main h2 a:active {
+  background: none;
 }
 
-#main-content .view-Personale .imagecache-personale_image {
-  float: right;
-  margin-left: 25px;
-  margin-bottom: 25px;
-  margin-right: 10px;
+/* ----- / Menus ----- */
+#header .menu a {
+  text-decoration: none;
+  color: #333;
+}
+
+#header a.active-trail,
+#header .menu a:hover {
+  color: #FFF;
+  background: #188DDC;
+  text-shadow: none;
+}
+
+#header .menu a:hover {
+  background: #188DDC;
+  background: rgba(24,141,220,0.8);
+}
+
+.menu-sidebar a:link,
+.menu-sidebar a:visited {
+  text-decoration: none;
+  color: #444;
+}
+
+.menu-sidebar .active-trail a:link,
+.menu-sidebar .active-trail a:visited {
+/*
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+*/
+}
+
+/* ----- / Slideshow ----- */
+.view-frontpage-slider h2 a {
+  color: #FFF;
+  color: rgba(255,255,255,0.9);
+  text-decoration: none;
+  text-shadow: none;
+}
+
+.view-frontpage-slider h2 a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.slideshow-description {
+  color: #fff;
+  color: rgba(255,255,255,0.9);
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 18px;
+  text-shadow: none;  
 }

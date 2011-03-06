@@ -1,0 +1,10 @@
+<?php
+function andromeda_admin_form_alter(&$form, $form_state, $form_id) {
+  switch ($form_id) {
+    case 'mailchimp_subscribe_anon_form':
+      $form['mailchimp_lists']['a90470be7f']['EMAIL']['#size'] = '20';
+      unset($form['mailchimp_lists']['a90470be7f']['FNAME']);
+      unset($form['mailchimp_lists']['a90470be7f']['LNAME']);
+      break;
+  }
+}

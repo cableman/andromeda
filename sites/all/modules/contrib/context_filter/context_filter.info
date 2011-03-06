@@ -1,0 +1,13 @@
+; $Id: context_filter.info,v 1.1 2010/12/24 13:13:57 cableman0408 Exp $
+name = Context filter
+description = Enables filtering of context selection options
+core = 6.x
+package = "Context"
+dependencies[] = context
+
+; Information added by drupal.org packaging script on 2011-01-02
+version = "6.x-1.1"
+core = "6.x"
+project = "context_filter"
+datestamp = "1293995100"
+

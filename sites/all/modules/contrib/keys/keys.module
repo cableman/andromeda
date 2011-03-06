@@ -1,0 +1,307 @@
+<?php
+// $Id: keys.module,v 1.2.2.6 2010/01/06 17:16:45 greenskin Exp $
+
+/**
+ * @file
+ * Supplies API key's based on service and rule.
+ *
+ * This module provides an API for API Keys management. Modules can use the
+ * provided API methods to store/grab a key for their service based on a given
+ * domain name.
+ *
+ * Written by greenSkin.
+ */
+
+/*******************************************************************************
+ * Hook Functions (Drupal)
+ ******************************************************************************/
+
+/**
+ * Implementation of hook_help().
+ */
+function keys_help($path, $args = NULL) {
+  switch ($path) {
+    case 'admin/help#keys':
+    case 'admin/help/keys':
+      return '<p>'. t('This module allows the use of unique keys based on a sites host name, like Google Maps API key. This module will provide the appropriate key to the service. Very useful for sites developed on several different computers.') .'</p>';
+  }
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function keys_perm() {
+  return array("administer keys");
+}
+
+/*******************************************************************************
+ * Hook Functions (Keys)
+ ******************************************************************************/
+
+/**
+ * Implementation of hook_keys_service().
+ */
+function keys_keys_service() {
+  return array(
+    'google_maps' => array(
+      'name' => t('Google Maps'),
+      'description' => t('Google Maps API Key')
+    ),
+  );
+}
+
+/*******************************************************************************
+ * Callback Functions, Forms, and Tables
+ ******************************************************************************/
+
+/**
+ * Menu load argument wrapper for keys_get_key().
+ */
+function keys_key_load($kid) {
+  return keys_get_key($kid, array('kid', 'service', 'rule', 'api_key'), TRUE);
+}
+
+/*******************************************************************************
+ * Module and Helper Functions
+ ******************************************************************************/
+
+/**
+ * Adds a module's service to the services list.
+ */
+function _keys_get_services(&$list, $module) {
+  $function = $module .'_keys_service';
+  foreach($function() as $key => $value) {
+    $list[$key] = array(
+      'id' => $key,
+      'name' => $value['name'],
+      'description' => $value['description']
+    );
+  }
+}
+
+function _keys_settings_form_validate($form, &$form_state) {
+  if ($form_state['values']['service'] == 'select') {
+    form_set_error('service', t("Please select a service for your key."));
+  }
+}
+
+function _keys_settings_form_submit($form, &$form_state) {
+  $key = new stdClass();
+  $key->kid = $form_state['values']['kid'];
+  $key->service = $form_state['values']['service'];
+  $key->rule = ($form_state['values']['rule'] != '') ? $form_state['values']['rule'] : keys_get_url();
+  $key->api_key = $form_state['values']['api_key'];
+
+  keys_save_key($key);
+}
+
+/*******************************************************************************
+ * API Functions
+ ******************************************************************************/
+
+/**
+ * This gets a key managed by Keys API module.
+ *
+ * @param $param
+ *   Either the kid of the API key, the service name, or an array with 'service' and 'rule' elements to match against
+ *   in the database query. If the param is an integer it will be treated as a kid, if it is a string then it will be
+ *   treated as the service name. If the 'rule' is not included in the array, the current base url with
+ *   base_path will be used.
+ * @param $fields
+ *   An array of fields to pull. Default is 'api_key'.
+ * @param $silent
+ *   Whether or not to display an error message if key is not found.
+ *
+ * @return
+ *   If one field is specified in the $fields array then that fields value is returned, otherwise an
+ *   array is returned with all the fields specified in $fields.
+ */
+function keys_get_key($param, $fields = array('api_key'), $silent = FALSE) {
+  static $keys = array();
+
+  $fid = implode('_', $fields);
+  $fields_select = implode(', ', $fields);
+
+  if (!is_numeric($param) && !is_array($param)) {
+    $param = array('service' => $param);
+  }
+
+  if (is_numeric($param)) {
+    if ($keys['kids'][$param][$fid]) {
+      return $keys['kids'][$param][$fid];
+    }
+
+    $result = db_query("SELECT $fields_select FROM {keys_api} WHERE kid = %d", $param);
+    if ($key = db_fetch_object($result)) {
+      $keys['kids'][$param][$fid] = (count($fields) == 1) ? $key->{array_shift($fields)} : $key;
+    }
+    else {
+      $message = t("Key doesn't exist. !edit.", array('!link' => ((user_access('administer keys')) ? l(t('Edit keys'), 'admin/settings/keys') : '')));
+    }
+  }
+  else if (isset($param['service'])) {
+    if (!isset($param['url'])) {
+      $param['url'] = keys_get_url();
+    }
+    $id = $param['service'] .'_'. $param['url'];
+
+    if ($keys['service_url'][$id][$fid]) {
+      return $keys['service_url'][$id][$fid];
+    }
+
+    $result = db_query("SELECT $fields_select FROM {keys_api} WHERE service = '%s' AND LOCATE(rule, '%s') ORDER BY LENGTH(rule) DESC", $param['service'], $param['url']);
+    if ($key = db_fetch_object($result)) {
+      $keys['service_rule'][$id][$fid] = (count($fields) == 1) ? $key->{array_shift($fields)} : $key;
+    }
+    else {
+      $message = t("Key for '%service' @ '%url' doesn't exist. !edit.", array('%service' => $param['service'], '%url' => $param['url'], '!edit' => ((user_access('administer keys')) ? l(t('Edit keys'), 'admin/settings/keys') : '')));
+    }
+  }
+  else {
+    return FALSE;
+  }
+
+  if ($key == NULL && !$silent) {
+    if (!user_access('administer keys')) {
+      $message = t("There was a problem acquiring the a needed API key, please contact the site administrator.");
+    }
+    drupal_set_message($message, 'error');
+  }
+  if (count((array)$key) == 1) {
+    $temp = (array)$key;
+    return array_shift($temp);
+  }
+  return $key;
+}
+
+/**
+ * Provides the ability for a module to show an API key on their
+ * modules settings form and allow the user to change it their also
+ * while allowing Keys to still manage it.
+ *
+ * In order for the validate and submit functions to be called
+ * successfully, this form should be at the base of the form being
+ * built. Otherwise they will have to be defined elsewhere.
+ */
+function keys_settings_form($key) {
+  $form['key']['kid'] = array(
+    '#type' => 'hidden',
+    '#value' => $key->kid
+  );
+
+  $options = array('select' => t("-- Select service --"));
+  $list = array();
+  foreach (keys_get_services() as $id => $service) {
+    $list[$id] = $service['name'] . ((isset($service['description']) && !empty($service['description'])) ? ' ('. $service['description'] .')' : '');
+  }
+  $form['key']['service'] = array(
+    '#type' => 'select',
+    '#title' => t("Service"),
+    '#description' => t("The Module specified Service name which the key is used for."),
+    '#required' => TRUE,
+    '#maxlength' => 60,
+    '#default_value' => $key->service,
+    '#options' => array_merge($options, $list)
+  );
+  $form['key']['rule'] = array(
+    '#type' => 'textfield',
+    '#title' => t("Rule"),
+    '#description' => t("The rule the supplied key is registered for. For example: example.com, sub.example.com, localhost, localhost:9000."),
+    '#default_value' => ($key->rule) ? $key->rule : keys_get_domain(),
+    '#required' => TRUE,
+    '#attributes' => (!$key->rule) ? array('style' => 'color:#999999;') : array()
+  );
+  $form['key']['api_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t("Key"),
+    '#description' => t("Add API Key you want to manage."),
+    '#default_value' => $key->api_key,
+    '#required' => TRUE,
+  );
+  $form['#validate'][] = '_keys_settings_form_validate';
+  $form['#submit'][] = '_keys_settings_form_submit';
+  return $form;
+}
+
+/**
+ * List available services.
+ *
+ * @return
+ *   A list of available services, or FALSE if no services are available.
+ */
+function keys_get_services() {
+  static $list = array();
+
+  if (!empty($list)) {
+    return $list;
+  }
+
+  foreach (module_implements('keys_service', TRUE) as $module) {
+    _keys_get_services($list, $module);
+  }
+
+  if (empty($list)) {
+    return FALSE;
+  }
+
+  return $list;
+}
+
+/**
+ * Get an array of API keys.
+ */
+function keys_get_keys($service = 'all') {
+  static $key_services = array();
+
+  if (!empty($key_services[$service])) {
+    return $key_services;
+  }
+
+  switch ($service) {
+    case 'all':
+      $result = db_query("SELECT * FROM {keys_api} ORDER BY service, rule");
+      break;
+    default:
+      $result = db_query("SELECT * FROM {keys_api} WHERE service = '%s' ORDER BY rule", $service);
+      break;
+  }
+
+  while ($data = db_fetch_object($result)) {
+    $key_services[$service][] = $data;
+  }
+  return $key_services[$service];
+}
+
+/**
+ * This function developers can use to allow submission of a key on their own settings page.
+ */
+function keys_save_key($key) {
+  if (isset($key->kid) && $key->kid > 0) {
+    db_query("UPDATE {keys_api} SET service = '%s', rule = '%s', api_key = '%s' WHERE kid = %d",
+      $key->service, $key->rule, $key->api_key, $key->kid);
+  }
+  else {
+    db_query("INSERT INTO {keys_api} (service, rule, api_key) VALUES('%s','%s','%s')",
+      $key->service, $key->rule, $key->api_key);
+  }
+}
+
+function keys_get_url() {
+  global $base_url;
+
+  return $base_url . request_uri();
+}
+
+function keys_get_domain() {
+  static $domain;
+
+  if (!$domain) {
+    $domain = $_SERVER['SERVER_NAME'] . ($_SERVER['SERVER_PORT'] == 80 ? '' : ':'. $_SERVER['SERVER_PORT']);
+    $base_path = base_path();
+    if ($base_path != '/') {
+      $domain .= $base_path;
+      $domain = ltrim($domain, '/');
+    }
+  }
+  return $domain;
+}

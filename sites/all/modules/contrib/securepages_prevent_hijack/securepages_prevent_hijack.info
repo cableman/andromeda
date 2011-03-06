@@ -4,9 +4,9 @@ description = "Prevents hijacked session from accessing pages protected by the s
 dependencies[] = securepages
 core = 6.x
 
-; Information added by drupal.org packaging script on 2009-08-06
-version = "6.x-1.5"
+; Information added by drupal.org packaging script on 2010-12-02
+version = "6.x-1.6"
 core = "6.x"
 project = "securepages_prevent_hijack"
-datestamp = "1249538167"
+datestamp = "1291317942"
 

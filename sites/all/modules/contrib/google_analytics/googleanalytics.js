@@ -1,4 +1,4 @@
-// $Id: googleanalytics.js,v 1.3.2.11 2010/09/19 11:38:41 hass Exp $
+// $Id: googleanalytics.js,v 1.9.2.8 2011/02/05 19:53:32 hass Exp $
 
 $(document).ready(function() {
 
@@ -15,32 +15,46 @@ $(document).ready(function() {
       // Expression to check for download links.
       var isDownload = new RegExp("\\.(" + ga.trackDownloadExtensions + ")$", "i");
 
-      try {
-        // Is the clicked URL internal?
-        if (isInternal.test(this.href)) {
-          // Is download tracking activated and the file extension configured for download tracking?
-          if (ga.trackDownload && isDownload.test(this.href)) {
-            // Download link clicked.
-            var extension = isDownload.exec(this.href);
-            pageTracker._trackEvent("Downloads", extension[1].toUpperCase(), this.href.replace(isInternal, ''));
-          }
-          else if (isInternalSpecial.test(this.href)) {
-            // Keep the internal URL for Google Analytics website overlay intact.
-            pageTracker._trackPageview(this.href.replace(isInternal, ''));
-          }
+      // Is the clicked URL internal?
+      if (isInternal.test(this.href)) {
+        // Is download tracking activated and the file extension configured for download tracking?
+        if (ga.trackDownload && isDownload.test(this.href)) {
+          // Download link clicked.
+          var extension = isDownload.exec(this.href);
+          _gaq.push(["_trackEvent", "Downloads", extension[1].toUpperCase(), this.href.replace(isInternal, '')]);
         }
-        else {
-          if (ga.trackMailto && $(this).is("a[href^=mailto:],area[href^=mailto:]")) {
-            // Mailto link clicked.
-            pageTracker._trackEvent("Mails", "Click", this.href.substring(7));
+        else if (isInternalSpecial.test(this.href)) {
+          // Keep the internal URL for Google Analytics website overlay intact.
+          _gaq.push(["_trackPageview", this.href.replace(isInternal, '')]);
+          setTimeout('document.location = "' + this.href + '"', 100);
+        }
+      }
+      else {
+        if (ga.trackMailto && $(this).is("a[href^=mailto:],area[href^=mailto:]")) {
+          // Mailto link clicked.
+          _gaq.push(["_trackEvent", "Mails", "Click", this.href.substring(7)]);
+        }
+        else if (ga.trackOutgoing && this.href) {
+          if (ga.trackOutboundAsPageview) {
+            // Track all external links as page views after URL cleanup.
+            // Currently required, if click should be tracked as goal.
+            _gaq.push(["_trackPageview", '/outbound/' + this.href.replace(/^(https?|ftp|news|nntp|telnet|irc|ssh|sftp|webcal):\/\//i, '').split('/').join('--')]);
+            setTimeout('document.location = "' + this.href + '"', 100);
           }
-          else if (ga.trackOutgoing && this.href) {
+          else {
             // External link clicked.
-            pageTracker._trackEvent("Outgoing links", "Click", this.href);
+            _gaq.push(["_trackEvent", "Outbound links", "Click", this.href]);
+  
+            // First, delay the outbound click by a fraction of a second.
+            // This delay will hardly be noticeable by the user, but it will provide the
+            // browser more time load the tracking code. Without this method, it's possible
+            // that a user can click on the outbound link before the tracking code loads,
+            // in which case the event will not be recorded.
+            // See http://www.google.com/support/analytics/bin/answer.py?hl=en&answer=55527
+            setTimeout('document.location = "' + this.href + '"', 100);
           }
         }
-      } catch(err) {}
-
+      }
     });
   });
 });

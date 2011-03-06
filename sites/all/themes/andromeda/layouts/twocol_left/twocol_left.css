@@ -1,0 +1,16 @@
+#panels-dnd-main {
+  width: 100%;
+  float: left;
+}
+
+#panels-dnd-main .panel-col-left {
+  float: left;
+  width: 66%;
+  padding: 3px;
+}
+
+#panels-dnd-main .panel-col-right {
+  float: right;
+  width: 32%;
+  padding: 3px;
+}

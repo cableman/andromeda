@@ -1,0 +1,53 @@
+<?php
+// $Id: keys.install,v 1.2 2008/12/10 18:02:00 greenskin Exp $
+
+function keys_schema() {
+  $schema['keys_api'] = array(
+    'description' => t('Primary keys storage table.'),
+    'fields' => array(
+      'kid' => array(
+        'description' => t('The primary identifier for an api key.'),
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE
+      ),
+      'service' => array(
+        'description' => t('The service the key applies to.'),
+        'type' => 'varchar',
+        'length' => 60,
+        'not null' => true
+      ),
+      'rule' => array(
+        'description' => t('URL for which the key is allocated.'),
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => true
+      ),
+      'api_key' => array(
+        'description' => t('The appropriate key value.'),
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => true
+      )
+    ),
+    'indexes' => array(
+      'keys_service' => array('service'),
+      'keys_rule' => array('rule'),
+      'keys_api_key' => array('api_key')
+    ),
+    'unique keys' => array(
+      'kid' => array('kid')
+    ),
+    'primary key' => array('kid')
+  );
+
+  return $schema;
+}
+
+function keys_install() {
+  drupal_install_schema('keys');
+}
+
+function keys_uninstall() {
+  drupal_uninstall_schema('keys');
+}
