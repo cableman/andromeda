@@ -107,6 +107,15 @@ h2 a:focus {
 .views_slideshow_main h2 a:link,
 .views_slideshow_main h2 a:visited {
   border: none;
+  color: #fff;
+}
+
+.views_slideshow_main h2 a {
+  *display: block;
+}
+
+.views_slideshow_main .slideshow-description  {
+  color: #fff;
 }
 
 .views_slideshow_main h2 a:hover,
