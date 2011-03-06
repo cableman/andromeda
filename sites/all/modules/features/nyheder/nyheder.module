@@ -1,0 +1,3 @@
+<?php
+
+include_once('nyheder.features.inc');
