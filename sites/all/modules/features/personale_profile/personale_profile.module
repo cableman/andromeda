@@ -1,0 +1,3 @@
+<?php
+
+include_once('personale_profile.features.inc');
