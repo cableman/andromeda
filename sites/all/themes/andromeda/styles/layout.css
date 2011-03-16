@@ -489,3 +489,8 @@ img.imagecache-album_listing {
   -moz-box-shadow: 
 
 }
+
+/* ----- / Google maps ----- */
+#gmap-auto1map-gmap0 {
+  margin-top: 30px;
+}
