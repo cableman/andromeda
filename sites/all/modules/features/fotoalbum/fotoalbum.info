@@ -1,4 +1,5 @@
 core = "6.x"
+dependencies[] = "ctools"
 dependencies[] = "features"
 dependencies[] = "imagecache"
 dependencies[] = "imagefield"

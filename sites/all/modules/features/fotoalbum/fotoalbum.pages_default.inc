@@ -38,12 +38,14 @@ function fotoalbum_default_page_manager_handlers() {
     ),
   );
   $display = new panels_display;
-  $display->layout = 'onecol';
+  $display->layout = 'twocol_left';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
       'default' => NULL,
       'middle' => NULL,
+      'left' => NULL,
+      'right' => NULL,
     ),
   );
   $display->cache = array();
@@ -52,7 +54,7 @@ function fotoalbum_default_page_manager_handlers() {
   $display->panels = array();
     $pane = new stdClass;
     $pane->pid = 'new-1';
-    $pane->panel = 'middle';
+    $pane->panel = 'left';
     $pane->type = 'views_panes';
     $pane->subtype = 'gallery-panel_pane_1';
     $pane->shown = TRUE;
@@ -73,10 +75,10 @@ function fotoalbum_default_page_manager_handlers() {
     $pane->extras = array();
     $pane->position = 0;
     $display->content['new-1'] = $pane;
-    $display->panels['middle'][0] = 'new-1';
+    $display->panels['left'][0] = 'new-1';
     $pane = new stdClass;
     $pane->pid = 'new-2';
-    $pane->panel = 'middle';
+    $pane->panel = 'right';
     $pane->type = 'content_field';
     $pane->subtype = 'field_album_description';
     $pane->shown = TRUE;
@@ -94,12 +96,12 @@ function fotoalbum_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 0;
     $display->content['new-2'] = $pane;
-    $display->panels['middle'][1] = 'new-2';
+    $display->panels['right'][0] = 'new-2';
     $pane = new stdClass;
     $pane->pid = 'new-3';
-    $pane->panel = 'middle';
+    $pane->panel = 'right';
     $pane->type = 'block';
     $pane->subtype = 'fb_social_like-like';
     $pane->shown = TRUE;
@@ -114,9 +116,9 @@ function fotoalbum_default_page_manager_handlers() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 2;
+    $pane->position = 1;
     $display->content['new-3'] = $pane;
-    $display->panels['middle'][2] = 'new-3';
+    $display->panels['right'][1] = 'new-3';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
