@@ -72,8 +72,8 @@ function nyheder_default_page_manager_handlers() {
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'map_width' => '220',
-      'map_height' => '250',
+      'map_width' => '300',
+      'map_height' => '300',
       'map_zoom' => '14',
       'context' => 'argument_nid_1',
       'override_title' => 0,
