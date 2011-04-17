@@ -1,0 +1,8 @@
+name = OpenLayers AIS
+description = Provides OpenLayers AIS plugin.
+core = 6.x
+package = OpenLayers
+dependencies[] = openlayers
+dependencies[] = ais
+
+
