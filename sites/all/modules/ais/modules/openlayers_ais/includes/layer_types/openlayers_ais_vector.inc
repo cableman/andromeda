@@ -32,6 +32,18 @@ class openlayers_layer_type_openlayers_ais_vector extends openlayers_layer_type 
    */
   function get_features() {
     // Load laste coordinate form the database.
+    $result = db_fetch_object(db_query('SELECT * FROM ais ORDER BY id DESC LIMIT 1'));
+
+    $features = array(
+      array(
+        'wkt' => 'POINT('.$result->long.' '.$result->lat.')',
+        'projection' => 4326,
+        'attributes' => array(
+          'name' => ucwords($result->name),
+          'description' => t('Speed: %speed, Course: %course', array('%speed' => $result->speed, '%course' => $result->course)),
+        ),
+      ),
+    );
 
     return isset($features) ? $features : array();
   }
