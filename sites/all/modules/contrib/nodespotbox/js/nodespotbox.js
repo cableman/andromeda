@@ -1,7 +1,5 @@
-// $Id: nodespotbox.js,v 1.1.2.1 2010/12/27 19:23:35 cableman0408 Exp $
-
 $(document).ready(function() {
-  var context = $('#nodespotbox-settings');
+  var context = $('#nodespotbox-view-settings');
   if (context.size()) {
     // Set views display list, based on selection
     _nodespotbox_change_display(false);

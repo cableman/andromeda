@@ -1,5 +1,4 @@
 <?php
-// $Id: nodespotbox.install,v 1.1.2.1 2010/12/27 19:23:35 cableman0408 Exp $
 
 /**
  * @file
@@ -63,4 +62,36 @@ function nodespotbox_update_6001() {
             'not null' => FALSE,
             'description' => t('Stores information about the view display, if selected'),
           ));
+}
+
+/**
+ * Save node spotbox settings in tree structure.
+ *
+ */
+function nodespotbox_update_6002() {
+  // Run through node types.
+  $types = node_get_types();
+  foreach ($types as $node_type) {
+    $node_type = $node_type->type;
+    if (variable_get('nodespotbox_'. $node_type, NULL) != NULL) {
+      // Build new settings array.
+      $nodespotbox = array();
+      $nodespotbox['enable'] = variable_get('nodespotbox_'. $node_type, 0);
+      $nodespotbox['always'] = variable_get('nodespotbox_always_'. $node_type, 1);
+      $nodespotbox['views']  = array(
+        'name'       => variable_get('nodespotbox_view_name_'. $node_type, 'none'),
+        'display_id' => variable_get('nodespotbox_view_display_id_'. $node_type, 'none'),
+        'user'       => variable_get('nodespotbox_view_display_id_user_'. $node_type, '0'),
+      );
+
+      // Save the new settings.
+      variable_set('nodespotbox_'.$node_type, $nodespotbox);
+
+      // Remove old settings.
+      variable_del('nodespotbox_always_'. $node_type);
+      variable_del('nodespotbox_view_name_'. $node_type);
+      variable_del('nodespotbox_view_display_id_'. $node_type);
+      variable_del('nodespotbox_view_display_id_user_'. $node_type);
+    }
+  }
 }
