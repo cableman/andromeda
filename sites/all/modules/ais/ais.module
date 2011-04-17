@@ -24,8 +24,8 @@ function ais_menu() {
     'page arguments' => array('ais_settings_form'),
     'description' => 'Configure what data should be stored localy in the database.',
     'access arguments' => array('administer ais'),
-    'file' => '.admin.inc',
-    'file path' => drupal_get_path('module', 'ais') . '/includes/ais.admin.inc',
+    'file' => 'ais.admin.inc',
+    'file path' => drupal_get_path('module', 'ais') . '/includes/',
   );
 
   return $items;

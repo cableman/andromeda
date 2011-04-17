@@ -1,0 +1,88 @@
+<?php
+
+/**
+ * @file
+ * Install file for AIS module.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function ais_schema() {
+  $schema['ais'] = array(
+    'description' => t('Stores information about ship location base on AIS feeds.'),
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => t('Row ID.'),
+      ),
+      'lat' => array(
+        'type' => 'float',
+        'not null' => TRUE,
+        'description' => t('Latitude of the ships position.'),
+      ),
+      'long' => array(
+        'type' => 'float',
+        'not null' => TRUE,
+        'description' => t('Longitude of the ships position.'),
+      ),
+      'name' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'description' => t('Ships name.'),
+      ),
+      'mmsi' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => t('Ships MMSI number.'),
+      ),
+      'imo' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => t('Ships IMO number.'),
+      ),
+      'call' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'description' => t('Ships call sign.'),
+      ),
+      'speed' => array(
+        'type' => 'float',
+        'not null' => TRUE,
+        'description' => t('Ships current speed.'),
+      ),
+      'course' => array(
+        'type' => 'float',
+        'not null' => TRUE,
+        'description' => t('Ships current ccourse.'),
+      ),
+      'type' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => t('Ship type.'),
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function ais_install() {
+  drupal_install_schema('ais');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ *
+ * Remove the database schema, module variables and rehash the 'blocks' table.
+ */
+function ais_uninstall() {
+  drupal_uninstall_schema('ais');
+
+  // Remove all node settings
+  db_query("DELETE FROM {variable} WHERE name LIKE '%ais_%'");
+}
