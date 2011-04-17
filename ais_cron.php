@@ -44,4 +44,3 @@ foreach ($xml->marker as $mark) {
   }
 }
 
-echo "cron";
