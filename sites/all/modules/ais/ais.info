@@ -1,0 +1,5 @@
+name = AIS (www.fiskerforum.dk AIS feed reader)
+description = Load AIS tracking information.
+package = Andromeda
+core = 6.x
+version = 0.1

@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * @file
+ *
+ */
+
+/**
+ * Implements hook_perm().
+ */
+function ais_perm() {
+  return array(
+    'administer ais'
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function ais_menu() {
+  $items['admin/settings/ais'] = array(
+    'title' => 'AIS',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ais_settings_form'),
+    'description' => 'Configure what data should be stored localy in the database.',
+    'access arguments' => array('administer ais'),
+    'file' => '.admin.inc',
+    'file path' => drupal_get_path('module', 'ais') . '/includes/ais.admin.inc',
+  );
+
+  return $items;
+}
