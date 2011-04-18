@@ -41,7 +41,6 @@ function openlayers_ais_openlayers_layers() {
     'url' => array(),
     'options' => array(),
     'events' => array(),
-    'views' => array('view' => $view->name, 'display' => $display),
   );
   $layers['ais'] = $layer;
 

@@ -13,6 +13,9 @@ Drupal.openlayers.layer.openlayers_ais_vector = function(title, map, options) {
   // Create layer object
   var layer = new OpenLayers.Layer.Vector(title, options.options);
 
+  // Center map to the first point in the feature.
+  map.center.initial['centerpoint'] = '' + options.features[0].center;
+
   // Add fetures if there are any
   if (options.features) {
     Drupal.openlayers.addFeatures(map, layer, options.features);

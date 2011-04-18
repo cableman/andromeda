@@ -36,7 +36,8 @@ class openlayers_layer_type_openlayers_ais_vector extends openlayers_layer_type 
 
     $features = array(
       array(
-        'wkt' => 'POINT('.$result->long.' '.$result->lat.')',
+        'center' => $result->long . ', ' . $result->lat,
+        'wkt' => 'POINT(' . $result->long . ' ' . $result->lat . ')',
         'projection' => 4326,
         'attributes' => array(
           'name' => ucwords($result->name),
