@@ -40,7 +40,7 @@ class openlayers_layer_type_openlayers_ais_vector extends openlayers_layer_type 
         'wkt' => 'POINT(' . $result->long . ' ' . $result->lat . ')',
         'projection' => 4326,
         'attributes' => array(
-          'name' => ucwords($result->name),
+          'name' => ucwords(strtolower($result->name)),
           'description' => t('Speed: %speed, Course: %course', array('%speed' => $result->speed, '%course' => $result->course)),
         ),
       ),
