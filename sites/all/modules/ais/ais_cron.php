@@ -32,6 +32,12 @@ $xml = simplexml_load_file($url);
 foreach ($xml->marker as $mark) {
   $attributes = $mark->attributes();
   if ($attributes->call == $call) {
+    // Check if the position have moved since laste time
+    $result = db_fetch_object(db_query('SELECT * FROM ais ORDER BY id DESC LIMIT 1'));
+    if ($result) {
+      
+    }
+
     // Store data in db
     $values = array(
       $attributes->lat, $attributes->lon,

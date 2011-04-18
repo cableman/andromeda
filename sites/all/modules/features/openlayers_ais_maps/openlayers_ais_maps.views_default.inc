@@ -34,9 +34,30 @@ function openlayers_ais_maps_views_default_views() {
     'links' => 1,
     'comments' => 0,
   ));
-  $handler = $view->new_display('block', 'AIS position', 'block_1');
+  $handler = $view->new_display('block', 'AIS position block', 'block_1');
   $handler->override_option('block_description', '');
   $handler->override_option('block_caching', -1);
+  $handler = $view->new_display('panel_pane', 'AIS position pane', 'panel_pane_1');
+  $handler->override_option('pane_title', 'AIS last position');
+  $handler->override_option('pane_description', 'Show AIS last position');
+  $handler->override_option('pane_category', array(
+    'name' => 'AIS',
+    'weight' => '0',
+  ));
+  $handler->override_option('allow', array(
+    'use_pager' => 0,
+    'items_per_page' => 0,
+    'offset' => 0,
+    'link_to_view' => 0,
+    'more_link' => 0,
+    'path_override' => 0,
+    'title_override' => 'title_override',
+    'exposed_form' => 0,
+    'fields_override' => 0,
+  ));
+  $handler->override_option('argument_input', array());
+  $handler->override_option('link_to_view', 0);
+  $handler->override_option('inherit_panels_path', 0);
 
   $views[$view->name] = $view;
 
