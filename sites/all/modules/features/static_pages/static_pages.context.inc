@@ -71,9 +71,9 @@ function static_pages_context_default_contexts() {
   $context->reactions = array(
     'block' => array(
       'blocks' => array(
-        'nodespotbox-2' => array(
+        'nodespotbox-42' => array(
           'module' => 'nodespotbox',
-          'delta' => '2',
+          'delta' => '42',
           'region' => 'region_middle_left',
           'weight' => 0,
         ),
@@ -83,9 +83,9 @@ function static_pages_context_default_contexts() {
           'region' => 'region_middle_left',
           'weight' => 1,
         ),
-        'nodespotbox-12' => array(
+        'nodespotbox-2' => array(
           'module' => 'nodespotbox',
-          'delta' => '12',
+          'delta' => '2',
           'region' => 'region_middle_center',
           'weight' => 0,
         ),
@@ -95,9 +95,9 @@ function static_pages_context_default_contexts() {
           'region' => 'region_middle_center',
           'weight' => 1,
         ),
-        'nodespotbox-1' => array(
+        'nodespotbox-12' => array(
           'module' => 'nodespotbox',
-          'delta' => '1',
+          'delta' => '12',
           'region' => 'region_middle_right',
           'weight' => 0,
         ),
