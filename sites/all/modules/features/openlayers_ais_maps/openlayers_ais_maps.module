@@ -1,0 +1,3 @@
+<?php
+
+include_once('openlayers_ais_maps.features.inc');

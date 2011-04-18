@@ -1,0 +1,67 @@
+<?
+
+/**
+ * Implementation of hook_ctools_plugin_api().
+ */
+function openlayers_ais_ctools_plugin_api($module, $api) {
+  if ($module == "openlayers") {
+    switch ($api) {
+      case 'openlayers_layers':
+        return array('version' => 1);
+    }
+  }
+}
+
+/**
+ * Implementation of hook_openlayers_layers().
+ */
+function openlayers_ais_openlayers_layers() {
+  $layers = array();
+
+  // Attempt to load information from cache.
+  // For now use a arg based check for skipping cache.
+  if (arg(0) != 'admin') {
+    $cache = cache_get('openlayers_ais');
+    if (isset($cache->data)) {
+      return $cache->data;
+    }
+  }
+
+  //Build Layer
+  $layer = new stdClass();
+  $layer->api_version = 1;
+  $layer->name = 'ais';
+  $layer->title = t('AIS track');
+  $layer->description = t('Display the AIS track for the selected ship');
+  $layer->data = array(
+    'layer_type' => 'openlayers_ais_vector',
+    'projection' => array('4326'),
+    'baselayer' => FALSE,
+    'type' => 'Vector',
+    'url' => array(),
+    'options' => array(),
+    'events' => array(),
+  );
+  $layers['ais'] = $layer;
+
+  cache_set('openlayers_ais', $layers);
+  return $layers;
+}
+
+/**
+ * Implementation of hook_openlayers_layer_types()
+ */
+function openlayers_ais_openlayers_layer_types() {
+  return array(
+    'openlayers_ais_vector' => array(
+      'title' => t('OpenLayers_AIS'),
+      'description' => t('OpenLayers AIS Vector'),
+      'layer_type' => array(
+        'path' => drupal_get_path('module', 'openlayers_ais')  . '/includes/layer_types',
+        'file' => 'openlayers_ais_vector.inc',
+        'class' => 'openlayers_layer_type_openlayers_ais_vector',
+        'parent' => 'openlayers_layer_type',
+      ),
+    ),
+  );
+}
