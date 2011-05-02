@@ -110,14 +110,14 @@ body {
 .menu-sidebar .menu>li.active-trail a:link,
 .menu-sidebar .menu>li.active-trail a:visited,
 .menu-sidebar .menu>li a:hover {
-  background: transparent url(../images/back-sidebarmenu-active.png) left top no-repeat;
+  background: transparent url(../images/back-sidebarmenu-active.png) left top repeat-y;
 }
 
 .menu-sidebar .menu>li>a {
   display: block;
   padding: 4px 10px 2px;
   line-height: 26px;
-  height: 26px;
+/*  height: 26px;*/
 }
 
 /* ----- / Content ----- */
