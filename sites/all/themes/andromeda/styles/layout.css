@@ -113,6 +113,17 @@ body {
   background: transparent url(../images/back-sidebarmenu-active.png) left top repeat-y;
 }
 
+.menu-sidebar .menu .menu>li a:link,
+.menu-sidebar .menu .menu>li a:visited,
+.menu-sidebar .menu .menu>li a:hover {
+  background: transparent url(../images/back-sidebarmenu-active-level2.png) left top repeat-y;
+}
+
+.menu-sidebar .menu .menu>li a.active,
+.menu-sidebar .menu .menu>li a:hover {
+  background: transparent url(../images/back-sidebarmenu-active.png) left top repeat-y;
+}
+
 .menu-sidebar .menu>li>a {
   display: block;
   padding: 4px 10px 2px;
@@ -169,7 +180,7 @@ body {
 .view-content .post-date + .teaser {
   background: transparent url(../images/back-border-default.png) left top repeat-x;
   padding: 8px;
-  margin: 0 -8px; 
+  margin: 0 -8px;
 }
 
 .meta .submitted {
@@ -213,13 +224,13 @@ body {
   min-width: 32px;
   height: 32px;
   padding: 0 16px;
-  background: transparent url() center center no-repeat; 
+  background: transparent url() center center no-repeat;
   background: rgba(0,0,0,0.15);
   text-decoration: none;
 }
 
 .item-list .pager a:hover {
-  background: transparent url() center center no-repeat; 
+  background: transparent url() center center no-repeat;
   background: rgba(24,141,220,0.6);}
 
 .item-list .pager-item a {
@@ -228,7 +239,7 @@ body {
 
 .item-list li.pager-current {
   color: #fff;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4); 
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
   background: #188DDC;
   background: rgba(24,141,220,0.8);
   margin-right: 8px;
@@ -241,7 +252,7 @@ body {
 img.imagecache-news_listing,
 .album-thumb .field-item,
 img.imagecache-album_listing {
-/*   border: 1px solid #ccc; -> Flyt til lt ie 9 stylesheet */ 
+/*   border: 1px solid #ccc; -> Flyt til lt ie 9 stylesheet */
   padding: 8px;
   background: #fff;
   background: rgba(255,255,255,0.7);
@@ -344,7 +355,7 @@ img.imagecache-album_listing {
 .views_slideshow_singleframe_pager .pager-item a:active,
 .views_slideshow_singleframe_pager .pager-item a:focus {
   outline: none;
-  border: 1px dotted 
+  border: 1px dotted
 }
 
 .views_slideshow_singleframe_pager .activeSlide a {
@@ -478,7 +489,7 @@ img.imagecache-album_listing {
 
 /* ----- / Forms ----- */
 .block-mailchimp input[type=text],
-.block-mailchimp textarea { 
+.block-mailchimp textarea {
   /* Flyt evt. styles over i generel styling af forms, n�r du har overblik over konsekvenserne */
   border: none;
   padding: 8px;
@@ -486,7 +497,7 @@ img.imagecache-album_listing {
   -o-border-radius: 8px;
   -webkit-border-radius: 8px;
   border-radius: 8px
-  -moz-box-shadow: 
+  -moz-box-shadow:
 
 }
 

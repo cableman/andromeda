@@ -1,8 +1,8 @@
 /* ----- / Basic font styling ----- */
 body {
-  font: 13px/18px "Helvetica Neue",Arial,sans-serif;  
+  font: 13px/18px "Helvetica Neue",Arial,sans-serif;
   color: #222;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4); 
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 p, dl, hr, h1, h2, h3, h4, h5, h6, ol, ul, pre, table, address, fieldset {
@@ -147,14 +147,6 @@ h2 a:focus {
   color: #444;
 }
 
-.menu-sidebar .active-trail a:link,
-.menu-sidebar .active-trail a:visited {
-/*
-  color: #fff;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-*/
-}
-
 /* ----- / Slideshow ----- */
 .view-frontpage-slider h2 a {
   color: #FFF;
@@ -174,5 +166,5 @@ h2 a:focus {
   font-weight: normal;
   font-size: 13px;
   line-height: 18px;
-  text-shadow: none;  
+  text-shadow: none;
 }
