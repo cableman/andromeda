@@ -1,4 +1,18 @@
-$Id: CHANGELOG.txt,v 1.1.2.10 2010/11/21 05:04:43 ferdi Exp $
+
+fb_social 6.x-1.0-BETA6, 2010-03-26
+
+Issue #1035310 : Don't display comments block on node edit pages.
+Issue #988378 : Wrong closing tag for activityfeed 
+Issue #980638 : Like box creates administrative block in Admin's sidebar
+Issue #1053718 by mrfelton: fb_share + fb_like dont display on full node view when  is false
+Issue #1020828 by mongeron, mr.j : Google Analytics integration
+Issue #1004162 by chia : Only load fb js on pages where its required by any plugin
+Issue #1102356 : Moderate Comments posted through Facebook
+Issue #1104446 by phenaproxima: "fb_social_comments: attribute url changed to href" 
+#995394 by AlexisWilke : Should comment block be hidden when node is unpublished
+#988086 : fb social views error
+changed "pageid" to "page url" (href) for likebox ; please update your settings accordingly
+#941842 Likebox Color Scheme
 
 fb_social 6.x-1.0-BETA5, 2010-11-xx
  

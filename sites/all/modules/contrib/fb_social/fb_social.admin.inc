@@ -1,6 +1,5 @@
 <?php
 
-// $Id: fb_social.admin.inc,v 1.2.2.8 2010/11/21 03:22:23 ferdi Exp $
 
 
 /**

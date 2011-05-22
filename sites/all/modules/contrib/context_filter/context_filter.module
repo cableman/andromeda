@@ -1,5 +1,4 @@
 <?php
-// $Id: context_filter.module,v 1.1.2.3 2011/01/02 18:54:20 cableman0408 Exp $
 
 /**
  * Implements hook_perm().
@@ -10,6 +9,9 @@ function context_filter_perm() {
   );
   $perm['administer context filter regions'] = array(
     'title' => t('Administer Context filter regions.'),
+  );
+  $perm['administer context filter names'] = array(
+    'title' => t('Administer Context filter names.'),
   );
   return array_keys($perm);
 }
@@ -28,6 +30,24 @@ function context_filter_menu() {
     'page arguments' => array('context_filter_admin_form'),
     'description' => 'Select which options should be avaliable in the context drop-down based on modules.',
     'access arguments' => array('administer context filter'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['admin/build/context/filter/groups'] = array(
+    'title' => 'Groups',
+    'description' => 'Select which options should be avaliable in the context drop-down based on modules.',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 1,
+  );
+
+  $items['admin/build/context/filter/names'] = array(
+    'title' => 'Names',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('context_filter_names_admin_form'),
+    'description' => 'Change the group names of the items in the context drop-down.',
+    'access arguments' => array('administer context filter names'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 2,
   );
 
   $items['admin/build/context/regions'] = array(
@@ -119,6 +139,40 @@ function context_filter_regions_admin_form(&$form_state) {
   return system_settings_form($form);
 }
 
+/**
+ * Administration form for chaning the group drop-down names in context.
+ *
+ * @return array $form
+ */
+function context_filter_names_admin_form() {
+  $form = array(
+    '#tree' => TRUE,
+  );
+
+  // Load the selected modules that provides blocks or show all modules that
+  // provides blocks.
+  $options = array_filter(variable_get('context_filter_block_types', NULL));
+  if (!$options) {
+    foreach (module_implements('block') as $module) {
+      $options[$module] = $module;
+    }
+  }
+
+  // Load default values.
+  $default = variable_get('context_filter_names', array());
+
+  // Build form elements.
+  foreach ($options as $value) {
+    $form['context_filter_names'][$value] = array(
+      '#type' => 'textfield',
+      '#title' => $value,
+      '#default_value' => isset($default[$value]) ? $default[$value] : $value,
+      '#description' => t('Change the name displayed in the context drop-down box.'),
+    );
+  }
+
+  return system_settings_form($form);
+}
 
 /**
  * Override "Context" preprocess function to limit the selections.
@@ -131,6 +185,11 @@ function context_filter_preprocess_context_block_browser(&$vars) {
 
   // Only change the list, if selections have be made in the admin interface
   if (!empty($selected)) {
+    // Update names.
+    $names = variable_get('context_filter_names', NULL);
+    foreach ($names as $key => $value) {
+      $selected[$key] = $value;
+    }
     // Only display selected modules
     $vars['categories']['#options'] = array_merge(array(0 => '<'. t('Choose a category') .'>'), $selected);
   }

@@ -1,5 +1,4 @@
 <?php
-//$Id: fb_social.widgets.inc,v 1.1.2.1 2010/11/21 03:23:32 ferdi Exp $
 function fb_social_facepile_settings_form(){
   $form = array();
 

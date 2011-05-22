@@ -1,5 +1,4 @@
 <?php
-//$Id: fb_social_likebox.admin.inc,v 1.1.2.2 2010/07/26 00:41:52 ferdi Exp $
 
 /**
  * Settings form for choosing the operating mode of purl
@@ -14,11 +13,11 @@ function fb_social_likebox_settings_form(){
     '#collapsed' => FALSE,
   );
 
-  $form['widget_setings']['fb_social_likebox_pageid'] = array(
+  $form['widget_setings']['fb_social_likebox_href'] = array(
     '#type' => 'textfield',
-    '#title' => t('Facebook Page ID'),
-    '#description' => t('The ID of the facebook page for this like box'),
-    '#default_value' => variable_get('fb_social_likebox_pageid', ''),
+    '#title' => t('Facebook Page URL'),
+    '#description' => t('The URL of the facebook page for this like box'),
+    '#default_value' => variable_get('fb_social_likebox_href', ''),
   );
   
   $form['widget_setings']['fb_social_likebox_width'] = array(
@@ -32,7 +31,15 @@ function fb_social_likebox_settings_form(){
     '#type' => 'textfield',
     '#title' => t('Height'),
     '#description' => t('The height of the wiget in pixel'),
-    '#default_value' => variable_get('fb_social_likebox_height', ''),
+    '#default_value' => variable_get('fb_social_likebox_height', 63),
+  );
+  
+  $form['widget_setings']['fb_social_likebox_color'] = array(
+    '#type' => 'select',
+    '#title' => t('Color'),
+    '#description' => t('The color scheme of the plugin'),
+    '#default_value' => variable_get('fb_social_likebox_color', 'light'),
+    '#options' => array('dark' => t('dark'), 'light' => t('light') )
   );
   
   $form['widget_setings']['fb_social_likebox_connections'] = array(

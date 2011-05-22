@@ -1,4 +1,3 @@
-$Id: README.txt,v 1.1.2.1 2010/04/30 03:04:03 ferdi Exp $
 
 -- Summary -- 
 

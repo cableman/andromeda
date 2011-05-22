@@ -1,10 +1,20 @@
 <?php
-// $Id: fb_social.module,v 1.2.2.10 2010/11/21 03:25:30 ferdi Exp $
 
 /**
  * @file
  * Common settings for all fb social plugins
  */
+
+/**
+ * Implementation of hook_init
+ */
+function fb_social_init(){
+  // like box or comments widget may want to admin like/comments
+  if (module_exists('fb_social_like') || module_exists('fb_social_comments')) {
+    $data = '<meta property="fb:app_id" content="' . check_plain(variable_get('fb_social_appid', '')) . '"/>' . "\n";
+    drupal_set_html_head($data);
+  }
+}
 
 /**
  * Implementation of hook_menu
@@ -110,6 +120,8 @@ function fb_social_theme() {
 }
 
 function theme_fb_social_recommendations(){
+  global $_fb_script_init;
+  $_fb_script_init = TRUE;
   $attrs = array(
       'site' => variable_get('fb_social_recommendation_site', ''), 
       'width' => variable_get('fb_social_recommendation_width', 300),
@@ -126,6 +138,8 @@ function theme_fb_social_recommendations(){
 }
 
 function theme_fb_social_activityfeed(){
+  global $_fb_script_init;
+  $_fb_script_init = TRUE;
   $attrs = array(
       'site' => variable_get('fb_social_activityfeed_site', ''), 
       'width' => variable_get('fb_social_activityfeed_width', 300),
@@ -139,10 +153,12 @@ function theme_fb_social_activityfeed(){
   
   $attrs = drupal_attributes($attrs);
   
-  return '<div id="fb-social-activity-widget"><fb:activity ' . $attrs . '></fb:recommendations></div>';
+  return '<div id="fb-social-activity-widget"><fb:activity ' . $attrs . '></fb:activity></div>';
 }
 
 function theme_fb_social_livestream(){
+  global $_fb_script_init;
+  $_fb_script_init = TRUE;
   $attrs = array(
       'appid' => variable_get('fb_social_appid', ''), 
       'width' => variable_get('fb_social_livestream_width', 300), 
@@ -158,6 +174,8 @@ function theme_fb_social_livestream(){
 
 
 function theme_fb_social_facepile(){
+  global $_fb_script_init;
+  $_fb_script_init = TRUE;
   $attrs = array(
       'max-rows' => variable_get('fb_social_facepile_numrows', 1),
       'href' => variable_get('fb_social_facepile_url', '') ,
@@ -175,51 +193,56 @@ function theme_fb_social_facepile(){
 /**
  * Implementation of hook_footer
  */
-function fb_social_footer($main = 0) {
-  global $language;
-
+function fb_social_footer($main = 0){
+  global $language, $_fb_script_init;
+  
+  // If their is no fb plugin enabled on this page, do not load fb script then
+  if (! $_fb_script_init) {
+    return;
+  }
+  
   $languages = _map_active_languages();
-
+  
   if (fb_social_auto_language()) {
     if (array_key_exists($language->language, $languages)) {
       $fb_locale = $languages[$language->language];
-    } else {
+    }
+    else {
       drupal_set_message("There is no mapping for the current language. Using the default locale.");
     }
-  } else {
+  }
+  else {
     $fb_locale = variable_get('fb_social_locale', 'en_US');
   }
-
   
   $appid = variable_get('fb_social_appid', '');
-
+  
   $output = '<div id="fb-root"></div>';
-  $output .=  
-  "<script type=\"text/javascript\">
+  $output .= "<script type=\"text/javascript\">
      window.fbAsyncInit = function() {
        FB.init({
-         appId: " . drupal_to_js($appid) .",
+         appId: " . drupal_to_js($appid) . ",
          status: true, 
          cookie: true,
          xfbml: true
        });
        
        ";
-         
-         // let each module subscribe to different events
-         $output .= implode("\n", module_invoke_all('fb_social_event_subscribe'));
-         $output .="
+  
+  // let each module subscribe to different events
+  $output .= implode("\n", module_invoke_all('fb_social_event_subscribe'));
+  $output .= "
        
          
      };
      (function() {
        var e = document.createElement('script'); 
        e.async = true;
-       e.src = document.location.protocol + '//connect.facebook.net/" . $fb_locale  . "/all.js';
+       e.src = document.location.protocol + '//connect.facebook.net/" . $fb_locale . "/all.js';
        document.getElementById('fb-root').appendChild(e);
      }());
   </script>";
-         
+  
   return $output;
 }
 

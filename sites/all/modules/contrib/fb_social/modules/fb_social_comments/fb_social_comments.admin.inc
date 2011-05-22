@@ -1,5 +1,4 @@
 <?php
-//$Id: fb_social_comments.admin.inc,v 1.1.2.3 2010/05/07 02:50:13 ferdi Exp $
 
 /**
  * Settings form

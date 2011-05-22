@@ -1,6 +1,8 @@
 Filters the context module's drag & drop selection menu when using the admin
 module. This module uses the context module's preprocessor functions to limit
-the options listed in the drop down.
+the options listed in the drop down. You can also rename the groups displayed in
+the drop-down to more meaningful names to end users (normally the name of the
+module the provides the blocks is used).
 
 Context filter also provides the ability to mark regions as not editable, which
 can be used to prevent, that uses drags blocks into unwanted regions (e.g menu,

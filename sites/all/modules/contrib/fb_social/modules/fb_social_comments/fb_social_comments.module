@@ -1,6 +1,5 @@
 <?php
 
-// $Id: fb_social_comments.module,v 1.3.2.9 2010/10/04 23:54:40 ferdi Exp $
 
 
 /**
@@ -44,7 +43,6 @@ function fb_social_comments_block($op = 'list', $delta = 0, $edit = array()){
       
       $blocks['comments'] = array(
           'info' => t('fb comments'), 
-          'admin' => TRUE 
       );
       
       return $blocks;
@@ -53,8 +51,7 @@ function fb_social_comments_block($op = 'list', $delta = 0, $edit = array()){
         case 'comments' :
           // show the block comment only for nodes
           $node = menu_get_object();
-          
-          if (is_object($node) && $node->nid) {
+          if (is_object($node) && $node->status && $node->nid && arg(2) != "edit") {
             return array(
                 'subject' => t(''), 
                 'content' => theme('fb_social_comments_block_comments_view', fb_social_url('node/' . $node->nid)),
@@ -86,7 +83,7 @@ function fb_social_comments_content_extra_fields($type_name){
 function fb_social_comments_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
   switch ($op) {
     case 'view' :
-      if (fb_social_comments_type($node->type)) {
+      if ($node->status && fb_social_comments_type($node->type)) {
         if ($a4) {  //only in page view
           
           $output = theme('fb_social_comments_block_comments_view', fb_social_url('node/' . $node->nid));
@@ -106,6 +103,9 @@ function fb_social_comments_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
  * theme function for the fb comments widget
  */
 function theme_fb_social_comments_block_comments_view($url){
+  global $_fb_script_init;
+  $_fb_script_init = TRUE;
+  
   $xid = url($_GET['q'], array(
       'absolute' => TRUE, 
       'alias' => TRUE 
@@ -114,7 +114,7 @@ function theme_fb_social_comments_block_comments_view($url){
   $attrs = array(
       'xid' => urlencode($xid),  // why is drupal_urlencode not working ?
       'title' => $node->title, 
-      'url' => $url, 
+      'href' => $url, 
       'numposts' => variable_get('fb_social_comments_numposts', 10), 
       'width' => variable_get('fb_social_comments_width', 420), 
       'simple' => variable_get('fb_social_comments_simple', 0) ? 'true' : 'false', 

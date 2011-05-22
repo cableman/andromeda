@@ -1,5 +1,4 @@
 <?php
-// $Id: fb_social_like_handler_field_like.inc,v 1.1.2.1 2010/08/20 22:46:41 ferdi Exp $
 
 
 /**
@@ -53,7 +52,6 @@ class fb_social_like_handler_field_like extends views_handler_field_node {
     }
     
     // Remove irrelevant controls / settings.
-    unset($form['exclude']);
     unset($form['empty']);
     unset($form['empty_zero']);
     unset($form['hide_empty']);
@@ -67,7 +65,7 @@ class fb_social_like_handler_field_like extends views_handler_field_node {
   function render($values){
     
     $attrs = array(
-        'href' => fb_social_url($values->nid), 
+        'href' => fb_social_url('node/'.$values->nid), 
         'layout' => $this->options['fb_social_like_layout_style'], 
         'show_faces' => $this->options['fb_social_like_show_faces'] ? 'true' : 'false', 
         'width' => $this->options['fb_social_like_width'], 

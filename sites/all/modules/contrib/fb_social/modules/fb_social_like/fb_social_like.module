@@ -1,5 +1,4 @@
 <?php
-// $Id: fb_social_like.module,v 1.4.2.21 2010/11/21 05:21:33 ferdi Exp $
 
 /**
  * Implementation of hook init
@@ -40,6 +39,22 @@ function fb_social_like_menu(){
   return $items;
 }
 
+/**
+ * Implementation of hook_fb_social_event_subscribe
+ */
+function fb_social_like_fb_social_event_subscribe() {
+  // integration with google analytics
+  if (module_exists('googleanalytics')) {
+    global $user;
+    $id = variable_get('googleanalytics_account', '');
+    if (!empty($id) && _googleanalytics_visibility_pages() && _googleanalytics_visibility_user($user)) {		
+      return array('FB.Event.subscribe("edge.create", function(href, widget) {',
+        '_gaq.push(["_trackEvent", "Facebook like", "Drupal", href]);',
+      '});');
+    }
+  }
+}
+
 
 /**
  * Implementation of hook_content_extra_fields.
@@ -62,7 +77,7 @@ function fb_social_like_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
   switch ($op) {
     case 'view' :    
       if ($node -> status && fb_social_like_type($node->type) && variable_get('fb_social_like_location', 0)) {
-        if ($a4 || variable_get('fb_social_like_display_teasers', 1) && $a3) {
+        if (($a4 || !$a3) || variable_get('fb_social_share_display_teasers', 1) && $a3) {
           
           $output = theme('fb_social_like_widget', fb_social_url('node/' . $node->nid));
           $weight = (module_exists('content')) ? content_extra_field_weight($node->type, 'fb_social_like_widget') : -10;
@@ -86,7 +101,6 @@ function fb_social_like_block($op = 'list', $delta = 0, $edit = array()){
       
       $blocks['like'] = array(
           'info' => t('fb like'), 
-          'admin' => TRUE 
       );
       
       return $blocks;
@@ -121,6 +135,9 @@ function fb_social_like_theme() {
  * returns the fbml content of the widget
  */
 function theme_fb_social_like_widget($url){
+  global $_fb_script_init;
+  $_fb_script_init = TRUE;
+  
   $attrs = array(
       'href' => $url, 
       'layout' => variable_get('fb_social_like_layout_style', 'button_count'), 

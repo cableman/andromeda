@@ -78,7 +78,7 @@ function fb_social_share_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
   switch ($op) {
     case 'view' :    
       if ($node -> status && fb_social_share_type($node->type) && variable_get('fb_social_share_location', 0)) {
-        if ($a4 || variable_get('fb_social_share_display_teasers', 1) && $a3) {
+        if (($a4 || !$a3) || variable_get('fb_social_share_display_teasers', 1) && $a3) {
           
           $output = theme('fb_social_share_widget', fb_social_url('node/' . $node->nid));
           $weight = (module_exists('content')) ? content_extra_field_weight($node->type, 'fb_social_share_widget') : -10;
@@ -96,6 +96,8 @@ function fb_social_share_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
  * theme callback function
  */
 function theme_fb_social_share_widget($url){
+  global $_fb_script_init;
+  $_fb_script_init = TRUE;
   
   $layout = variable_get('fb_social_share_layout_style', 'button_count');
   return '<fb:share-button href="' . $url . '" type ="' . $layout . '" ></fb:share-button>';

@@ -1,13 +1,12 @@
 <?php
-// $Id: nodewords_pagetitle.module,v 1.2 2010/06/19 19:57:30 brian294 Exp $
 /**
  * @file
  * Set the page title using nodewords custom pages.
  *
- * Leverage the power of nodewords custom pages to set the page title 
- * using wildcard paths and tokens.  Great for tough-to-reach page titles in 
+ * Leverage the power of nodewords custom pages to set the page title
+ * using wildcard paths and tokens.  Great for tough-to-reach page titles in
  * Views, Panels, and other non-node paths!
-*/
+ */
 
 /**
  * The hook is used from nodewords.module to know which API is supported by the
@@ -24,9 +23,14 @@
  *     NODEWORDS_API_VERSION.
  *   - path - the path where the files for the integration with Nodewords are
  *     placed.
-*/
+ */
 function nodewords_pagetitle_nodewords_api() {
-  return array('api' => '1.12', 'path' => '');
+  if (function_exists('_nodewords_detect_type_and_id')) {
+    return array('api' => '1.12', 'path' => '');
+  }
+  if (function_exists('nodewords_detect_type_id')) {
+    return array('api' => '1.14', 'path' => '');
+  }
 }
 
 /**
@@ -88,34 +92,34 @@ function nodewords_pagetitle_page_title_form(&$form, $content, $options) {
 }
 
 
-// nodewords_pagetitle_page_title_prepare not needed because it puts the meta tag into variable that will output it with the rest of the metatags.
-// Since this is not a metatag, we can skip it!
-//function nodewords_pagetitle_page_title_prepare(&$tags, $content, $options) {
-//  if (!empty($content['value'])) {
-//	  $tags['page.title'] = nodewords_replace_tokens($content['value'], $options);
-//  }
-//}
-
-// hook_page_title_alter().
-// Set the title variable.  Called by the page_title module..
+/**
+ * Implements hook_page_title_alter().
+ */
 function nodewords_pagetitle_page_title_alter(&$title) {
-	// Try to guess the $type and $id by looking at $_GET['q'].
-	// Private function borrowed from nodewords module.
-	if (function_exists('_nodewords_detect_type_and_id')) {
-		// Depreciated with Nodewords API 1.14
-		$options = _nodewords_detect_type_and_id();
-	}
-	else {
-		$options = nodewords_detect_type_id();
-	}
-	
-	switch ($options['type']) {
-		// NODEWORDS_TYPE_PAGE
-		case 10:
-			// Load the page meta tags data from the database.
-			// Private function borrowed from nodewords_custom_pages	
-			$page_data = _nodewords_custom_pages_load_data($options['id']);
-			$title = $page_data->tags['page.title']['value'];
-			break;
-	}
+  // Try to guess the $type and $id by looking at $_GET['q'].
+  // Private function borrowed from nodewords module.
+  $nodewords_api = nodewords_pagetitle_nodewords_api();  
+  switch($nodewords_api['api']) {
+    case "1.12":
+      $options = _nodewords_detect_type_and_id();
+        if ($options['type'] == NODEWORDS_TYPE_PAGE && $page = _nodewords_custom_pages_load_data($options['id'])) {
+          // Load the page meta tags data from the database.
+          $page_title = $page->tags['page.title']['value'];
+          if (drupal_strlen($page_title) > 0) {
+            $title = t($page_title);
+          }
+        }
+      break;
+    case "1.14":
+      $options = nodewords_detect_type_id();
+      if ($options['type'] == NODEWORDS_TYPE_PAGE && $page = nodewords_custom_pages_load($options['id'])) {
+        $page_title = $page->tags['page.title']['value'];
+          if (drupal_strlen($page_title) > 0) {
+            $title = t($page_title);
+          }
+      }  
+      break;
+    default:
+      return;
+  }
 }

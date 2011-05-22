@@ -1,6 +1,5 @@
 <?php
 
-// $Id: fb_social_like.views.inc,v 1.1.2.1 2010/08/20 22:46:41 ferdi Exp $
 
 
 /**
