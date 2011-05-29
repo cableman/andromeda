@@ -19,7 +19,7 @@ function context_filter_perm() {
 /**
  * Implementation of hook_menu, which sets the path admin/build/context/filter
  * for administrate the selections.
- * 
+ *
  * @return array $items
  */
 function context_filter_menu() {
@@ -88,8 +88,8 @@ function context_filter_admin_form(&$form_state) {
 }
 
 /**
- * Administration form to select the regions editable in context 
- * 
+ * Administration form to select the regions editable in context
+ *
  * @param array $form_state
  * @return array $form
  */
@@ -187,8 +187,10 @@ function context_filter_preprocess_context_block_browser(&$vars) {
   if (!empty($selected)) {
     // Update names.
     $names = variable_get('context_filter_names', NULL);
-    foreach ($names as $key => $value) {
-      $selected[$key] = $value;
+    if ($names) {
+      foreach ($names as $key => $value) {
+        $selected[$key] = $value;
+      }
     }
     // Only display selected modules
     $vars['categories']['#options'] = array_merge(array(0 => '<'. t('Choose a category') .'>'), $selected);

@@ -3,10 +3,3 @@ description = Enables filtering of context selection options
 core = 6.x
 package = "Context"
 dependencies[] = context
-
-; Information added by drupal.org packaging script on 2011-04-20
-version = "6.x-1.2"
-core = "6.x"
-project = "context_filter"
-datestamp = "1303328815"
-
