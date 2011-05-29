@@ -1,5 +1,4 @@
 <?php
-// $Id: form.inc,v 1.265.2.35 2010/11/04 09:55:29 goba Exp $
 
 /**
  * @defgroup forms Form builder functions
@@ -1993,7 +1992,7 @@ function theme_image_button($element) {
     (!empty($element['#value']) ? ('value="'. check_plain($element['#value']) .'" ') : '') .
     'id="'. $element['#id'] .'" '.
     drupal_attributes($element['#attributes']) .
-    ' src="'. file_create_url($element['#src']) .'" '.
+    ' src="'. base_path() . $element['#src'] .'" '.
     (!empty($element['#title']) ? 'alt="'. check_plain($element['#title']) .'" title="'. check_plain($element['#title']) .'" ' : '' ) .
     "/>\n";
 }

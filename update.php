@@ -1,5 +1,4 @@
 <?php
-// $Id: update.php,v 1.252.2.4 2010/11/03 12:29:24 goba Exp $
 
 /**
  * @file
@@ -346,8 +345,8 @@ function update_results_page() {
           if (!count($queries)) {
             $output .= '<li class="none">No queries</li>';
           }
+          $output .= '</ul>';
         }
-        $output .= '</ul>';
       }
     }
     $output .= '</div>';
@@ -642,7 +641,6 @@ ini_set('display_errors', TRUE);
 
 // Access check:
 if (!empty($update_free_access) || $user->uid == 1) {
-  drupal_session_start();
 
   include_once './includes/install.inc';
   include_once './includes/batch.inc';
