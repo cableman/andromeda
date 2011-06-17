@@ -77,7 +77,7 @@ function fb_social_like_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL){
   switch ($op) {
     case 'view' :    
       if ($node -> status && fb_social_like_type($node->type) && variable_get('fb_social_like_location', 0)) {
-        if (($a4 || !$a3) || variable_get('fb_social_share_display_teasers', 1) && $a3) {
+        if (($a4 || !$a3) || variable_get('fb_social_like_display_teasers', 1) && $a3) {
           
           $output = theme('fb_social_like_widget', fb_social_url('node/' . $node->nid));
           $weight = (module_exists('content')) ? content_extra_field_weight($node->type, 'fb_social_like_widget') : -10;
@@ -140,6 +140,7 @@ function theme_fb_social_like_widget($url){
   
   $attrs = array(
       'href' => $url, 
+      'send' => variable_get('fb_social_like_send_button', 0) ? 'true' : 'false',
       'layout' => variable_get('fb_social_like_layout_style', 'button_count'), 
       'show_faces' => variable_get('fb_social_like_show_faces', 0) ? 'true' : 'false', 
       'width' => variable_get('fb_social_like_width', 350), 

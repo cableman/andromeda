@@ -66,6 +66,14 @@ function fb_social_like_settings_form(){
 
 function fb_social_like_widget_settings_form(){
   $form = array();
+  
+  $form['fb_social_like_send_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Send button'),
+    '#description' => t('Include a send button'),
+    '#default_value' => variable_get('fb_social_like_send_button', 0),
+  );
+  
   $form['fb_social_like_layout_style'] = array(
     '#type' => 'select',
     '#title' => t('Layout style'),

@@ -63,7 +63,8 @@ class fb_social_like_handler_field_like extends views_handler_field_node {
    * Render the fb like field
    */
   function render($values){
-    
+    global $_fb_script_init;
+    $_fb_script_init = TRUE;
     $attrs = array(
         'href' => fb_social_url('node/'.$values->nid), 
         'layout' => $this->options['fb_social_like_layout_style'], 

@@ -21,6 +21,12 @@ function fb_social_init(){
  */
 function fb_social_menu(){
   $items = array();
+  $items['fb_social/channel'] = array(
+    'type' => MENU_CALLBACK,
+    'description' => 'Facebook Custom Channel URL',
+    'page callback' => 'fb_social_custom_channel_url',
+    'access callback' => TRUE,
+  );
   $items['admin/settings/fb/social'] = array(
     'type' => MENU_NORMAL_ITEM,
     'title' => 'Facebook social',
@@ -74,7 +80,6 @@ function fb_social_block($op = 'list', $delta = 0) {
       );
       return $info;
     case 'view':
-      //module_load_include('inc', 'atrium', 'atrium.block');
       $function = "_fb_social_{$delta}_block";
       if (function_exists($function)) {
       	return call_user_func($function);
@@ -118,6 +123,7 @@ function fb_social_theme() {
     'fb_social_facepile' => array(),
   );
 }
+
 
 function theme_fb_social_recommendations(){
   global $_fb_script_init;
@@ -194,7 +200,7 @@ function theme_fb_social_facepile(){
  * Implementation of hook_footer
  */
 function fb_social_footer($main = 0){
-  global $language, $_fb_script_init;
+  global $language, $_fb_script_init, $base_url;
   
   // If their is no fb plugin enabled on this page, do not load fb script then
   if (! $_fb_script_init) {
@@ -216,6 +222,7 @@ function fb_social_footer($main = 0){
   }
   
   $appid = variable_get('fb_social_appid', '');
+  $channel_url = $base_url . "/fb_social/channel";
   
   $output = '<div id="fb-root"></div>';
   $output .= "<script type=\"text/javascript\">
@@ -224,7 +231,8 @@ function fb_social_footer($main = 0){
          appId: " . drupal_to_js($appid) . ",
          status: true, 
          cookie: true,
-         xfbml: true
+         xfbml: true,
+         channelUrl: " . drupal_to_js($channel_url) . ",
        });
        
        ";
@@ -244,6 +252,25 @@ function fb_social_footer($main = 0){
   </script>";
   
   return $output;
+}
+
+/**
+ * The Custom Channel URL that FB.init has as an option
+ */
+function fb_social_custom_channel_url() {
+  header("Cache-Control: public, s-maxage=31536000, max-age=31536000");
+  header("Expires: Sun, 1 Oct 2079 00:00:00 GMT");
+
+  if (fb_social_auto_language()) {
+    if (array_key_exists($language->language, $languages)) {
+      $fb_locale = $languages[$language->language];
+    }
+  }
+  else {
+    $fb_locale = variable_get('fb_social_locale', 'en_US');
+  }
+  print '<script src="http://connect.facebook.net/' . $fb_locale . '/all.js"></script>';
+  exit;
 }
 
 function fb_social_auto_language() {

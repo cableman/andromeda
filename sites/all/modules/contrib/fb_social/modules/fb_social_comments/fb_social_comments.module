@@ -114,13 +114,22 @@ function theme_fb_social_comments_block_comments_view($url){
   $attrs = array(
       'xid' => urlencode($xid),  // why is drupal_urlencode not working ?
       'title' => $node->title, 
-      'href' => $url, 
+
       'numposts' => variable_get('fb_social_comments_numposts', 10), 
       'width' => variable_get('fb_social_comments_width', 420), 
       'simple' => variable_get('fb_social_comments_simple', 0) ? 'true' : 'false', 
       'reverse' => variable_get('fb_social_comments_reverse', 0) ? 'true' : 'false', 
       'publish_feed' => variable_get('fb_social_comments_publish_feed', 0) ? 'true' : 'false' 
   );
+  
+  // migrate to the new version of facebook comments
+  $migrated = variable_get('fb_social_comments_migrated', 0);
+  if ($migrated){
+	$attrs['migrated'] = '1';
+  }
+  else {
+    $attrs['href'] = $url; 
+  }
   
   if ($css = variable_get('fb_social_comments_css', '')) {
     $attrs['css'] = $css;

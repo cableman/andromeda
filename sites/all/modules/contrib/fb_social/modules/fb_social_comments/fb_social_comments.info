@@ -4,9 +4,9 @@ package = "Facebook Social"
 dependencies[] = fb_social
 core = 6.x
 
-; Information added by drupal.org packaging script on 2011-03-27
-version = "6.x-1.0-beta6"
+; Information added by drupal.org packaging script on 2011-06-11
+version = "6.x-1.0-beta8"
 core = "6.x"
 project = "fb_social"
-datestamp = "1301195468"
+datestamp = "1307760116"
 

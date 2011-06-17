@@ -72,8 +72,13 @@ function fb_social_comments_settings_form(){
     '#options' => array(t('False'), t('True')),
   );
   
+  $form['widget_setings']['fb_social_comments_migrated'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Migrate to the new version of facebook comments'),
+    '#description' => t('If you are using the original version of the Facebook Comments box, check and the comments box will automatically switch to the new version'),
+    '#default_value' => variable_get('fb_social_comments_migrated', 0),
+  );
   
-
   
   $form = system_settings_form($form);
   return $form;

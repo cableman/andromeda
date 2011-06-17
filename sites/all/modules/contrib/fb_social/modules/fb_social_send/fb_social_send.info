@@ -1,5 +1,5 @@
-name = fb social like
-description = fb social like
+name = fb social send
+description = fb social send
 dependencies[] = fb_social
 package = "Facebook Social"
 core = 6.x

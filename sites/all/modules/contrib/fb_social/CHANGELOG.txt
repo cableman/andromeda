@@ -1,3 +1,10 @@
+fb_social 6.x-1.0-BETA7, 2011-06-09
+
+Issue #1177776 by Roger Saner  : Add a Custom Channel URL option to FB.init
+Issue #150282 : Retrieving old FB comments with Migrated ="1"
+Added facebook send plugin (http://developers.facebook.com/docs/reference/plugins/send)
+Added "send" option to the like widget
+
 
 fb_social 6.x-1.0-BETA6, 2010-03-26
 
