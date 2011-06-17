@@ -56,7 +56,7 @@ h3 {
 
 
 /* ----- / Links ----- */
-a {
+#page a {
   -moz-transition: background 0.3s linear, color 0.2s linear;
   -webkit-transition: background 0.3s linear, color 0.2s linear;
   -o-transition: background 0.3s linear, color 0.2s linear;
