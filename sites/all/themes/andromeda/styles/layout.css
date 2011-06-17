@@ -496,9 +496,11 @@ img.imagecache-album_listing {
   -moz-border-radius: 8px;
   -o-border-radius: 8px;
   -webkit-border-radius: 8px;
-  border-radius: 8px
-  -moz-box-shadow:
-
+  border-radius: 8px;
+  -moz-box-shadow: 0px 1px 2px #aaaaaa;
+  -o-box-shadow: 0px 1px 2px #aaaaaa;
+  -webkit-box-shadow: 0px 1px 2px #aaaaaa;
+  box-shadow: 0px 1px 2px #aaaaaa;
 }
 
 /* ----- / Google maps ----- */

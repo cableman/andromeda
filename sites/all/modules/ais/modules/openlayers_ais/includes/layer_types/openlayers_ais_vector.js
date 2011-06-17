@@ -8,8 +8,10 @@ Drupal.openlayers.layer.openlayers_ais_vector = function(title, map, options) {
 
   // Create projection
   options.projection = new OpenLayers.Projection('EPSG:'+options.projection);
+
   // Get style map
   options.options.styleMap = Drupal.openlayers.getStyleMap(map, options.drupalID);
+
   // Create layer object
   var layer = new OpenLayers.Layer.Vector(title, options.options);
 
