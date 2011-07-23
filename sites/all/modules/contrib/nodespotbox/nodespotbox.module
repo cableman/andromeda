@@ -270,7 +270,7 @@ function nodespotbox_nodeapi(&$node, $op, $teaser, $page) {
         $result = db_fetch_array(db_query('SELECT nid FROM {nodespotbox} WHERE nid=%d', $node->nid));
         if ($result) {
           db_query('UPDATE {nodespotbox} SET view_display = "%s"
-                     WHERE nid = %d',$node->nid, $display_id);
+                     WHERE nid = %d', $display_id, $node->nid);
         }
         else {
           db_query('INSERT INTO {nodespotbox}
@@ -316,9 +316,9 @@ function nodespotbox_block($op = 'list', $delta = 0, $edit = array()) {
       // Get all node types.
       foreach (node_get_types() as $node_type) {
         // Load spotbox settings, if enabled for this content type.
-        $nodespotbox = nodespotbox_is_enabled($node_type);
-        if ($nodespotbox) {
-          if ($nodespotbox['always']) {
+        $settings = nodespotbox_is_enabled($node_type);
+        if ($settings) {
+          if ($settings['always']) {
             // As spotbox setting, says that all nodes of this type should be spotboxes.. load all.
             $result = db_query("SELECT nid, title
                                   FROM {node}
@@ -348,7 +348,7 @@ function nodespotbox_block($op = 'list', $delta = 0, $edit = array()) {
     case 'configure':
       // Get spotbox settings for a given content type.
       $node_info = db_fetch_object(db_query('SELECT title, type FROM {node} WHERE nid = %d', $delta));
-      $nodespotbox = nodespotbox_is_enabled($node_info->type);
+      $settings = nodespotbox_is_enabled($node_info->type);
 
       // Get settings for the current node spotbox.
       $display_id = db_result(db_query('SELECT view_display
@@ -356,7 +356,7 @@ function nodespotbox_block($op = 'list', $delta = 0, $edit = array()) {
                                          WHERE nid=%d', $delta));
 
       // Create view display settings form.
-      if ($nodespotbox['views']['user']) {
+      if ($settings['views']['user']) {
         $form = array();
         $form['nodespotbox'] = array(
           '#type' => 'fieldset',
@@ -367,9 +367,9 @@ function nodespotbox_block($op = 'list', $delta = 0, $edit = array()) {
         $form['nodespotbox']['display_id'] = array(
           '#type' => 'select',
           '#title' => t('View display id'),
-          '#default_value' => isset($display_id) ? $display_id : $nodespotbox['views']['display_id'],
+          '#default_value' => isset($display_id) ? $display_id : $settings['views']['display_id'],
           '#description' => t('The view aboves display. If selected that users can choose, this will be the default display.'),
-          '#options' =>  _nodespotbox_load_views_info($nodespotbox['views']['name']),
+          '#options' =>  _nodespotbox_load_views_info($settings['views']['name']),
         );
       }
       return $form;
@@ -384,28 +384,60 @@ function nodespotbox_block($op = 'list', $delta = 0, $edit = array()) {
       }
       break;
 
-    case 'view':      
-      // Get the node type based on the delta (nid).
-      $node_info = db_fetch_object(db_query('SELECT title, type FROM {node} WHERE nid = %d', $delta));
-      
-      // Get spotbox settings.
-      $nodespotbox = nodespotbox_is_enabled($node_info->type);
+    case 'view':
+      global $language;
+      // Get basic information about the node based on the delta (nid).
+      $node_info = db_fetch_object(db_query('SELECT tnid, title, type, language
+                                               FROM {node}
+                                              WHERE nid = %d', $delta));
 
-      // Load display id, if user have selected one.
-      if ($nodespotbox['views']['user']) {
-        $nodespotbox['views']['display_id'] = db_result(db_query("SELECT view_display
-                                                                    FROM {nodespotbox}
-                                                                   WHERE nid = %d", $delta));
+      // Get spotbox settings.
+      $settings = nodespotbox_is_enabled($node_info->type);
+      if ($settings) {
+        // Set the node id to the current node.
+        $settings['nid'] = $delta;
+
+        // Translation support: Try find the tranlationed nodes nid, if not
+        // already the correct language.
+        if (function_exists('translation_supported_type') && translation_supported_type($node_info->type)) {
+          // Translation is active and supported for this node type.
+          if ($node_info->language != $language->language) {
+            // Find the translated node nid for the current language.
+            $translations = translation_node_get_translations($node_info->tnid);
+            $settings['nid'] = isset($translations[$language->language]) ? $translations[$language->language]->nid : NULL;
+          }
+        }
+
+        // Build output based on selected view.
+        if (isset($settings['nid'])) {
+          $output['content'] = _nodespotbox_render_view($settings);
+        }
       }
-      
-      // Build output based on selected view.
-      $output['content'] = views_embed_view($nodespotbox['views']['name'], $nodespotbox['views']['display_id'], $delta);
       break;
   }
 
   // @TODO Set drupal message, if the view used have been disabled or removed.
 
   return $output;
+}
+
+/**
+ * Utility function that, based on the settings array, renders the output of
+ * the selected view.
+ *
+ * @param array $settings
+ * @return string rendered view output
+ */
+function _nodespotbox_render_view($settings) {
+  // Check if the user, has supplied a another display to use.
+  if ($settings['views']['user']) {
+    $settings['views']['display_id'] = db_result(db_query("SELECT view_display
+                                                             FROM {nodespotbox}
+                                                            WHERE nid = %d", $delta));
+  }
+
+  // Build view based on selected view and display.
+  return views_embed_view($settings['views']['name'], $settings['views']['display_id'], $settings['nid']);
 }
 
 /**
