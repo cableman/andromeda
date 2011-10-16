@@ -1,0 +1,6 @@
+Keys 6.x-2.1, 2011-08-29
+------------------------
+by greenSkin: Fixed grammatical error.
+#704276 by roderik: Allow modules which define a hook_keys_service to return
+  nothing and not cause a 'Invalid argument supplied' error.
+#864632 by greenSkin: Fix to work with sites utilizing a base_path.
