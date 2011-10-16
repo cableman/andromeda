@@ -11,7 +11,7 @@ function static_pages_content_default_fields() {
     'field_name' => 'field_content',
     'type_name' => 'static_page',
     'display_settings' => array(
-      'weight' => '-1',
+      'weight' => '-2',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -43,28 +43,6 @@ function static_pages_content_default_fields() {
     'max_length' => '',
     'allowed_values' => '',
     'allowed_values_php' => '',
-    'semantic_cck_field_settings' => array(
-      'enabled' => 1,
-      'field_element' => '',
-      'field_class' => '',
-      'label_element_above' => 'h3',
-      'label_class_above' => '',
-      'label_suffix_above' => '',
-      'label_element_inline' => 'span',
-      'label_class_inline' => '',
-      'label_suffix_inline' => '',
-      'multiple_items_element' => '',
-      'multiple_items_class' => '',
-      'multiple_item_element' => '',
-      'multiple_item_class' => '',
-      'use_singlevalue_settings' => 0,
-      'single_item_element' => 'div',
-      'single_item_class' => '',
-      'last_every_nth' => '0',
-      'first_class' => 'first',
-      'last_class' => 'last',
-      'striping_classes' => 'odd even',
-    ),
     'widget' => array(
       'rows' => '20',
       'size' => 60,
@@ -92,7 +70,7 @@ function static_pages_content_default_fields() {
     'field_name' => 'field_content_image',
     'type_name' => 'static_page',
     'display_settings' => array(
-      'weight' => 0,
+      'weight' => '-1',
       'parent' => '',
       'label' => array(
         'format' => 'hidden',
@@ -266,13 +244,14 @@ function static_pages_content_default_fields() {
     'field_name' => 'field_static_files',
     'type_name' => 'static_page',
     'display_settings' => array(
+      'weight' => 0,
+      'parent' => '',
       'label' => array(
-        'format' => 'above',
-        'exclude' => 0,
+        'format' => 'hidden',
       ),
       'teaser' => array(
         'format' => 'default',
-        'exclude' => 0,
+        'exclude' => 1,
       ),
       'full' => array(
         'format' => 'default',
