@@ -1,5 +1,4 @@
 <?php
-// $Id: keys.install,v 1.2 2008/12/10 18:02:00 greenskin Exp $
 
 function keys_schema() {
   $schema['keys_api'] = array(

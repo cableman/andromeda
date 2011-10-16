@@ -41,35 +41,15 @@ function fb_social_comments_settings_form(){
     '#default_value' => variable_get('fb_social_comments_width', 550),
   );
   
-  $form['widget_setings']['fb_social_comments_css'] = array(
-    '#type' => 'textfield',
-    '#title' => t('The URL to your own stylesheet.'),
-    '#description' => t('Note: To provide you with better performance, we cache your stylesheet. If you update your stylesheet, you should use a cachebreaker in the URL to the stylesheet, typically by appending a version number to the .CSS file extension, as in http://www.example.com/my.css?2'),
-    '#default_value' => variable_get('fb_social_comments_css', ''),
-  );
-  
-  $form['widget_setings']['fb_social_comments_simple'] = array(
-    '#type' => 'radios',
-    '#title' => 'Simple',
-    '#description' => t('When true, a rounded box does not appear around each post on your site. (Default value is false.)'),
-    '#default_value' => variable_get('fb_social_comments_simple', 0),
-    '#options' => array(t('False'), t('True')),
-  );
-  
-  $form['widget_setings']['fb_social_comments_reverse'] = array(
-    '#type' => 'radios',
-    '#title' => 'Reverse',
-    '#description' => t('When true, reverses order of comments so the most recent one appears at the bottom of the list and the composer appears at the bottom of the page.'),
-    '#default_value' => variable_get('fb_social_comments_reverse', 0),
-    '#options' => array(t('False'), t('True')),
-  );
-  
-  $form['widget_setings']['fb_social_comments_publish_feed'] = array(
-    '#type' => 'radios',
-    '#title' => 'Publish feed',
-    '#description' => t('Indicates whether the Post comment to my Facebook profile check box is checked. If false, the user must check the check box before the comment can be published to a user\'s Feed'),
-    '#default_value' => variable_get('fb_social_comments_publish_feed', 0),
-    '#options' => array(t('False'), t('True')),
+  $form['widget_setings']['fb_social_comments_colorscheme'] = array(
+    '#type' => 'select',
+    '#title' => t('Color Scheme'),
+    '#description' => t('The color scheme of the plugin'),
+    '#options' => array(
+      'dark' => t('dark'),
+      'light' => t('light'),
+    ),
+    '#default_value' => variable_get('fb_social_comments_colorscheme', 'light'),
   );
   
   $form['widget_setings']['fb_social_comments_migrated'] = array(

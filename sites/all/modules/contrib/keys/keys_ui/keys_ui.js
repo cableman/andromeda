@@ -1,4 +1,3 @@
-// $Id: keys_ui.js,v 1.2.2.3 2010/01/06 16:25:21 greenskin Exp $
 
 Drupal.behaviors.keys = function() {
   if ($("#edit-rule:not('.keys-processed')").size()) {

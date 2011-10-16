@@ -1,5 +1,4 @@
 <?php
-// $Id: keys_ui.admin.inc,v 1.2.2.4 2010/01/06 16:25:21 greenskin Exp $
 
 /**
  * @file

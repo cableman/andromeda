@@ -1,3 +1,9 @@
+
+fb_social 6.x-1.0-BETA9, 2011-09-20
+Issue #1198338 by AdamGerthel Javascript error in IE7: No comma  after the last item in the array
+Issue #1187894
+Issue #1273650 : Comments - no color option
+
 fb_social 6.x-1.0-BETA7, 2011-06-09
 
 Issue #1177776 by Roger Saner  : Add a Custom Channel URL option to FB.init

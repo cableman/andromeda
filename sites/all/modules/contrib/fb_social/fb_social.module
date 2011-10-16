@@ -232,7 +232,7 @@ function fb_social_footer($main = 0){
          status: true, 
          cookie: true,
          xfbml: true,
-         channelUrl: " . drupal_to_js($channel_url) . ",
+         channelUrl: " . drupal_to_js($channel_url) . "
        });
        
        ";
@@ -260,6 +260,10 @@ function fb_social_footer($main = 0){
 function fb_social_custom_channel_url() {
   header("Cache-Control: public, s-maxage=31536000, max-age=31536000");
   header("Expires: Sun, 1 Oct 2079 00:00:00 GMT");
+  
+  global $language;
+  $languages = _map_active_languages();
+  $fb_locale = "en_US";
 
   if (fb_social_auto_language()) {
     if (array_key_exists($language->language, $languages)) {

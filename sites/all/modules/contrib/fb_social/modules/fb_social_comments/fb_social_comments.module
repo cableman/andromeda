@@ -117,9 +117,7 @@ function theme_fb_social_comments_block_comments_view($url){
 
       'numposts' => variable_get('fb_social_comments_numposts', 10), 
       'width' => variable_get('fb_social_comments_width', 420), 
-      'simple' => variable_get('fb_social_comments_simple', 0) ? 'true' : 'false', 
-      'reverse' => variable_get('fb_social_comments_reverse', 0) ? 'true' : 'false', 
-      'publish_feed' => variable_get('fb_social_comments_publish_feed', 0) ? 'true' : 'false' 
+      'colorscheme' => variable_get('fb_social_comments_colorscheme', 'light'),
   );
   
   // migrate to the new version of facebook comments
