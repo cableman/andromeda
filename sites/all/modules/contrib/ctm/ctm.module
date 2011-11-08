@@ -7,31 +7,41 @@ function ctm_form_alter(&$form, $form_state, $form_id) {
   // Menu Setting for content types - Content Type Form
   if ($form_id == 'node_type_form') {
     $form['menu_settings'] = array(
-	  '#type' => 'fieldset',
-	  '#title' => t('Menu Settings'),
-	  '#description' => t('Enable Menu Settings for this content type.'),
-	  '#collapsible' => TRUE,
+      '#type' => 'fieldset',
+      '#title' => t('Menu Settings'),
+      '#description' => t('Enable Menu Settings for this content type.'),
+      '#collapsible' => TRUE,
     );
-	$default_values = variable_get($form['#node_type']->type.'_menu_settings', array());
-	//$default_values = $default_values ? $default_values : array();
-	$options = menu_get_menus();
-	$form['menu_settings']['menu'] = array(
+    $default_values = variable_get($form['#node_type']->type.'_menu_settings', array());
+    //$default_values = $default_values ? $default_values : array();
+    $options = menu_get_menus();
+    $form['menu_settings']['menu'] = array(
       '#type' => 'checkboxes',
       '#title' => t('Enable the Menus you want to be available for this Content Type'),
-	  '#default_value' => $default_values,
-	  '#options' => $options,
-    );  
-	$form['#submit'][] = 'ctm_node_type_form_submit';
+      '#default_value' => $default_values,
+      '#options' => $options,
+      );  
+    $form['#submit'][] = 'ctm_node_type_form_submit';
   }
   // Menu Settings for Node Edit (Form)
   elseif (isset($form['#node']) && $form['#node']->type .'_node_form' == $form_id) {
-    $menu_settings = variable_get($form['#node']->type.'_menu_settings', array());
-	if ($menu_settings) {
-	  $menus = array_intersect_key(menu_get_menus(), $menu_settings);
-	  $options = menu_parent_options($menus, $form['menu']['#item']);
-	  $form['menu']['parent']['#options'] = $options;
-	} else {
-	    unset($form['menu']);
+    global $user;
+    if ($user->uid != 1) {
+      $menu_settings = variable_get($form['#node']->type.'_menu_settings', array());
+      if (!empty($form['menu']['parent']['#default_value'])) {
+        // Add the existing menu to the list, even if it's not an option
+        list($cur_menu) = explode(':', $form['menu']['parent']['#default_value']);
+        if (!in_array($cur_menu, $menu_settings)) {
+          $menu_settings[$cur_menu] = $cur_menu;
+        }
+      }
+      if ($menu_settings) {
+        $menus = array_intersect_key(menu_get_menus(), $menu_settings);
+        $options = menu_parent_options($menus, $form['menu']['#item']);
+        $form['menu']['parent']['#options'] = $options;
+      } else {
+        $form['menu']['#access'] = FALSE;
+      }
     }
   }
   // Delete Content Type
