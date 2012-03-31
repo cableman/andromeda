@@ -401,7 +401,7 @@ function nodespotbox_block($op = 'list', $delta = 0, $edit = array()) {
         // already the correct language.
         if (function_exists('translation_supported_type') && translation_supported_type($node_info->type)) {
           // Translation is active and supported for this node type.
-          if ($node_info->language != $language->language) {
+          if (isset($node_info->language) && $node_info->language != $language->language) {
             // Find the translated node nid for the current language.
             $translations = translation_node_get_translations($node_info->tnid);
             $settings['nid'] = isset($translations[$language->language]) ? $translations[$language->language]->nid : NULL;
@@ -431,9 +431,10 @@ function nodespotbox_block($op = 'list', $delta = 0, $edit = array()) {
 function _nodespotbox_render_view($settings) {
   // Check if the user, has supplied a another display to use.
   if ($settings['views']['user']) {
-    $settings['views']['display_id'] = db_result(db_query("SELECT view_display
-                                                             FROM {nodespotbox}
-                                                            WHERE nid = %d", $delta));
+    $display_id = db_result(db_query("SELECT view_display
+                                        FROM {nodespotbox}
+                                       WHERE nid = %d", $settings['nid']));
+    $settings['views']['display_id'] = $display_id ? $display_id : $settings['views']['display_id'];
   }
 
   // Build view based on selected view and display.

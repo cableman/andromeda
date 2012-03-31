@@ -5,9 +5,9 @@ core = 6.x
 project = "ctm"
 
 
-; Information added by drupal.org packaging script on 2011-10-19
-version = "6.x-2.0"
+; Information added by drupal.org packaging script on 2011-11-17
+version = "6.x-2.1"
 core = "6.x"
 project = "ctm"
-datestamp = "1319001629"
+datestamp = "1321558537"
 
