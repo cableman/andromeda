@@ -1,5 +1,4 @@
 <?php
-// $Id: search404.install,v 1.3.2.4 2010/12/19 18:19:06 zyxware Exp $
 
 /*
  * @file
@@ -33,4 +32,6 @@ function search404_uninstall() {
   variable_del('search404_skip_auto_search');
   variable_del('search404_use_or');
   variable_del('search404_use_search_engine');
+  variable_del('search404_disable_error_message');
+  variable_del('search404_do_fuzzysearch');
 }
