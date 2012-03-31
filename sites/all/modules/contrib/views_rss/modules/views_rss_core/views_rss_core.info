@@ -1,8 +1,9 @@
-name = "Views RSS"
-description = "Provides a views plugin that allows fields to be included in RSS feeds created using the Views module."
+name = "Views RSS: Core Elements"
+description = "Provides core XML channel and item elements for Views RSS."
 package = Views
-dependencies[] = views
+dependencies[] = views_rss
 core = "6.x"
+
 ; Information added by drupal.org packaging script on 2012-03-08
 version = "6.x-2.0-rc2"
 core = "6.x"
