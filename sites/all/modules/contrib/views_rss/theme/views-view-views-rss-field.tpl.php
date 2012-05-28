@@ -1,4 +1,9 @@
 <?php
+// Received full markup, nothing to theme.
+if (!empty($markup)) {
+  print $markup;
+  return;
+}
 print "<$element";
 // Process element arguments if provided.
 if (!empty($arguments) && is_array($arguments)) {

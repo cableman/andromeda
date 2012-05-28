@@ -77,16 +77,23 @@ function template_preprocess_views_view_views_rss(&$variables) {
   $rows = '';
   $item_elements = views_rss_get('item_elements');
   $items = $view->style_plugin->map_rows($variables['rows']);
-  foreach ($items as $item) {
+  foreach ($items as $item_key => $item) {
     $row = '';
     // Preprocess whole item array before processing and theming separate elements.
     foreach (module_implements('views_rss_preprocess_item') as $module) {
-      $function = $module .'_views_rss_preprocess_item';
-      $item = $function(array(
+      $preprocess_function = $module . '_views_rss_preprocess_item';
+      $item_variables = array(
         'item' => $item,
         'view' => $view,
-      ));
+      );
+      // Add raw row if generated based on raw item values provided by field formatter.
+      if (!empty($view->views_rss['raw_items'][$item_key])) {
+        $item_variables['raw'] = $view->views_rss['raw_items'][$item_key];
+      }
+      $preprocess_function($item_variables);
+      $item = $item_variables['item'];
     }
+    // Process each element separately.
     foreach ($item as $module => $module_item_elements) {
       foreach ($module_item_elements as $element => $value) {
         // Preprocess element initial value if required.
@@ -99,9 +106,33 @@ function template_preprocess_views_view_views_rss(&$variables) {
                 'item' => $item,
                 'view' => $view,
               );
+              // Add raw item if provided by field formatter.
+              if (!empty($view->views_rss['raw_items'][$item_key][$module][$element])) {
+                $item_variables['raw'] = $view->views_rss['raw_items'][$item_key][$module][$element];
+              }
               $preprocess_function($item_variables);
+              // $element and $item values could have been updated in
+              // the preprocess function, so let's re-assing them back.
+              $element = $item_variables['element'];
               $value = $item_variables['value'];
             }
+          }
+        }
+        // If no preprocess function was defined, and we have received
+        // #markup value (fully formatted feed element) from the formatter,
+        // it should be passed to field template to be displayed without
+        // any further modifications.
+        elseif (!empty($view->views_rss['raw_items'][$item_key][$module][$element]) && is_array($view->views_rss['raw_items'][$item_key][$module][$element])) {
+          $markups = array();
+          foreach ($view->views_rss['raw_items'][$item_key][$module][$element] as $raw_item) {
+            if (!empty($raw_item['rendered']['#markup'])) {
+              $markups[] = $raw_item['rendered']['#markup'];
+            }
+          }
+          if (!empty($markups)) {
+            $value = array(
+              'markup' => implode('', $markups),
+            );
           }
         }
         // If there is no value and no arguments (in case of self-closing elements)
@@ -137,7 +168,7 @@ function template_preprocess_views_view_views_rss(&$variables) {
   $variables['rows'] = $rows;
 
   // Prepare namespaces.
-  $namespaces = array();
+  $namespaces = array('base' => 'xml:base="' . url('<front>', array('absolute' => TRUE)) . '"');
   foreach (views_rss_get('namespaces') as $module => $module_namespaces) {
     foreach ($module_namespaces as $namespace => $definition) {
       // Check if definition provided through modules hooks

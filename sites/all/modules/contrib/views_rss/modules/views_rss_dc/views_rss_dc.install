@@ -24,7 +24,7 @@ function views_rss_dc_uninstall() {
 /**
  * Migrate feed Dublin Core elements settings from Views RSS 6.x-1.0-beta5 format.
  */
-function views_rss_dc_update_6100() {
+function views_rss_dc_update_6200() {
   $sql = "SELECT vd.*, vv.name FROM {views_display} vd JOIN {views_view} vv USING(vid) WHERE vd.display_plugin = 'feed'";
   $result = db_query($sql);
   while ($row = db_fetch_array($result)) {

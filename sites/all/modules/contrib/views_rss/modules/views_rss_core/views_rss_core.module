@@ -11,6 +11,11 @@
 define('VIEWS_RSS_CORE_PATH', drupal_get_path('module', 'views_rss_core'));
 
 /**
+ * Include file with field formatters.
+ */
+include_once VIEWS_RSS_CORE_PATH .'/views_rss_core.field.inc';
+
+/**
  * Include file with all preprocess functions.
  */
 include_once VIEWS_RSS_CORE_PATH . '/views_rss_core.inc';
@@ -19,10 +24,6 @@ include_once VIEWS_RSS_CORE_PATH . '/views_rss_core.inc';
  * Implementation of hook_views_rss_namespaces().
  */
 function views_rss_core_views_rss_namespaces() {
-  $namespaces['base'] = array(
-    'prefix' => 'xml',
-    'uri' => trim($GLOBALS['base_url'], '/') . '/',
-  );
   $namespaces['atom'] = array(
     'prefix' => 'xmlns',
     'uri' => 'http://www.w3.org/2005/Atom',
@@ -72,7 +73,7 @@ function views_rss_core_views_rss_channel_elements() {
     'description' => t('Specify one or more categories that the channel belongs to. Separate multiple items with comma.'),
     'preprocess functions' => array(
       'views_rss_htmlspecialchars',
-      'views_rss_core_preprocess_category',
+      'views_rss_core_preprocess_channel_category',
     ),
     'help' => 'http://www.rssboard.org/rss-profile#element-channel-category',
   );
@@ -164,10 +165,6 @@ function views_rss_core_views_rss_item_elements() {
   );
   $elements['category'] = array(
     'description' => t('Includes the item in one or more categories.'),
-    'preprocess functions' => array(
-      'views_rss_htmlspecialchars',
-      'views_rss_core_preprocess_category',
-    ),
     'help' => 'http://www.rssboard.org/rss-profile#element-channel-item-category',
   );
   $elements['comments'] = array(
@@ -267,91 +264,24 @@ function views_rss_core_theme() {
     'views_rss_core_formatter_enclosure_image' => array(
       'arguments' => array('element' => NULL),
       'function' => 'views_rss_core_field_formatter_view',
+      'file' => 'views_rss_core.field.inc',
     ),
     'views_rss_core_formatter_enclosure_file' => array(
       'arguments' => array('element' => NULL),
       'function' => 'views_rss_core_field_formatter_view',
+      'file' => 'views_rss_core.field.inc',
     ),
-    'views_rss_core_test' => array(),
   );
   if (module_exists('imagecache')) {
     foreach (imagecache_presets() as $preset) {
       $theme['views_rss_core_formatter_enclosure_image' . $preset['presetname']] = array(
         'arguments' => array('element' => NULL),
         'function' => 'views_rss_core_field_formatter_view',
+        'file' => 'views_rss_core.field.inc',
       );
     }
   }
   return $theme;
-}
-
-/**
- * Implementation of hook_field_formatter_info().
- */
-function views_rss_core_field_formatter_info() {
-  $formatters = array(
-    // Generic image formatter for <enclosure> element.
-    'enclosure_image' => array(
-      'label' => t('RSS <enclosure> element: image: original size'),
-      'field types' => array('image', 'filefield'),
-    ),
-  );
-  // Additional formatters for imagecache module.
-  if (module_exists('imagecache')) {
-    foreach (imagecache_presets() as $preset) {
-      // Imagecache image formatter for <enclosure> element.
-      $formatters['enclosure_image' . $preset['presetname']] = array(
-        'label' => t('RSS <enclosure> element: image: @preset', array('@preset' => $preset['presetname'])),
-        'field types' => array('image', 'filefield'),
-      );
-    }
-  }
-  // Generic file formatter for <enclosure> element.
-  $formatters['enclosure_file'] = array(
-    'label' => t('RSS <enclosure> element: file'),
-    'field types' => array('filefield'),
-  );
-  return $formatters;
-}
-
-/**
- * No, this is not an implementation of hook_field_formatter_view(). This hook
- * does not exist in D6. This function only more or less simulates it.
- */
-function views_rss_core_field_formatter_view($variables) {
-  // Inside a view $element may contain NULL data. In that case, just return.
-  if (empty($variables['#item']['fid'])) {
-    return;
-  }
-  // Is this an image formatter?
-  $uri = NULL;
-  // #formatter could have values like "enclosure_image<preset>".
-  if (strpos($variables['#formatter'], 'enclosure_image') !== FALSE) {
-    // Get full image URL based on provided imagecache preset.
-    $preset_name = str_replace('enclosure_image', '', $variables['#formatter']);
-    if (!empty($preset_name) && $preset = imagecache_preset_by_name($preset_name)) {
-      $uri = imagecache_create_url($preset_name, $variables['#item']['filepath']);
-      // Get file size of image preset file (if it has already been created,
-      // otherwise just create it first and then get file size).
-      $path = imagecache_create_path($preset_name, $variables['#item']['filepath']);
-      $real_path = realpath($path);
-      if (file_exists($real_path) || imagecache_build_derivative($preset['actions'], $variables['#item']['filepath'], $path)) {
-        $variables['#item']['filesize'] = filesize($real_path);
-      }
-    }
-  }
-  if (empty($uri)) {
-    $uri = url($variables['#item']['filepath'], array('absolute' => TRUE));
-  }
-  // Return values to generate XML element.
-  $element = array(
-    'arguments' => array(
-      'url' => $uri,
-      'length' => $variables['#item']['filesize'],
-      'type'   => $variables['#item']['filemime'],
-    ),
-  );
-  return 'serialized:' . serialize($element);
 }
 
 /**
@@ -361,28 +291,31 @@ function views_rss_core_views_rss_options_form_validate($form, &$form_state) {
 
   // Validate channel <image> element.
   if (!empty($form_state['values']['style_options']['channel']['core']['views_rss_core']['image'])) {
-    // Check that image exists and is in acceptable format.
-    $real_path = realpath($form_state['values']['style_options']['channel']['core']['views_rss_core']['image']);
-    if (!file_exists($real_path)) {
-      form_set_error('style_options][channel][core][views_rss_core][image', t('Unable to find %image or incorrect image format.', array(
-        '%image' => $form_state['values']['style_options']['channel']['core']['views_rss_core']['image'],
-      )));
-    }
-    else {
-      list($width, $height) = getimagesize($real_path);
-      // Check image width.
-      if ($width > 144) {
-        form_set_error('style_options][channel][core][views_rss_core][image', t("Maximum allowed width of an image for feed channel's &lt;image&gt; element is 144 pixels. Specified %image is !width pixels wide.", array(
+    // Do not validate absolute URLs, as this could mean external image.
+    if (!valid_url($form_state['values']['style_options']['channel']['core']['views_rss_core']['image'], TRUE)) {
+      // Check that image exists and is in acceptable format.
+      $real_path = realpath($form_state['values']['style_options']['channel']['core']['views_rss_core']['image']);
+      if (!file_exists($real_path)) {
+        form_set_error('style_options][channel][core][views_rss_core][image', t('Unable to find %image or incorrect image format.', array(
           '%image' => $form_state['values']['style_options']['channel']['core']['views_rss_core']['image'],
-          '!width' => $width,
         )));
       }
-      // Check image height.
-      if ($height > 400) {
-        form_set_error('style_options][channel][core][views_rss_core][image', t("Maximum allowed height of an image for feed channel's &lt;image&gt; element is 400 pixels. Specified %image is !height pixels high.", array(
-          '%image' => $form_state['values']['style_options']['channel']['core']['views_rss_core']['image'],
-          '!height' => $height,
-        )));
+      else {
+        list($width, $height) = getimagesize($real_path);
+        // Check image width.
+        if ($width > 144) {
+          form_set_error('style_options][channel][core][views_rss_core][image', t("Maximum allowed width of an image for feed channel's &lt;image&gt; element is 144 pixels. Specified %image is !width pixels wide.", array(
+            '%image' => $form_state['values']['style_options']['channel']['core']['views_rss_core']['image'],
+            '!width' => $width,
+          )));
+        }
+        // Check image height.
+        if ($height > 400) {
+          form_set_error('style_options][channel][core][views_rss_core][image', t("Maximum allowed height of an image for feed channel's &lt;image&gt; element is 400 pixels. Specified %image is !height pixels high.", array(
+            '%image' => $form_state['values']['style_options']['channel']['core']['views_rss_core']['image'],
+            '!height' => $height,
+          )));
+        }
       }
     }
   }

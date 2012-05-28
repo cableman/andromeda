@@ -11,7 +11,7 @@
 function views_rss_dc_views_rss_namespaces() {
   $namespaces['dc'] = array(
     'prefix' => 'xmlns',
-    'uri' => 'http://purl.org/dc/terms/',
+    'uri' => 'http://purl.org/dc/elements/1.1/',
   );
   return $namespaces;
 }

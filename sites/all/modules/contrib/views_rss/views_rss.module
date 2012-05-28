@@ -8,7 +8,7 @@
 /**
  * Module build version.
  */
-define('VIEWS_RSS_BUILD', '6.x-2.x-dev-20120306');
+define('VIEWS_RSS_BUILD', '6.x-2.x-dev-20120413');
 
 /**
  * Module installation path.
@@ -50,6 +50,7 @@ function views_rss_theme() {
         'element' => NULL,
         'arguments' => NULL,
         'value' => NULL,
+        'markup' => NULL,
         'subelements' => NULL,
         'item' => NULL,
         'view' => NULL,
@@ -205,7 +206,7 @@ function views_rss_theme7($callback, $variables) {
   $parameters = array($callback);
   $arguments = !empty($hooks[$callback]['arguments']) ? $hooks[$callback]['arguments'] : array();
   foreach (array_keys($arguments) as $argument) {
-    $parameters[] = !empty($variables[$argument]) ? $variables[$argument] : NULL;
+    $parameters[] = !empty($variables[$argument]) ? $variables[$argument] : $hooks[$callback]['arguments'][$argument];
   }
   return call_user_func_array('theme', $parameters);
 }
