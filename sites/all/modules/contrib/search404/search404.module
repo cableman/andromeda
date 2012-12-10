@@ -15,7 +15,7 @@ function search404_menu() {
     'title' => 'Page not found',
     'access callback' => TRUE,
     'page callback' => 'search404_page',
-    'type' => MENU_LOCAL_TASK
+    'type' => MENU_CALLBACK,
   );
 
   $items['admin/settings/search404'] = array(
@@ -150,6 +150,20 @@ function search404_page() {
         }
         search404_goto('search/google/'. $keys);
       }
+      elseif (module_exists('google_cse_adv') && user_access('search content') && variable_get('search404_do_google_cse_adv', FALSE)) {
+        if (!variable_get('search404_disable_error_message', FALSE)) {
+          drupal_set_message(t('The page you requested does not exist. For your convenience, a google search was performed using the query %keys.', array('%keys' => check_plain($keys))), 'error');
+        }
+        search404_goto('search/google_cse_adv/'. $keys);
+      }
+      elseif (variable_get('search404_do_custom_search', FALSE)) {
+        if (!variable_get('search404_disable_error_message', FALSE)) {
+          drupal_set_message(t('The page you requested does not exist. For your convenience, a search was performed using the query %keys.', array('%keys' => check_plain($keys))), 'error');
+        }
+        $custom_search_path = variable_get('search404_custom_search_path', 'search/@keys');
+        $custom_search_path = str_replace('@keys', $keys, $custom_search_path);
+        search404_goto($custom_search_path);
+      }
       else {
         // Called for apache solr, lucene, xapian and core search.
         $results = module_invoke($type_search, 'search', 'search', $keys);
@@ -194,7 +208,14 @@ function search404_page() {
             // If we are searching with apache solr, use the no results text
             // from the apachesolr_search module (#1127412).
             if (module_exists('apachesolr_search')) {
-              $results = apachesolr_search_noresults();
+              // Some versions of apachesolr_search has this as a function
+              // instead of a theme function (#1279466).
+              if (function_exists('apachesolr_search_noresults')) {
+                $results = apachesolr_search_noresults();
+              }
+              else {
+                $results = theme('apachesolr_search_noresults');
+              }
             }
             else {
               $results = search_help('search#noresults', drupal_help_arg());
@@ -288,6 +309,13 @@ function search404_settings() {
     '#attributes' => module_exists('google') ? array()  : array('disabled' => 'disabled'),
     '#default_value' => variable_get('search404_do_google_cse', FALSE),
   );
+  $form['search404_do_google_cse_adv'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Do a "Google CSE Advanced" search instead of a Drupal Search when a 404 occurs'),
+    '#description' => t('Requires Google CSE Advanced Search Module to be Enabled.'),
+    '#attributes' => module_exists('google_cse_adv') ? array() : array('disabled' => 'disabled'),
+    '#default_value' => variable_get('search404_do_google_cse_adv', FALSE),
+  );
   $form['search404_do_search_by_page'] = array(
     '#type' => 'checkbox',
     '#title' => t('Do a "Search By Page" search instead of a Drupal Search when a 404 occurs'),
@@ -301,6 +329,19 @@ function search404_settings() {
     '#description' => t('Requires "Fuzzy Search" module to be enabled. If using both Core search and Fuzzy Search, do not use "search" as your fuzzysearch results path.'),
     '#attributes' => module_exists('fuzzysearch') ? array()  : array('disabled' => 'disabled'),
     '#default_value' => variable_get('search404_do_fuzzysearch', FALSE),
+  );
+  // Custom search path implementation (for Search API integration #1076190)
+  $form['search404_do_custom_search'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Do a "Search" with custom path instead of a Drupal Search when a 404 occurs'),
+    '#description' => t('Redirect the user to a Custom search path to be entered below. Can be used to open a view with path parameter.'),
+    '#default_value' => variable_get('search404_do_custom_search', FALSE),
+  );
+  $form['search404_custom_search_path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Custom search path'),
+    '#description' => t('The custom search path: example: myownsearch/@keys or myownsearch?txt_s=@keys. The token "@keys" will be replaced with the search keys from the URL.'),
+    '#default_value' => variable_get('search404_custom_search_path', 'search/@keys'),
   );
   // Added for preventing automatic search for large sites.
   $form['search404_skip_auto_search'] = array(
