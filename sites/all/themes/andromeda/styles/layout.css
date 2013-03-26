@@ -507,3 +507,11 @@ img.imagecache-album_listing {
 #gmap-auto1map-gmap0 {
   margin-top: 30px;
 }
+
+.node-type-static-page .field-field-content ol {
+  padding-left: 40px;
+}
+
+.node-type-static-page .field-field-content li {
+  padding-bottom: 4px;
+}
