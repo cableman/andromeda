@@ -1,5 +1,4 @@
 <?php
-// $Id: menu_breadcrumb.install,v 1.2 2009/12/01 22:55:43 xuriz Exp $
 /**
  * @file
  * Install file for the menu_breadcrumb module.

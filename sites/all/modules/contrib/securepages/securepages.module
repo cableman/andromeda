@@ -1,5 +1,4 @@
 <?php
-// $Id: securepages.module,v 1.15.2.28 2011/02/23 14:41:39 gordon Exp $
 /**
  * @file
  * Provide method of creating allowing certain pages to only viewable from
@@ -22,7 +21,9 @@ function securepages_boot() {
   }
 
   if (!variable_get('securepages_enable', 0) || basename($_SERVER['PHP_SELF']) != 'index.php' || php_sapi_name() == 'cli') {
-    return;
+    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+      return;
+    }
   }
 
   /**
@@ -120,12 +121,12 @@ function securepages_form_alter(&$form, &$form_state, $form_id) {
 /**
  * Implementation of hook_link_alter().
  */
-function securepages_link_alter(&$links, $node) {
+function securepages_link_alter(&$links, $node, $comment = NULL) {
   if (!variable_get('securepages_enable', 0)) {
     return;
   }
   foreach ($links as $module => $link) {
-    if ($link['href'] && securepages_can_alter_url($link['href'])) {
+    if (isset($link['href']) && $link['href'] && securepages_can_alter_url($link['href'])) {
       $page_match = securepages_match($link['href']);
       if ($page_match && !securepages_is_secure()) {
         $links[$module]['href'] = securepages_url($link['href'], array('secure' => TRUE));
@@ -214,7 +215,8 @@ function securepages_match($path) {
    */
   $secure = variable_get('securepages_secure', 1);
   $pages = variable_get('securepages_pages', "node/add*\nnode/*/edit\nuser/*\nadmin*");
-  $ignore = variable_get('securepages_ignore', "*/autocomplete/*\n*/ajax/*");
+  $ignore = variable_get('securepages_ignore', '');
+  $path = securepages_strtolower(trim($path, '/'));
 
   if ($ignore) {
     $regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'), array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote($ignore, '/')) .')$/';
@@ -255,7 +257,15 @@ function securepages_test() {
  * Check if the current page is SSL
  */
 function securepages_is_secure() {
-  return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? TRUE : FALSE;
+  foreach (variable_get('securepages_ssl_checks', array('HTTPS' => array('on', '1'), 'HTTP_X_FORWARDED_PROTO' => 'https')) as $key => $value) {
+    if (isset($_SERVER[$key]) && is_array($value) && in_array($_SERVER[$key], $value)) {
+      return TRUE;
+    }
+    elseif (isset($_SERVER[$key]) && $_SERVER[$key] == $value) {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 /**
@@ -415,6 +425,39 @@ function securepages_urlencode($text) {
     return str_replace('%2F', '/', rawurlencode($text));
   }
 }
+
+/**
+ * Lowercase a UTF-8 string.
+ *
+ * @param $text
+ * The string to run the operation on.
+ *
+ * @return string
+ * The string in lowercase.
+ *
+ * @ingroup php_wrappers
+ */
+function securepages_strtolower($text) {
+  global $multibyte;
+  if ($multibyte == 1) {
+    return mb_strtolower($text);
+  }
+  else {
+    // Use C-locale for ASCII-only lowercase
+    $text = strtolower($text);
+    // Case flip Latin-1 accented letters
+    $text = preg_replace_callback('/\xC3[\x80-\x96\x98-\x9E]/', '_securepages_unicode_caseflip', $text);
+    return $text;
+  }
+} 
+
+/**
+ * Helper function for case conversion of Latin-1.
+ * Used for flipping U+C0-U+DE to U+E0-U+FD and back.
+ */
+function _securepages_unicode_caseflip($matches) {
+  return $matches[0][0] . chr(ord($matches[0][1]) ^ 32);
+} 
 
 /**
  * Check the url and make sure that it is a url that you can alter this url.

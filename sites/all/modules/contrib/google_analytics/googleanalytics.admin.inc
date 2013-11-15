@@ -315,7 +315,12 @@ function googleanalytics_admin_settings_form(&$form_state) {
     '#description' => t('If checked, your AdSense ads will be tracked in your Google Analytics account.'),
     '#default_value' => variable_get('googleanalytics_trackadsense', FALSE),
   );
-
+  $form['advanced']['googleanalytics_trackdoubleclick'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Track DoubleClick data'),
+    '#description' => t('If checked, the alternative Google <a href="@doubleclick">DoubleClick data tracking</a> is used to enable AdWords remarketing features. If you choose this option you will need to <a href="@privacy">update your privacy policy</a>.', array('@doubleclick' => url('http://support.google.com/analytics/bin/answer.py', array('query' => array('answer' => '2444872'))), '@privacy' => url('http://support.google.com/analytics/bin/answer.py', array('query' => array('answer' => '2636405'))))),
+    '#default_value' => variable_get('googleanalytics_trackdoubleclick', FALSE),
+  );
   $form['advanced']['codesnippet'] = array(
     '#type' => 'fieldset',
     '#title' => t('Custom JavaScript code'),

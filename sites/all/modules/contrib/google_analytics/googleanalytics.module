@@ -74,7 +74,20 @@ function googleanalytics_init() {
 
     // Custom tracking.
     if (variable_get('googleanalytics_trackadsense', FALSE)) {
-      drupal_add_js('window.google_analytics_uacct = ' . drupal_to_js($id) . ';', 'inline', 'header');
+      // Prepare Adsense tracking.
+      $googleanalytics_adsense_script = 'window.google_analytics_uacct = ' . drupal_to_js($id) . ';';
+
+      // Domain tracking type.
+      global $cookie_domain;
+      $domain_mode = variable_get('googleanalytics_domain_mode', 0);
+
+      // Per RFC 2109, cookie domains must contain at least one dot other than the
+      // first. For hosts such as 'localhost' or IP Addresses we don't set a cookie domain.
+      if ($domain_mode == 1 && count(explode('.', $cookie_domain)) > 2 && !is_numeric(str_replace('.', '', $cookie_domain))) {
+        $googleanalytics_adsense_script .= 'window.google_analytics_domain_name = ' . drupal_to_js($cookie_domain) . ';';
+      }
+
+      drupal_add_js($googleanalytics_adsense_script, 'inline', 'header');
     }
 
     // Add link tracking.
@@ -223,8 +236,18 @@ function googleanalytics_footer($main = 0) {
     $script .= 'ga.type = "text/javascript";';
     $script .= 'ga.async = true;';
 
+    // Which version of the tracking library should be used?
+    if ($trackdoubleclick = variable_get('googleanalytics_trackdoubleclick', FALSE)) {
+      $library_tracker_url = 'stats.g.doubleclick.net/dc.js';
+      $library_cache_url = 'http://' . $library_tracker_url;
+    }
+    else {
+      $library_tracker_url = '.google-analytics.com/ga.js';
+      $library_cache_url = 'http://www' . $library_tracker_url;
+    }
+
     // Should a local cached copy of ga.js be used?
-    if (variable_get('googleanalytics_cache', 0) && $url = _googleanalytics_cache('http://www.google-analytics.com/ga.js')) {
+    if (variable_get('googleanalytics_cache', 0) && $url = _googleanalytics_cache($library_cache_url)) {
       // A dummy query-string is added to filenames, to gain control over
       // browser-caching. The string changes on every update or full cache
       // flush, forcing browsers to load a new copy of the files, as the
@@ -234,7 +257,13 @@ function googleanalytics_footer($main = 0) {
       $script .= 'ga.src = "' . $url . $query_string . '";';
     }
     else {
-      $script .= 'ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";';
+      // Library paths do not follow the same naming convention.
+      if ($trackdoubleclick) {
+        $script .= 'ga.src = ("https:" == document.location.protocol ? "https://" : "http://") + "' . $library_tracker_url . '";';
+      }
+      else {
+        $script .= 'ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + "' . $library_tracker_url . '";';
+      }
     }
     $script .= 'var s = document.getElementsByTagName("script")[0];';
     $script .= 's.parentNode.insertBefore(ga, s);';
@@ -305,7 +334,13 @@ function googleanalytics_user($type, $edit, &$account, $category = NULL) {
 function googleanalytics_cron() {
   // Regenerate the tracking code file every day.
   if (time() - variable_get('googleanalytics_last_cache', 0) >= 86400 && variable_get('googleanalytics_cache', 0)) {
-    _googleanalytics_cache('http://www.google-analytics.com/ga.js', TRUE);
+    // Which version of the tracking library should be used?
+    if (variable_get('googleanalytics_trackdoubleclick', FALSE)) {
+      _googleanalytics_cache('http://stats.g.doubleclick.net/dc.js', TRUE);
+    }
+    else {
+      _googleanalytics_cache('http://www.google-analytics.com/ga.js', TRUE);
+    }
     variable_set('googleanalytics_last_cache', time());
   }
 }

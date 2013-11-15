@@ -129,6 +129,11 @@ class GoogleAnalyticsBasicTest extends DrupalWebTestCase {
     $this->drupalGet('');
     $this->assertRaw('google-analytics.com/ga.js', '[testGoogleAnalyticsTrackingCode]: Latest tracking code used.');
 
+    // Test whether the alternate doubleclick library is used
+    variable_set('googleanalytics_trackdoubleclick', 1);
+    $this->drupalGet('');
+    $this->assertRaw('stats.g.doubleclick.net/dc.js', '[testGoogleAnalyticsTrackingCode]: Doubleclick tracking code used.');
+
     // Test whether anonymize visitors IP address feature has been enabled.
     $this->drupalGet('');
     $this->assertNoRaw('_gaq.push(["_gat._anonymizeIp"]);', '[testGoogleAnalyticsTrackingCode]: Anonymize visitors IP address not found on frontpage.');

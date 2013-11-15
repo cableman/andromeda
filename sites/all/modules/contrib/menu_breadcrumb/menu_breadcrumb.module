@@ -1,5 +1,4 @@
 <?php
-// $Id: menu_breadcrumb.module,v 1.11 2010/02/02 23:41:11 xuriz Exp $
 /**
  * @file
  * The main file for the menu_breadcrumb module.
@@ -300,7 +299,8 @@ function menu_breadcrumb_menu_list() {
  * Set the active menu according to the current path.
  */
 function menu_breadcrumb_init() {
-  if (variable_get('menu_breadcrumb_determine_menu', 1)) {
+  $is_front = drupal_is_front_page();
+  if (variable_get('menu_breadcrumb_determine_menu', 1) && !$is_front) {
     // Find the set of menus containing a link for the current page.
     $menu_item = menu_get_item();
     $result = db_query("SELECT mlid, menu_name FROM {menu_links} WHERE link_path = '%s'", $menu_item['href']);
@@ -338,11 +338,12 @@ function menu_breadcrumb_init() {
   $breadcrumb = drupal_get_breadcrumb();
 
   if (variable_get('menu_breadcrumb_append_node_title', 0) == 1) {
+    $node_title = filter_xss(menu_get_active_title(), array());
     if (variable_get('menu_breadcrumb_append_node_url', 0) == 1) {
-      $breadcrumb[] = l(drupal_get_title(), $_GET['q'], array('html' => TRUE));
+      $breadcrumb[] = $is_front ? l(t('Home'), '<front>') : l($node_title, $_GET['q'], array('html' => TRUE,));
     }
     else {
-      $breadcrumb[] = drupal_get_title();
+      $breadcrumb[] = $is_front ? t('Home') : $node_title;
     }
   }
 

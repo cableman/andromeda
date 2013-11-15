@@ -1,5 +1,4 @@
 <?php
-// $Id: securepages.install,v 1.2.2.7 2011/01/25 05:05:15 grendzy Exp $
 /**
  * @file
  * Provides installation details for Secure Pages
@@ -23,6 +22,7 @@ function securepages_uninstall() {
   variable_del('securepages_ignore');
   variable_del('securepages_basepath');
   variable_del('securepages_basepath_ssl');
+  variable_del('securepages_ssl_checks');
 }
 
 /**

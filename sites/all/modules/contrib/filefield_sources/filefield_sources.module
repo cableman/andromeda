@@ -294,6 +294,34 @@ function filefield_sources_includes($include = TRUE, $enabled_only = TRUE) {
 }
 
 /**
+ * Check the current user's access to a file through hook_file_download().
+ *
+ * @param $uri
+ *   A file URI as loaded from the database.
+ * @return
+ *   Boolean TRUE if the user has access, FALSE otherwise.
+ *
+ * @see file_download()
+ * @see hook_file_download().
+ */
+function filefield_sources_file_access($filepath) {
+  $headers = array();
+  foreach (module_implements('file_download') as $module) {
+    $function = $module . '_file_download';
+    $result = $function($filepath);
+    if ($result == -1) {
+      // Throw away the headers received so far.
+      $headers = array();
+      break;
+    }
+    if (isset($result) && is_array($result)) {
+      $headers = array_merge($headers, $result);
+    }
+  }
+  return !empty($headers);
+}
+
+/**
  * Clean up the file name, munging extensions and transliterating.
  *
  * @param $filepath

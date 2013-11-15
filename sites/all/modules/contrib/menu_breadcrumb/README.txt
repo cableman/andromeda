@@ -1,4 +1,3 @@
-// $Id: README.txt,v 1.5 2009/12/01 22:55:43 xuriz Exp $
 
 MENU BREADCRUMBS
 ================
