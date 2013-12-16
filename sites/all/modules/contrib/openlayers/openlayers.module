@@ -62,6 +62,13 @@ function openlayers_include() {
 
     $path = check_plain(variable_get('openlayers_source', 
       'http://openlayers.org/api/2.9/OpenLayers.js'));
+
+    // Correctly handle URLs beginning with a double backslash, see RFC 1808 Section 4
+    if (substr($path, 0, 2) == '//') {
+      $http_protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
+      $path = $http_protocol .':'. $path;
+    }
+
     // Check for full URL and include it manually if external.
     if (valid_url($path, TRUE)) {
       drupal_set_html_head('<script src="' . check_url($path) . 

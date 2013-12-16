@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap_location.module,v 1.58 2009/03/13 17:10:45 bdragon Exp $
 
 /**
  * @file
@@ -84,7 +83,7 @@ function gmap_location_menu() {
     'type' => MENU_CALLBACK,
     'access arguments' => array('view node map'),
     'page callback' => 'gmap_location_node_point',
-    'page arguments' => array(3,4),
+    'page arguments' => array(3, 4),
   );
   $items['admin/settings/gmap_location'] = array(
     'type' => MENU_NORMAL_ITEM,
@@ -151,8 +150,10 @@ function gmap_location_user_page() {
       if ($mode == 1) {
         $newmarker['rmt'] = $row->uid;
       }
-      else if ($mode == 2) {
-        $newmarker['link'] = url('user/'. $row->uid);
+      else {
+        if ($mode == 2) {
+          $newmarker['link'] = url('user/' . $row->uid);
+        }
       }
       $newmarker['latitude'] = $row->latitude;
       $newmarker['longitude'] = $row->longitude;
@@ -168,26 +169,26 @@ function gmap_location_user_page() {
   }
 
 // @@@ Move to gmap_addons.
-/*
-  if (user_access('view user location details') && function_exists('buddylist_get_buddies') && count($locationbyuser)>0) {
-    //create lines for buddies
-    if (!isset($thismap['shapes'])) {
-      $thismap['shapes']=array();
-    }
-    ksort($locationbyuser);
-    foreach ($locationbyuser as $key => $value) {
-      $buddies= buddylist_get_buddies($key);
-      foreach ($buddies as $bkey => $bvalue) {
-        if ($bkey > $key && isset($locationbyuser[$bkey])) {
-          $thismap['shape'][] = array(
-            'points' => array($locationbyuser[$key], $locationbyuser[$bkey]),
-            'type' => 'line'
-          );
+  /*
+    if (user_access('view user location details') && function_exists('buddylist_get_buddies') && count($locationbyuser)>0) {
+      //create lines for buddies
+      if (!isset($thismap['shapes'])) {
+        $thismap['shapes']=array();
+      }
+      ksort($locationbyuser);
+      foreach ($locationbyuser as $key => $value) {
+        $buddies= buddylist_get_buddies($key);
+        foreach ($buddies as $bkey => $bvalue) {
+          if ($bkey > $key && isset($locationbyuser[$bkey])) {
+            $thismap['shape'][] = array(
+              'points' => array($locationbyuser[$key], $locationbyuser[$bkey]),
+              'type' => 'line'
+            );
+          }
         }
       }
     }
-  }
-*/
+  */
 
   return theme('gmap_location_user_page',
     $usermap['header'],
@@ -216,7 +217,7 @@ function theme_gmap_location_user_page($header, $map, $footer) {
   $output = "<p>$header</p>\n<p>$map</p>\n<p>$footer</p>";
 
   if ($user->uid > 0) {
-    $output .= '<p>'. t('To add/change your location to the user map, <a href="@url">edit your location</a>.', array('@url' => url('user/'. $user->uid .'/edit'))) .'</p>';
+    $output .= '<p>' . t('To add/change your location to the user map, <a href="@url">edit your location</a>.', array('@url' => url('user/' . $user->uid . '/edit'))) . '</p>';
   }
 
   return $output;
@@ -266,7 +267,7 @@ function gmap_location_node_page($nid = NULL) {
       n.status = 1
     AND
       (l.latitude != 0 OR l.longitude != 0)
-    ". $add_sql), $nid);
+    " . $add_sql), $nid);
 
   $count = 0;
   while ($row = db_fetch_object($result)) {
@@ -274,11 +275,11 @@ function gmap_location_node_page($nid = NULL) {
     $newmarker = array();
     if ($mode == 1) {
       // Popup
-      $newmarker['rmt'] = $row->nid .'/0';
+      $newmarker['rmt'] = $row->nid . '/0';
     }
     elseif ($mode == 2) {
       // Link
-      $newmarker['link'] = url('node/'. $row->nid);
+      $newmarker['link'] = url('node/' . $row->nid);
     }
 
     $newmarker['latitude'] = $row->latitude;
@@ -334,7 +335,7 @@ function gmap_location_node_page($nid = NULL) {
 
       while ($row = db_fetch_object($result)) {
         $newmarker = array();
-        $newmarker['rmt'] = $nid .'/'. $row->uid;
+        $newmarker['rmt'] = $nid . '/' . $row->uid;
 
         // Determine marker type to show.
         $newmarker['markername'] = $markertypes[DRUPAL_AUTHENTICATED_RID];
@@ -617,7 +618,7 @@ function gmap_location_block($op = 'list', $delta = 0, $edit = array()) {
               variable_del("gmap_location_block_macro_$key");
             }
             else {
-              variable_set('gmap_location_block_macro_'. $key, $edit['gmap_location_block_macro_'. $key]);
+              variable_set('gmap_location_block_macro_' . $key, $edit['gmap_location_block_macro_' . $key]);
             }
           }
         }
@@ -644,12 +645,12 @@ function gmap_location_block($op = 'list', $delta = 0, $edit = array()) {
     case 'view':
       switch ($delta) {
         case 0:
-          if (arg(0)=='node' && is_numeric(arg(1))) {
+          if (arg(0) == 'node' && is_numeric(arg(1))) {
             return gmap_location_block_view(arg(1));
           }
           break;
         case 1:
-          if (arg(0)=='node' && is_numeric(arg(1))) {
+          if (arg(0) == 'node' && is_numeric(arg(1))) {
             return gmap_location_author_block_view(arg(1));
           }
           break;
@@ -660,7 +661,7 @@ function gmap_location_block($op = 'list', $delta = 0, $edit = array()) {
 function gmap_location_block_view($nid) {
   $block = array();
   $node = node_load($nid);
-  if ($node->locations) {
+  if (!empty($node->locations)) {
     $markertypes = variable_get('gmap_node_markers', array());
     $markers = array();
     $count = 0;
@@ -685,13 +686,13 @@ function gmap_location_block_view($nid) {
           'latitude' => $loc['latitude'],
           'longitude' => $loc['longitude'],
           'markername' => $markername,
-          'offset' => $count-1,
+          'offset' => $count - 1,
           'opts' => array('title' => $markertitle),
         );
       }
     }
     if (!empty($markers)) {
-      $macro = variable_get('gmap_location_block_macro_'. $node->type, '');
+      $macro = variable_get('gmap_location_block_macro_' . $node->type, '');
       if (empty($macro)) {
         $macro = variable_get('gmap_location_block_macro', '[gmap |width=100% |height=200px |control=None |behavior=+autozoom +notype]');
       }
@@ -729,7 +730,7 @@ function gmap_location_author_block_view($nid) {
         'latitude' => $loc['latitude'],
         'longitude' => $loc['longitude'],
         'markername' => $markername,
-        'offset' => $count-1,
+        'offset' => $count - 1,
         'opts' => array('title' => $markertitle),
       );
     }
@@ -751,7 +752,7 @@ function gmap_location_author_block_view($nid) {
  * @@@ Todo: Move to a tpl.
  */
 function theme_gmap_location_infowindow_node__image($node) {
-  $out = '<a href="'. url('node/'. $node->nid) .'">'. check_plain($node->title) .'</a> <br>';
+  $out = '<a href="' . url('node/' . $node->nid) . '">' . check_plain($node->title) . '</a> <br>';
   $out .= image_display($node, 'thumbnail');
   return $out;
 }
@@ -782,8 +783,8 @@ function theme_gmap_location_infowindow_node($node) {
   // a module called 'flexinode_#.module' in your site's module
   // directory and add theme_hook_gmapnodelabel($node, $location) to it.
   // Be sure to enable your 'flexinode_#.module'.
-  return '<div class="gmapnodelabel gmapnodelabel-'. form_clean_id($node->type) .
-    '">'. strtr(node_view($node, TRUE, FALSE, FALSE), "'\n\r", '"  ') .'</div>'; // make sure it all goes on one line.
+  return '<div class="gmapnodelabel gmapnodelabel-' . form_clean_id($node->type) .
+    '">' . strtr(node_view($node, TRUE, FALSE, FALSE), "'\n\r", '"  ') . '</div>'; // make sure it all goes on one line.
 }
 
 /**

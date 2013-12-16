@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap_taxonomy.module,v 1.7 2009/02/04 20:34:18 bdragon Exp $
 
 /**
  * @file
@@ -59,7 +58,7 @@ function gmap_taxonomy_form_alter(&$form, &$form_state, $form_id) {
     }
     if (isset($form['delete'])) {
       if (isset($form['delete']['#weight'])) {
-        $form['delete']['#weight']+=2;
+        $form['delete']['#weight'] += 2;
       }
       else {
         $form['delete']['#weight'] = 2;
@@ -164,7 +163,7 @@ function gmap_taxonomy_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
  * Reassign markers associated with a term that's going away.
  */
 function gmap_taxonomy_reassign_marker($tid, $table = 'term_node') {
-  $result = db_query('SELECT vid FROM {'. db_escape_table($table) .'} WHERE tid = %d', $tid);
+  $result = db_query('SELECT vid FROM {' . db_escape_table($table) . '} WHERE tid = %d', $tid);
   while ($node = db_fetch_object($result)) {
     $markers = db_query('SELECT t.tid, gt.marker FROM {term_node} r INNER JOIN {gmap_taxonomy_term} gt ON r.tid = gt.tid INNER JOIN {term_data} t ON r.tid = t.tid INNER JOIN {vocabulary} v ON t.vid = v.vid WHERE r.vid = %d ORDER BY v.weight DESC, t.weight DESC, t.name DESC', $node->vid);
     if ($marker = db_fetch_object($markers)) {

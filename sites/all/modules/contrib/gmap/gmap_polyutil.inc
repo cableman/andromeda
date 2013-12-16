@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap_polyutil.inc,v 1.4 2009/04/06 19:11:59 bec Exp $
 
 /**
  * @file
@@ -30,7 +29,9 @@ DEFINE('GMAP_ZOOM_FACTOR', 2);
  */
 function gmap_polyutil_encode_latlon($x) {
   $x = round($x * 1e5) << 1;
-  if ($x < 0) { $x = ~ $x; }
+  if ($x < 0) {
+    $x = ~$x;
+  }
   return _gmap_polyutil_encode($x);
 }
 
@@ -76,7 +77,7 @@ function gmap_polyutil_point_line_dist($q, $p1, $p2) {
   // p1p2. For more information, see:
   //   http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
   //   http://www.codeguru.com/forum/printthread.php?t=194400
-  $u = (($p2[1]-$p1[1])*($q[1]-$p1[1]) + ($p2[0]-$p1[0])*($q[0]-$p1[0])) / (pow($p2[1]-$p1[1], 2) + pow($p2[0]-$p1[0], 2));
+  $u = (($p2[1] - $p1[1]) * ($q[1] - $p1[1]) + ($p2[0] - $p1[0]) * ($q[0] - $p1[0])) / (pow($p2[1] - $p1[1], 2) + pow($p2[0] - $p1[0], 2));
 
   if ($u <= 0) { // point is not alongside segment, it is further off in $p1's direction
     return gmap_polyutil_dist($q, $p1);
@@ -88,7 +89,7 @@ function gmap_polyutil_point_line_dist($q, $p1, $p2) {
     // calculate distance between q and the nearest point on the line segment
     // use $u to calculate the nearest point on the line segment:
     //   p1 + u*(p2 - p1) => [p1x + u*(p2x - p1x), p1y + u*(p2y - p1y)]
-    return gmap_polyutil_dist($q, array( $p1[0] + $u*($p2[0] - $p1[0]), $p1[1] + $u*($p2[1] - $p1[1])));
+    return gmap_polyutil_dist($q, array($p1[0] + $u * ($p2[0] - $p1[0]), $p1[1] + $u * ($p2[1] - $p1[1])));
   }
 }
 
@@ -110,11 +111,11 @@ function gmap_polyutil_dp_encode($points) {
   if (count($points) > 2) {
     // the 'stack' holds line segments to be simplified
     $stack[] = array(0, count($points) - 1);
-    
+
     while (count($stack) > 0) {
       // take a line segment to look at
       $segment = array_pop($stack);
-      
+
       // figure out which subdividing point is the furthest off the line segment
       $max_dist = 0;
       for ($i = $segment[0] + 1; $i < $segment[1]; $i++) {
@@ -124,7 +125,7 @@ function gmap_polyutil_dp_encode($points) {
           $max_i = $i;
         }
       }
-      
+
       // if the subdividing point found above is significantly off the line
       // segment then we want to simplify further. Add sub-segments to the stack.
       if ($max_dist > GMAP_DP_EPSILON) {
@@ -138,7 +139,7 @@ function gmap_polyutil_dp_encode($points) {
   // The first and last points of the line should always be visible.
   $levels = _gmap_polyutil_zoom_levels();
   $weights[0] = $levels[0];
-  $weights[count($points) -1] = $levels[0];
+  $weights[count($points) - 1] = $levels[0];
 
   return $weights;
 }

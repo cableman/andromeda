@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap_location.install,v 1.8 2009/03/13 17:10:45 bdragon Exp $
 
 /**
  * @file
@@ -45,7 +44,7 @@ function gmap_location_update_5080() {
   $result = db_query("SELECT name FROM {variable} WHERE name LIKE 'gmap_role_map_marker_%%'");
   $markers = array();
   while ($row = db_fetch_object($result)) {
-    $num = (int)substr($row->name, 21);
+    $num = (int) substr($row->name, 21);
     $markers[$num] = variable_get($row->name, 'drupal');
     variable_del($row->name);
   }
@@ -128,7 +127,11 @@ function gmap_location_update_5100() {
         break;
       default:
         // User has customized macro.
-        drupal_set_message(t('You have customized the !type macro. Be advised that the new default macro is %macro. Please check your macro on the <a href="@url">block configuration page</a>.', array('!type' => t('Location block'), '%macro' => '[gmap |width=100% |height=200px |control=None |behavior=+autozoom +notype]', '@url' => url('admin/build/block/configure/gmap_location/0'))));
+        drupal_set_message(t('You have customized the !type macro. Be advised that the new default macro is %macro. Please check your macro on the <a href="@url">block configuration page</a>.', array(
+          '!type' => t('Location block'),
+          '%macro' => '[gmap |width=100% |height=200px |control=None |behavior=+autozoom +notype]',
+          '@url' => url('admin/build/block/configure/gmap_location/0')
+        )));
     }
   }
 
@@ -147,7 +150,11 @@ function gmap_location_update_5100() {
         break;
       default:
         // User has customized macro.
-        drupal_set_message(t('You have customized the !type macro. Be advised that the new default macro is %macro. Please check your macro on the <a href="@url">block configuration page</a>.', array('!type' => t('Author block'), '%macro' => '[gmap |width=100% |height=200px |control=None |behavior=+autozoom +notype]', '@url' => url('admin/build/block/configure/gmap_location/1'))));
+        drupal_set_message(t('You have customized the !type macro. Be advised that the new default macro is %macro. Please check your macro on the <a href="@url">block configuration page</a>.', array(
+          '!type' => t('Author block'),
+          '%macro' => '[gmap |width=100% |height=200px |control=None |behavior=+autozoom +notype]',
+          '@url' => url('admin/build/block/configure/gmap_location/1')
+        )));
     }
   }
 

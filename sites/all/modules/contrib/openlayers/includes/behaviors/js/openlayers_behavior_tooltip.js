@@ -44,6 +44,11 @@ Drupal.behaviors.openlayers_behavior_tooltip = function(context) {
       }
     }
 
+    // if only 1 layer exists, do not add as an array
+    if (layers.length == 1) {
+      layers = layers[0];
+    }
+
     // Define feature select events for selected layers.
     popupSelect = new OpenLayers.Control.SelectFeature(layers, 
       {

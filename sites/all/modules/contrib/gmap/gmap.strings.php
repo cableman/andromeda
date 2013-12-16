@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap.strings.php,v 1.1.2.1 2010/06/13 08:50:02 rooby Exp $
 /**
  * gmap.strings.php
  *

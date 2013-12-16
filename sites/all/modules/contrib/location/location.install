@@ -290,6 +290,27 @@ function location_schema() {
     'primary key' => array('cid'),
   );
 
+  //New location country table (needed for sorting
+    $schema['location_country'] = array(
+      'description' => 'Country data managed by location.module.',
+      'fields' => array(
+        'code' => array(
+          'description' => 'Primary Key: Two letter ISO Country Code',
+          'type' => 'char',
+          'length' => 2,
+          'not null' => TRUE,
+        ),
+        'name' => array(
+          'description' => 'Full Country Name ',
+          'type' => 'varchar',
+          'length' => 255,
+          'default' => '',
+          'not null' => TRUE,
+        ),
+      ),
+      'primary key' => array('code'),
+    );
+
   return $schema;
 }
 
@@ -962,8 +983,8 @@ function location_update_6303() {
  */
 function location_update_6304() {
   // Skip this update if it was already done on the 5.x side.
-  if (variable_get('location_update_5305_done', FALSE)) {
-    variable_del('location_update_5305_done');
+  if (variable_get('location_5305_done', FALSE)) {
+    variable_del('location_5305_done');
     return array();
   }
 
@@ -1068,8 +1089,8 @@ function location_update_6305() {
  */
 function location_update_6306() {
   // Skip this update if it was already done on the 5.x side.
-  if (variable_get('location_update_5306_done', FALSE)) {
-    variable_del('location_update_5306_done');
+  if (variable_get('location_5306_done', FALSE)) {
+    variable_del('location_5306_done');
     return array();
   }
   $ret = array();
@@ -1173,4 +1194,26 @@ function location_update_6309() {
   }
 
   return $ret;
+}
+
+/**
+ * Adds the Country code to name table "location_country".  It is created from the included array country array.
+ */
+function location_update_6310() {
+    //Create the new table
+    $schema = location_schema() ;
+    db_create_table($ret, 'location_country', $schema['location_country']);
+
+    //Fill it.
+    $sql = 'INSERT INTO {location_country} (code, name) VALUES ';
+    $sql2 = '';
+    $countries = location_get_iso3166_list();
+    foreach($countries as $code => $name){
+        $variables = array();
+
+        $variables[] = $code;
+        $variables[] = $name;
+        $sql2 = "('$code', '$name')";
+        db_query($sql . $sql2);
+    }
 }

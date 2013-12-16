@@ -1,4 +1,3 @@
-/* $Id: README.txt,v 1.4.2.1 2010/06/08 20:49:13 bdragon Exp $ */
 
 Third party code.
 Place downloaded third party code in this folder if instructed to by GMap.
@@ -35,7 +34,7 @@ MarkerManager.js
 ----------------
 Google Maps API Utility Library addon
 This is an improved version of GMarkerManager.
-Website: http://code.google.com/p/gmaps-utility-library/
+Website: http://code.google.com/p/gmaps-utility-library-dev/
 Tested version: 1.0
 
 MarkerClusterer.js

@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap_taxonomy.views.inc,v 1.1 2008/11/24 22:31:59 bdragon Exp $
 
 /**
  * @file

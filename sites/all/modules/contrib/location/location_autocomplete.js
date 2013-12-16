@@ -74,7 +74,7 @@ function location_update_provinces(countryItem, provinceItem) {
     provinceItem.find('option').remove();
     provinceItem.append('<option>Loading...</option>');
     return $.ajax({
-      url : Drupal.settings.basePath + Drupal.settings.location_fetch_provinces_url + '/' + country,
+      url : Drupal.settings.location_fetch_provinces_url + '/' + country,
       data : { input_id : provinceItem.attr('id'), country : country },
       dataType : 'json',
       success : location_update_provinces_callback,

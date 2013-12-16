@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap_macro_builder.module,v 1.6.2.1 2010/06/08 17:40:59 bdragon Exp $
 
 /**
  * @file
@@ -175,9 +174,11 @@ function gmap_macro_builder_form(&$form_state, $settings = array(), $hide = arra
         $form['macroform'][$field]['#type'] = 'hidden';
         $form['macroform'][$field]['#value'] = $form['macroform'][$field]['#default_value'];
       }
-      else if ($mode == 2) {
-        $form['macroform'][$field]['#prefix'] = '<div style="display: none;">';
-        $form['macroform'][$field]['#suffix'] = '</div>';
+      else {
+        if ($mode == 2) {
+          $form['macroform'][$field]['#prefix'] = '<div style="display: none;">';
+          $form['macroform'][$field]['#suffix'] = '</div>';
+        }
       }
     }
   }

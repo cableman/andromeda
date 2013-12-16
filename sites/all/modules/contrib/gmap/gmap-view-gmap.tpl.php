@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap-view-gmap.tpl.php,v 1.1 2008/09/17 22:47:10 bdragon Exp $
 /**
  * @file gmap-view-gmap.tpl.php
  * Default view template for a gmap.

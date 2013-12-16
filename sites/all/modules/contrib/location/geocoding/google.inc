@@ -111,53 +111,29 @@ function google_geocode_info() {
  */
 function google_geocode_location($location = array()) {
 
-  if (function_exists('gmap_get_key')) {
-    $key = gmap_get_key();
-  }
-  else {
-    $key = variable_get('location_geocode_google_apikey', '');
-  }
-
   $query = array(
-    'key' => $key,
+    'region' => $location['country'],
+    'address' => _google_geocode_flatten($location),
+    'components' => _google_geocode_get_components($location),
     'sensor' => 'false', // Required by TOS.
-    'output' => 'xml',
-    //'ll' => 0,
-    //'spn' => 0,
-    'gl' => $location['country'],
-    'q' => _google_geocode_flatten($location),
   );
 
-  $url = url('http://maps.google.com/maps/geo', array(
+  $url = url('http://maps.googleapis.com/maps/api/geocode/json', array(
     'query' => $query,
     'external' => TRUE,
   ));
 
   $http_reply = drupal_http_request($url);
+  $data = json_decode($http_reply->data);
 
-  $status_code_match = array();
-  preg_match('/<code>(.*)<\/code>/', $http_reply->data, $status_code_match);
-  $status_code = $status_code_match[1];
-  if ($status_code != 200) {
-    watchdog('location', 'Google geocoding returned status code: %status_code', array('%status_code' => $status_code));
+  $status_code = $data->status;
+  if ($status_code != 'OK') {
+    watchdog('location', 'Google geocoding returned status code: %status_code for the query url: %url', array('%status_code' => $data->status, '%url' => $url));
     return NULL;
   }
+  $location = $data->results[0]->geometry->location;
 
-  $accuracy_code_match = array();
-  preg_match('/Accuracy="([0-9])"/', $http_reply->data, $accuracy_code_match);
-  $accuracy_code = $accuracy_code_match[1];
-  $min_accuracy = variable_get('location_geocode_' . $location['country'] . 'google_accuracy_code', variable_get('location_geocode_google_minimum_accuracy', '3'));
-  if ($accuracy_code < $min_accuracy) {
-    watchdog('location', 'Google geocoding result for %country did not meet the minimum accuracy level of %min_accuracy. Result accuracy: %accuracy_code', array('%country' => $location['country'], '%min_accuracy' => $min_accuracy, '%accuracy_code' => $accuracy_code));
-    return NULL;
-  }
-
-  $latlon_match = array();
-  preg_match('/<coordinates>(.*)<\/coordinates>/', $http_reply->data, $latlon_match);
-
-  $latlon_exploded = explode(',', $latlon_match[1]);
-
-  return array('lat' => $latlon_exploded[1], 'lon' => $latlon_exploded[0]);
+  return array('lat' => $location->lat, 'lon' => $location->lng);
 }
 
 /**
@@ -238,7 +214,7 @@ function _google_geocode_flatten($location = array()) {
 
   if (!empty($location['postal_code'])) {
     if (!empty($address)) {
-      $address .= ' ';
+      $address .= ', ';
     }
     $address .= $location['postal_code'];
   }
@@ -251,4 +227,50 @@ function _google_geocode_flatten($location = array()) {
   }
 
   return $address;
+}
+
+/**
+ * Gets a components string to pass to the google geocode API.
+ *
+ * This is required to get more accurate results because sometimes when passing
+ * in a small piece of information, like a country code only, it could also
+ * match a different part of an address for another country as the highest
+ * match.
+ *
+ * See https://developers.google.com/maps/documentation/geocoding/#ComponentFiltering
+ * for details.
+ *
+ * @param array $location
+ *   A location array.
+ *
+ * @return string
+ *   A components string formatted as per the docs page linked to above.
+ */
+function _google_geocode_get_components($location = array()) {
+  // Check if its a valid address
+  if (empty($location)) {
+    return '';
+  }
+
+  $components = array();
+  if (!empty($location['city'])) {
+    $components[] = 'locality:' . $location['city'];
+  }
+  if (!empty($location['province'])) {
+    // @@@ Fix this!
+    if (!empty($location['country']) && substr($location['province'], 0, 3) == $location['country'] . '-') {
+      $components[] = 'administrative_area:' . substr($location['province'], 3);
+    }
+    else {
+      $components[] = 'administrative_area:' . $location['province'];
+    }
+  }
+  if (!empty($location['postal_code'])) {
+    $components[] = 'postal_code:' . $location['postal_code'];
+  }
+  if (!empty($location['country'])) {
+    $components[] = 'country:' . $location['country'];
+  }
+
+  return implode('|', $components);
 }

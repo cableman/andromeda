@@ -19,6 +19,12 @@ function location_cck_theme() {
     'location_cck_formatter_map' => array(
       'arguments' => array('element' => NULL),
     ),
+    'location_cck_formatter_multiple' => array(
+      'arguments' => array('element' => NULL),
+    ),
+    'location_cck_formatter_multiple_all' => array(
+      'arguments' => array('element' => NULL),
+    ),
     'location_cck_field_map' => array(
       'arguments' => array('locations' => NULL, 'field' => NULL),
     ),
@@ -116,7 +122,7 @@ function location_cck_field_settings($op, $field) {
       $data = content_views_field_views_data($field);
       $data[$table][$field_alias]['relationship'] = array(
         'base' => 'location',
-        'field' => 'lid',
+        'field' => $field_alias,
         'handler' => 'views_handler_relationship',
         'label' => t('Location'), // @@@ Some sort of better name?
       );
@@ -158,7 +164,7 @@ function location_cck_field($op, &$node, $field, &$items, $teaser, $page) {
       // doesn't call the "load" $op.
       foreach ($items as $delta => $item) {
         if (!isset($item['latitude'])) {
-          $items[$delta] = array_merge($items[$delta], location_load_location($item['lid']));
+          $items[$delta] = array_merge(location_load_location($item['lid']), $items[$delta]);
         }
       }
       break;
@@ -204,6 +210,11 @@ function location_cck_field_formatter_info() {
     );
     $info['multiple'] = array(
       'label' => t('Multiple field values on a single map'),
+      'field types' => array('location'),
+      'multiple values' => CONTENT_HANDLE_MODULE,
+    );
+    $info['multiple_all'] = array(
+      'label' => t('Addresses with multiple field values on a single map'),
       'field types' => array('location'),
       'multiple values' => CONTENT_HANDLE_MODULE,
     );
@@ -367,10 +378,43 @@ function theme_location_cck_formatter_map($element) {
  * Alternate function to return a map with all
  * multiple values in the same map.
  */
-function theme_location_cck_formatter_combined($element) {
+function theme_location_cck_formatter_multiple($element) {
   $field = content_fields($element['#field_name'], $element['#type_name']);
-  $locations = $element['#items'];
+  $locations = array();
+  foreach (element_children($element) as $key) {
+    $locations[$key] = $element[$key]['#item'];
+  }
   return theme_location_cck_field_map($locations, $field);
+}
+
+/**
+ * Return both a addresses and a single map with all location items.
+ */
+function theme_location_cck_formatter_multiple_all($element) {
+  $content = '';
+  $field = content_fields($element['#field_name'], $element['#type_name']);
+  $hide = (isset($field['location_settings']['display']['hide'])) ? array_keys(array_filter($field['location_settings']['display']['hide'])) : array();
+  $locations = array();
+  foreach (element_children($element) as $key) {
+    $location = $element[$key]['#item'];
+    $locations[$key] = $location;
+    if (!empty($location['cck_preview_in_progress'])) {
+      // Our canary field is in place, we are in a node preview.
+      $fields = array();
+      // If the location isn't "empty", then theme it based on the current state
+      // of the item.
+      if (!location_is_empty($location, $fields)) {
+        $content .= theme('location', $location, $hide);
+      }
+    }
+    else if (isset($location['lid']) && $location['lid']) {
+      // "normal" viewing.
+      // Location is already cached by CCK, so no need to load it.
+      $content .= theme('location', $location, $hide);
+    }
+  }
+  $content .= theme_location_cck_field_map($locations, $field);
+  return $content;
 }
 
 /**

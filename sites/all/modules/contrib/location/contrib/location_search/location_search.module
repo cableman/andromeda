@@ -141,6 +141,7 @@ function _location_search($op = 'search', $keys = null) {
       }
 
       if ($city = search_query_extract($keys, 'city')) {
+        $city = str_replace('_', ' ', city);
         $conditions1 .= " AND (l.city = '%s')";
         $arguments1[] = $city;
         $keys = search_query_insert($keys, 'city');
@@ -347,7 +348,7 @@ function location_search_validate($form, &$form_state) {
   }
 
   if (!empty($values['city'])) {
-    $keys = search_query_insert($keys, 'city', $values['city']);
+    $keys = search_query_insert($keys, 'city', str_replace(' ', '_', $values['city']));
   }
 
   if (!empty($values['latitude']) && !empty($values['longitude']) && !empty($values['distance'])) {

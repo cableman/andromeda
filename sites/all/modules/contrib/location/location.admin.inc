@@ -66,6 +66,13 @@ function location_admin_settings() {
     '#description' => t('If you would like to change the macro used to generate the location chooser map, you can do so here. Note: Behaviors <em>locpick</em> and <em>collapsehack</em> are forced to be enabled and cannot be changed.'),
   );
 
+  $form['location_copy_on_write'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Updating a location creates a new location'),
+    '#default_value' => variable_get('location_copy_on_write', TRUE),
+    '#description' => t('If checked, when you modify a location it will be created as a new location.  If unckecked, modifications to a location will be made to the existing location.  Uncheck this if the order of your locations is important otherwise when you update a location it will then become the last location on your node.  This is very important if your locations will be used as points on a polygon.  It also makes things a bit easier when dealing with a large number of locations on a single node or user.'),
+  );
+
   $form['location_jit_geocoding'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable JIT geocoding'),

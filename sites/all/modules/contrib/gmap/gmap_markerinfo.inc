@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap_markerinfo.inc,v 1.3.2.1 2010/06/13 08:50:02 rooby Exp $
 
 /**
  * @file
@@ -23,7 +22,7 @@ function _gmap_get_icondata() {
     'transparent',
   );
 
-  $markerdir = variable_get('gmap_markerfiles', drupal_get_path('module', 'gmap') .'/markers');
+  $markerdir = variable_get('gmap_markerfiles', drupal_get_path('module', 'gmap') . '/markers');
 
   // The following routines are designed to be easy to comprehend, not fast.
   // This whole process gets cached.
@@ -164,27 +163,36 @@ function _gmap_get_icondata() {
  */
 function _gmap_compress_icon_def($iconset) {
   $order = array(
-    'key', 'name', 'sequence', 'anchorX', 'anchorY',
-    'infoX', 'infoY', 'shadow', 'printImage', 'mozPrintImage',
-    'printShadow', 'transparent',
+    'key',
+    'name',
+    'sequence',
+    'anchorX',
+    'anchorY',
+    'infoX',
+    'infoY',
+    'shadow',
+    'printImage',
+    'mozPrintImage',
+    'printShadow',
+    'transparent',
   );
   $ints = array(3 => TRUE, 4 => TRUE, 5 => TRUE, 6 => TRUE);
-  $nulls = array('', '', array(), 0, 0, 0, 0, '', '', '', '', '', );
+  $nulls = array('', '', array(), 0, 0, 0, 0, '', '', '', '', '',);
 
   $a = array();
-  for ($c0 = 0; $c0<count($order); $c0++) {
+  for ($c0 = 0; $c0 < count($order); $c0++) {
     $a[$c0] = array();
-    for ($c1=0; $c1<count($iconset); $c1++) {
+    for ($c1 = 0; $c1 < count($iconset); $c1++) {
       $temp = isset($iconset[$c1][$order[$c0]]) ? $iconset[$c1][$order[$c0]] : $nulls[$c0];
       // Ensure that numeric quantities are encoded as ints, not strings.
       if (isset($ints[$c0])) {
-        $temp = (int)$temp;
+        $temp = (int) $temp;
       }
       $a[$c0][$c1] = $temp;
     }
     _gmap_compress_array($a[$c0]);
   }
-  for ($c0--;$c0>=0;$c0--) {
+  for ($c0--; $c0 >= 0; $c0--) {
     if ($a[$c0] === array($nulls[$c0])) {
       unset($a[$c0]);
     }
@@ -204,8 +212,8 @@ function _gmap_compress_array(&$arr) {
   }
   $c = count($arr) - 1;
   // Walk backwards and unset duplicates...
-  for ($cval = $arr[$c]; $c>0; $c--) {
-    if ($arr[$c-1]==$cval) {
+  for ($cval = $arr[$c]; $c > 0; $c--) {
+    if ($arr[$c - 1] == $cval) {
       unset($arr[$c]);
     }
     else {
@@ -216,7 +224,7 @@ function _gmap_compress_array(&$arr) {
 }
 
 function _gmap_get_marker_titles() {
-  $markerdir = variable_get('gmap_markerfiles', drupal_get_path('module', 'gmap') .'/markers');
+  $markerdir = variable_get('gmap_markerfiles', drupal_get_path('module', 'gmap') . '/markers');
 
   // The following routines are designed to be easy to comprehend, not fast.
   // This whole process gets cached.

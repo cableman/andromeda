@@ -1,5 +1,3 @@
-/* $Id: clustermarker_marker.js,v 1.2 2009/12/12 00:14:17 bdragon Exp $ */
-
 /**
  * @file
  * GMap Markers
@@ -10,45 +8,46 @@
 
 // Replace to override marker creation
 Drupal.gmap.factory.marker = function (loc, opts) {
-  return new GMarker(loc, opts);
+    return new GMarker(loc, opts);
 };
 
 Drupal.gmap.addHandler('gmap', function (elem) {
-  var obj = this;
+    var obj = this;
 
-  obj.bind('init', function () {
-    obj.clustermarker = 0;
-  });
+    obj.bind('init', function () {
+        obj.clusterMarker = 0;
+    });
 
-  obj.bind('iconsready', function () {
-    if (!obj.clustermarker) {
-      var options = Drupal.settings.gmap_markermanager;
-      if (options.clusterMarkerIcon.length) {
-        options.clusterMarkerIcon = Drupal.gmap.getIcon(options.clusterMarkerIcon, 0);
-      }
-      else {
-        delete options.clusterMarkerIcon;
-      }
-      options.borderPadding = +options.borderPadding;
-      options.fitMapMaxZoom = +options.fitMapMaxZoom;
-      options.intersectPadding = +options.intersectPadding;
-      obj.clusterMarker = new ClusterMarker(obj.map, options);
-    }
-  });
+    obj.bind('iconsready', function () {
+        if (!obj.clusterMarker) {
+            // Force copying the settings so we don't overwrite them.
+            var options = jQuery.extend(true, {}, Drupal.settings.gmap_markermanager);
+            if (options.clusterMarkerIcon.length) {
+                options.clusterMarkerIcon = Drupal.gmap.getIcon(options.clusterMarkerIcon, 0);
+            }
+            else {
+                delete options.clusterMarkerIcon;
+            }
+            options.borderPadding = +options.borderPadding;
+            options.fitMapMaxZoom = +options.fitMapMaxZoom;
+            options.intersectPadding = +options.intersectPadding;
+            obj.clusterMarker = new ClusterMarker(obj.map, options);
+        }
+    });
 
-  obj.bind('addmarker', function (marker) {
-    obj.clusterMarker.addMarkers([marker.marker]);
-  });
+    obj.bind('addmarker', function (marker) {
+        obj.clusterMarker.addMarkers([marker.marker]);
+    });
 
-  obj.bind('delmarker', function (marker) {
-    // @@@TODO: Implement this!
-  });
+    obj.bind('delmarker', function (marker) {
+        // @@@TODO: Implement this!
+    });
 
-  obj.bind('clearmarkers', function () {
-    obj.clusterMarker.removeMarkers();
-  });
+    obj.bind('clearmarkers', function () {
+        obj.clusterMarker.removeMarkers();
+    });
 
-  obj.bind('markersready', function () {
-    obj.clusterMarker.refresh();
-  });
+    obj.bind('markersready', function () {
+        obj.clusterMarker.refresh();
+    });
 });

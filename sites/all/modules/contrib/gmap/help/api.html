@@ -1,19 +1,22 @@
-<!-- $Id: api.html,v 1.2 2009/03/13 19:35:17 bdragon Exp $ -->
 <em>This documentation is still in flux.</em>
 
-<p>The GMap API is a simple way to create Google Maps from a macro or PHP code. It allows other modules to integrate Google Maps into their Drupal site. Among other things, the GMap API can be used by theme developers to integrate Google maps into portions of their theme, or by developers to insert a map into any block of PHP.</p>
+<p>The GMap API is a simple way to create Google Maps from a macro or PHP code. It allows other modules to integrate
+    Google Maps into their Drupal site. Among other things, the GMap API can be used by theme developers to integrate
+    Google maps into portions of their theme, or by developers to insert a map into any block of PHP.</p>
 
 <h2>CONCEPTS</h2>
 
 <dl>
-<dt>Baselayer</dt>
-<dd>The actual map (Street map, topological map, satellite imagery, etc.) that everything is being displayed upon. This may also be referred to as the "map type".</dd>
+    <dt>Baselayer</dt>
+    <dd>The actual map (Street map, topological map, satellite imagery, etc.) that everything is being displayed upon.
+        This may also be referred to as the "map type".
+    </dd>
 
-<dt>GMap macro</dt>
-<dd>A GMap-specific text-based representation of a Google Map.</dd>
+    <dt>GMap macro</dt>
+    <dd>A GMap-specific text-based representation of a Google Map.</dd>
 
-<dt>Overlay</dt>
-<dd>A transparent layer drawn on top of the baselayer.</dd>
+    <dt>Overlay</dt>
+    <dd>A transparent layer drawn on top of the baselayer.</dd>
 </dl>
 
 <h2>PROGRAMMING API</h2>
@@ -22,11 +25,14 @@ There are two methods of inserting a Google Map using the GMap API. You may eith
 
 <h2>Macros</h2>
 
-<p>Each attribute of a macro is separated by a "|" and uses an "=" to define that attribute. Possible attributes are center, width, height, zoom, type, control, align, id, markers, feed, line, circle, polygon, and rpolygon.</p>
+<p>Each attribute of a macro is separated by a "|" and uses an "=" to define that attribute. Possible attributes are
+    center, width, height, zoom, type, control, align, id, markers, feed, line, circle, polygon, and rpolygon.</p>
 
 <p>**See the MACRO-DICTIONARY.txt for an explaination of each of these attributes.</p>
 
-<p>You can convert a macro into a GMap array with the function gmap_parse_macro(). If you need to parse a macro generated with an old version of GMap where the point format was longitude, latitude, set $version to 1: gmap_parse_macro($my_macro, 1); otherwise, you may omit it.</p>
+<p>You can convert a macro into a GMap array with the function gmap_parse_macro(). If you need to parse a macro
+    generated with an old version of GMap where the point format was longitude, latitude, set $version to 1:
+    gmap_parse_macro($my_macro, 1); otherwise, you may omit it.</p>
 
 <pre>
 /**
@@ -49,10 +55,14 @@ There are two methods of inserting a Google Map using the GMap API. You may eith
 
 <h2>GMap Array</h2>
 
-<p>The main map array is quite complex. Most of the features have a macro equivilent, but some of the more powerful constructs do not. The map array is processed and converted to a javascript object. Shapes are parsed by gmap_shapes.js and loaded by shapeloader_static.js.</p>
+<p>The main map array is quite complex. Most of the features have a macro equivilent, but some of the more powerful
+    constructs do not. The map array is processed and converted to a javascript object. Shapes are parsed by
+    gmap_shapes.js and loaded by shapeloader_static.js.</p>
 
 <h3>Using the GMap Array</h3>
-<p>Once you build a GMap array, you can render it as a map using a theme function provided by GMap. Anything left out of your GMap array will be filled in with the default map settings, which can be changed on the <a href="base_url:admin/settings/gmap">GMap settings page</a>.</p>
+<p>Once you build a GMap array, you can render it as a map using a theme function provided by GMap. Anything left out of
+    your GMap array will be filled in with the default map settings, which can be changed on the <a
+            href="base_url:admin/settings/gmap">GMap settings page</a>.</p>
 
 <p>**See GMAP-ARRAY-DICTIONARY.txt for explainations of each of the GMap array options.</p>
 

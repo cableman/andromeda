@@ -1,4 +1,3 @@
-; $Id: gmap_location.info,v 1.3 2008/07/15 18:45:37 bdragon Exp $
 name = GMap Location
 description = Display location.module information on Google Maps
 package = Location
@@ -6,9 +5,9 @@ core = 6.x
 dependencies[] = gmap
 dependencies[] = location
 
-; Information added by drupal.org packaging script on 2010-07-06
-version = "6.x-1.1"
+; Information added by drupal.org packaging script on 2013-09-10
+version = "6.x-2.0-beta5"
 core = "6.x"
 project = "gmap"
-datestamp = "1278426618"
+datestamp = "1378835214"
 

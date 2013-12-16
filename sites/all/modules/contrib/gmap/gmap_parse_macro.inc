@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap_parse_macro.inc,v 1.2.2.1 2010/06/08 17:40:59 bdragon Exp $
 
 /**
  * @file
@@ -53,7 +52,7 @@ function _gmap_str2coord($str) {
   $points = array();
   foreach ($arr as $pt) {
     list($lat, $lon) = explode(',', $pt);
-    $points[] = array((float)trim($lat), (float)trim($lon));
+    $points[] = array((float) trim($lat), (float) trim($lon));
   }
   return $points;
 }
@@ -62,12 +61,13 @@ function _gmap_parse_macro($instring, $ver = 2) {
   // Get a list of keys that are "multiple."
   $m = array();
   $multiple = gmap_module_invoke('macro_multiple', $m);
+  $def = gmap_defaults();
 
   // Remove leading and trailing tags
-  if (substr(trim($instring), -1)==']') {
+  if (substr(trim($instring), -1) == ']') {
     $instring = substr(trim($instring), 0, -1);
   }
-  if (substr($instring, 0, 5)=='[gmap') {
+  if (substr($instring, 0, 5) == '[gmap') {
     $instring = substr($instring, 6);
   }
 
@@ -78,7 +78,7 @@ function _gmap_parse_macro($instring, $ver = 2) {
     $offset = strpos($row, '=');
     if ($offset !== FALSE) {
       $k = trim(substr($row, 0, $offset));
-      $r = trim(substr($row, $offset+1));
+      $r = trim(substr($row, $offset + 1));
       if (in_array($k, $multiple)) {
         // Things that can appear multiple times
         if (!isset($m[$k])) {
@@ -127,8 +127,12 @@ function _gmap_parse_macro($instring, $ver = 2) {
   }
 
   // Merge points and markers
-  if (!isset($m['points']) || !is_array($m['points'])) $m['points'] = array();
-  if (!isset($m['markers']) || !is_array($m['markers'])) $m['markers'] = array();
+  if (!isset($m['points']) || !is_array($m['points'])) {
+    $m['points'] = array();
+  }
+  if (!isset($m['markers']) || !is_array($m['markers'])) {
+    $m['markers'] = array();
+  }
   $m['markers-temp'] = array_merge($m['points'], $m['markers']);
   unset($m['points']);
   unset($m['markers']);
@@ -141,11 +145,13 @@ function _gmap_parse_macro($instring, $ver = 2) {
       if ($cp !== FALSE) {
         $stylestr = substr($shape, 0, $cp);
         $s['style'] = _gmap_parse_style($stylestr);
-        $shape = substr($shape, $cp+1);
+        $shape = substr($shape, $cp + 1);
       }
       $tmp = explode('+', $shape);
       $s['radius'] = $tmp[1] ? $tmp[1] : 100;
-      if (isset($tmp[2]) && $tmp[2]) $s['numpoints'] = trim($tmp[2]);
+      if (isset($tmp[2]) && $tmp[2]) {
+        $s['numpoints'] = trim($tmp[2]);
+      }
       $tmp = _gmap_str2coord($tmp[0]);
       $s['center'] = $tmp[0];
       $m['shapes'][] = $s;
@@ -154,21 +160,24 @@ function _gmap_parse_macro($instring, $ver = 2) {
   }
   // Fixup legacy lines.
   if (isset($m['line1'])) {
-    $def = gmap_defaults();
-    if (!isset($m['line'])) $m['line'] = array();
-    $m['line'][] = $def['line_colors'][0] .':'. $m['line1'];
+    if (!isset($m['line'])) {
+      $m['line'] = array();
+    }
+    $m['line'][] = $def['line_colors'][0] . ':' . $m['line1'];
     unset($m['line1']);
   }
   if (isset($m['line2'])) {
-    $def = gmap_defaults();
-    if (!isset($m['line'])) $m['line'] = array();
-    $m['line'][] = $def['line_colors'][1] .':'. $m['line3'];
+    if (!isset($m['line'])) {
+      $m['line'] = array();
+    }
+    $m['line'][] = $def['line_colors'][1] . ':' . $m['line3'];
     unset($m['line2']);
   }
   if (isset($m['line3'])) {
-    $def = gmap_defaults();
-    if (!isset($m['line'])) $m['line'] = array();
-    $m['line'][] = $def['line_colors'][2] .':'. $m['line3'];
+    if (!isset($m['line'])) {
+      $m['line'] = array();
+    }
+    $m['line'][] = $def['line_colors'][2] . ':' . $m['line3'];
     unset($m['line3']);
   }
 
@@ -179,7 +188,7 @@ function _gmap_parse_macro($instring, $ver = 2) {
       if ($cp != FALSE) {
         $stylestr = substr($shape, 0, $cp);
         $s['style'] = _gmap_parse_style($stylestr);
-        $shape = substr($shape, $cp+1);
+        $shape = substr($shape, $cp + 1);
       }
       $s['points'] = _gmap_str2coord($shape);
       $m['shapes'][] = $s;
@@ -193,11 +202,11 @@ function _gmap_parse_macro($instring, $ver = 2) {
       if ($cp !== FALSE) {
         $stylestr = substr($shape, 0, $cp);
         $s['style'] = _gmap_parse_style($stylestr);
-        $shape = substr($shape, $cp+1);
+        $shape = substr($shape, $cp + 1);
       }
       $tmp = explode('+', $shape);
       if ($tmp[2]) {
-        $s['numpoints'] = (int)trim($tmp[2]);
+        $s['numpoints'] = (int) trim($tmp[2]);
         $tmp = array_slice($tmp, 0, 2);
       }
       $shape = implode('+', $tmp);
@@ -215,7 +224,7 @@ function _gmap_parse_macro($instring, $ver = 2) {
       if ($cp !== FALSE) {
         $stylestr = substr($shape, 0, $cp);
         $s['style'] = _gmap_parse_style($stylestr);
-        $shape = substr($shape, $cp+1);
+        $shape = substr($shape, $cp + 1);
       }
       $s['points'] = _gmap_str2coord($shape);
       $m['shapes'][] = $s;
@@ -253,7 +262,12 @@ function _gmap_parse_macro($instring, $ver = 2) {
       $sep = ',';
     }
     $m['behavior-temp'] = explode($sep, $m['behavior']);
-    $m['behavior'] = array();
+    // 2010 Nov 30 change:
+    // Fix a very old bug regarding behavior flags:
+    // It was always supposed to defer to the site default behaviors for every
+    // flag not defined by the macro, but this was just plain not happening.
+    // This is a backwards-incompatible change
+    $m['behavior'] = $def['behavior'];
     foreach ($m['behavior-temp'] as $v) {
       $m['behavior'][substr($v, 1)] = (substr($v, 0, 1) == '+') ? TRUE : FALSE;
     }
@@ -274,7 +288,7 @@ function _gmap_parse_macro($instring, $ver = 2) {
   // notype also controls mtc.
   if (isset($m['behavior']['notype'])) {
     if ($m['behavior']['notype']) {
-      $m['mtc']= 'none';
+      $m['mtc'] = 'none';
     }
     unset($m['behavior']['notype']);
   }
@@ -354,7 +368,7 @@ function _gmap_parse_macro($instring, $ver = 2) {
   // manipulations on $m OR return the changes
   // they want to apply to $m.)
   foreach (module_implements('gmap') as $module) {
-    $additions = call_user_func_array($module .'_gmap', array('parse_macro', &$m));
+    $additions = call_user_func_array($module . '_gmap', array('parse_macro', &$m));
     if (!empty($additions)) {
       foreach ($additions as $k => $v) {
         $m[$k] = $v;

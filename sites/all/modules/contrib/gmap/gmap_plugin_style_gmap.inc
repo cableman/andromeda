@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap_plugin_style_gmap.inc,v 1.11.2.3 2010/07/04 11:17:47 rooby Exp $
 
 /**
  * @file
@@ -33,6 +32,10 @@ class gmap_plugin_style_gmap extends views_plugin_style {
     $options['lonfield'] = array('default' => '');
     $options['markerfield'] = array('default' => '');
 
+    $options['enablermt'] = array('default' => FALSE);
+    $options['rmtfield'] = array('default' => '');
+    $options['rmtcallback'] = array('default' => '');
+
     $options['center_on_nodearg'] = array('default' => 0);
     $options['center_on_nodearg_arg'] = array('default' => '');
 
@@ -58,11 +61,15 @@ class gmap_plugin_style_gmap extends views_plugin_style {
     if ($this->options['markers'] == 'nodetype') {
       $this->view->query->add_field('node', 'type', 'gmap_node_type');
     }
-    else if ($this->options['markers'] == 'taxonomy') {
-      $this->view->query->add_field('gmap_taxonomy_node', 'marker', 'gmap_node_marker');
-    }
-    else if ($this->options['markers'] == 'userrole') {
-      $this->view->query->add_field('users_roles', 'rid', 'gmap_role_marker');
+    else {
+      if ($this->options['markers'] == 'taxonomy') {
+        $this->view->query->add_field('gmap_taxonomy_node', 'marker', 'gmap_node_marker');
+      }
+      else {
+        if ($this->options['markers'] == 'userrole') {
+          $this->view->query->add_field('users_roles', 'rid', 'gmap_role_marker');
+        }
+      }
     }
 
     if (isset($this->row_plugin)) {
@@ -84,6 +91,7 @@ class gmap_plugin_style_gmap extends views_plugin_style {
       return;
     }
 
+    $defaults = gmap_defaults();
     $lat_field = 'gmap_lat';
     $lon_field = 'gmap_lon';
 
@@ -107,14 +115,22 @@ class gmap_plugin_style_gmap extends views_plugin_style {
       $marker_field = $marker_field_obj->field_alias;
     }
 
+    // Determine rmt field.
+    if ($this->options['enablermt']) {
+      $rmt_field_obj = $this->view->display_handler->get_handler('field', $this->options['rmtfield']);
+      $rmt_field = $rmt_field_obj->field_alias;
+    }
+
     $markername = isset($this->options['markertype']) ? $this->options['markertype'] : 'drupal';
 
     $markertypes = variable_get('gmap_node_markers', array());
     if ($this->options['markers'] == 'nodetype') {
       $markertypes = variable_get('gmap_node_markers', array());
     }
-    else if ($this->options['markers'] == 'userrole') {
-      $markertypes = variable_get('gmap_role_markers', array(DRUPAL_AUTHENTICATED_RID => 'drupal'));
+    else {
+      if ($this->options['markers'] == 'userrole') {
+        $markertypes = variable_get('gmap_role_markers', array(DRUPAL_AUTHENTICATED_RID => 'drupal'));
+      }
     }
 
     // Group the rows according to the grouping field, if specified.
@@ -126,10 +142,10 @@ class gmap_plugin_style_gmap extends views_plugin_style {
     foreach ($sets as $title => $records) {
       $markers = array();
       $offsets = array();
-      $center_lat = null;
-      $center_lon = null;
-      $center_nid = null;
-      $highlight_nid = null;
+      $center_lat = NULL;
+      $center_lon = NULL;
+      $center_nid = NULL;
+      $highlight_nid = NULL;
 
       // We search nid argument used to center map
       if ($this->options['center_on_nodearg'] && $nodehandler = $this->view->display_handler->get_handler('argument', $this->options['center_on_nodearg_arg'])) {
@@ -141,8 +157,8 @@ class gmap_plugin_style_gmap extends views_plugin_style {
 
       foreach ($records as $row_index => $row) {
         $this->view->row_index = $row_index;
-        $lat = (float)$row->{$lat_field};
-        $lon = (float)$row->{$lon_field};
+        $lat = (float) $row->{$lat_field};
+        $lon = (float) $row->{$lon_field};
 
         // $row->nid is present in node views, views without node as the base table must include the nid field,
         // which will be in $row->node_nid if present.
@@ -162,22 +178,28 @@ class gmap_plugin_style_gmap extends views_plugin_style {
               $markername = $markertypes[$row->gmap_node_type];
             }
           }
-          else if ($this->options['markers'] == 'taxonomy') {
-            if (!empty($row->gmap_node_marker)) {
-              $markername = $row->gmap_node_marker;
-            }
-          }
-          else if ($this->options['markers'] == 'userrole') {
-            if (!empty($row->gmap_role_marker)) {
-              $markername = $markertypes[DRUPAL_AUTHENTICATED_RID];
-              if (isset($markertypes[$row->gmap_role_marker])) {
-                $markername = $markertypes[$row->gmap_role_marker];
+          else {
+            if ($this->options['markers'] == 'taxonomy') {
+              if (!empty($row->gmap_node_marker)) {
+                $markername = $row->gmap_node_marker;
               }
             }
-          }
-          else if ($this->options['markers'] == 'field') {
-            if (!empty($row->{$marker_field})) {
-              $markername = $row->{$marker_field};
+            else {
+              if ($this->options['markers'] == 'userrole') {
+                if (!empty($row->gmap_role_marker)) {
+                  $markername = $markertypes[DRUPAL_AUTHENTICATED_RID];
+                  if (isset($markertypes[$row->gmap_role_marker])) {
+                    $markername = $markertypes[$row->gmap_role_marker];
+                  }
+                }
+              }
+              else {
+                if ($this->options['markers'] == 'field') {
+                  if (!empty($row->{$marker_field})) {
+                    $markername = $row->{$marker_field};
+                  }
+                }
+              }
             }
           }
           if (!isset($offsets[$markername])) {
@@ -185,28 +207,47 @@ class gmap_plugin_style_gmap extends views_plugin_style {
           }
 
           $tooltip = "";
-          if ($this->options['tooltipenabled'] && $row->$tooltip_field) {
-            $tooltip = $row->$tooltip_field;
+          if ($this->options['tooltipenabled'] && !empty($tooltip_field) && !empty($row->{$tooltip_field})) {
+            $tooltip = $row->{$tooltip_field};
           }
 
-          $markers[] = array(
+          $marker = array(
             'latitude' => $lat,
             'longitude' => $lon,
             'markername' => $markername,
             'offset' => $offsets[$markername],
-            'text' => $this->row_plugin->render($row),
             'opts' => array(
               'title' => $tooltip,
               'highlight' => (!empty($highlight_nid) && !empty($row_nid) && $highlight_nid == $row_nid) ? 1 : 0,
               'highlightcolor' => $this->options['highlight_nodearg_color'],
             ),
           );
+          // RMT mode.
+          if ($this->options['enablermt']) {
+            $marker['rmt'] = $row->{$rmt_field};
+          }
+          else {
+            // Marker mode: popup.
+            if ($defaults['markermode'] == 1) {
+              $marker['text'] = $this->row_plugin->render($row);
+            }
+            // Marker mode: link.
+            else {
+              if ($defaults['markermode'] == 2) {
+                $marker['link'] = url('node/' . $row_nid);
+              }
+            }
+          }
+          $markers[] = $marker;
 
           $offsets[$markername]++;
         }
       }
       if (!empty($markers)) { // Don't draw empty maps.
         $map = gmap_parse_macro($this->options['macro']);
+        if ($this->options['enablermt']) {
+          $map['rmtcallback'] = $this->options['rmtcallback'];
+        }
 
         // If center lon/lat are not empty they are used to center map
         if (!empty($center_lon) && !empty($center_lat)) {
@@ -254,11 +295,12 @@ class gmap_plugin_style_gmap extends views_plugin_style {
       '#options' => array(
         'location' => t('Location.module'),
         'fields' => t('Choose latitude and longitude fields'),
-      //'geocode' => t('Just-in-time geocoding on field named "address"'),
+        //'geocode' => t('Just-in-time geocoding on field named "address"'),
       ),
       '#default_value' => $this->options['datasource'],
       '#multiple' => FALSE,
     );
+
     $form['latfield'] = array(
       '#title' => t('Latitude field'),
       '#description' => t('Format must be degrees decimal.'),
@@ -268,6 +310,7 @@ class gmap_plugin_style_gmap extends views_plugin_style {
       '#process' => array('views_process_dependency'),
       '#dependency' => array('edit-style-options-datasource' => array('fields')),
     );
+
     $form['lonfield'] = array(
       '#title' => t('Longitude field'),
       '#description' => t('Format must be degrees decimal.'),
@@ -291,6 +334,7 @@ class gmap_plugin_style_gmap extends views_plugin_style {
       ),
       '#default_value' => $this->options['markers'],
     );
+
     $form['markerfield'] = array(
       '#type' => 'select',
       '#title' => t('Marker field'),
@@ -299,6 +343,30 @@ class gmap_plugin_style_gmap extends views_plugin_style {
       '#default_value' => $this->options['markerfield'],
       '#process' => array('views_process_dependency'),
       '#dependency' => array('edit-style-options-markers' => array('field')),
+    );
+
+    $form['enablermt'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Enable GMap RMT for markers'),
+      '#description' => t('You can pull the bodies of the markers from a callback instead of defining them inline. This is a performance feature for advanced users.'),
+      '#default_value' => $this->options['enablermt'],
+    );
+    $form['rmtfield'] = array(
+      '#type' => 'select',
+      '#title' => t('RMT field'),
+      '#description' => t('You can use a views field to define the "tail" of the path called back.'),
+      '#options' => $field_options,
+      '#default_value' => $this->options['rmtfield'],
+      '#process' => array('views_process_dependency'),
+      '#dependency' => array('edit-style-options-enablermt' => array(TRUE)),
+    );
+    $form['rmtcallback'] = array(
+      '#type' => 'textfield',
+      '#title' => t('RMT callback path'),
+      '#description' => t('Define the base path to the callback here. The value of the rmt field will be appended.'),
+      '#default_value' => $this->options['rmtcallback'],
+      '#process' => array('views_process_dependency'),
+      '#dependency' => array('edit-style-options-enablermt' => array(TRUE)),
     );
 
     // Hide the taxonomy handling if gmap_taxonomy.module isn't installed.
@@ -377,6 +445,6 @@ class gmap_plugin_style_gmap extends views_plugin_style {
     // Check if highlight color is a valid hex color
     if (!preg_match('/^#[a-f0-9]{6}$/i', $form_state['values']['style_options']['highlight_nodearg_color'])) {
       form_error($form['highlight_nodearg_color'], t('Highlight colour must be a valid hex code in the form #FF0000.'));
-    } 
+    }
   }
 }

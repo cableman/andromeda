@@ -1,5 +1,3 @@
-/* $Id: markermanager_marker.js,v 1.1 2009/02/12 23:45:23 bdragon Exp $ */
-
 /**
  * @file
  * GMap Markers
@@ -10,40 +8,40 @@
 
 // Replace to override marker creation
 Drupal.gmap.factory.marker = function (loc, opts) {
-  return new GMarker(loc, opts);
+    return new GMarker(loc, opts);
 };
 
 Drupal.gmap.addHandler('gmap', function (elem) {
-  var obj = this;
+    var obj = this;
 
-  obj.bind('init', function () {
-    // Set up the markermanager.
-    obj.mm = new MarkerManager(obj.map, Drupal.settings.gmap_markermanager);
-  });
+    obj.bind('init', function () {
+        // Set up the markermanager.
+        obj.mm = new MarkerManager(obj.map, Drupal.settings.gmap_markermanager);
+    });
 
-  obj.bind('addmarker', function (marker) {
-    var minzoom = Drupal.settings.gmap_markermanager.markerMinZoom;
-    var maxzoom = Drupal.settings.gmap_markermanager.markerMaxZoom;
-    if (marker.minzoom) {
-      minzoom = marker.minzoom;
-    }
-    if (marker.maxzoom) {
-      maxzoom = marker.maxzoom;
-    }
-    if (maxzoom > 0) {
-      obj.mm.addMarker(marker.marker, minzoom, maxzoom);
-    }
-    else {
-      obj.mm.addMarker(marker.marker, minzoom);
-    }
-    obj.mm.refresh();
-  });
+    obj.bind('addmarker', function (marker) {
+        var minzoom = Drupal.settings.gmap_markermanager.markerMinZoom;
+        var maxzoom = Drupal.settings.gmap_markermanager.markerMaxZoom;
+        if (marker.minzoom) {
+            minzoom = marker.minzoom;
+        }
+        if (marker.maxzoom) {
+            maxzoom = marker.maxzoom;
+        }
+        if (maxzoom > 0) {
+            obj.mm.addMarker(marker.marker, minzoom, maxzoom);
+        }
+        else {
+            obj.mm.addMarker(marker.marker, minzoom);
+        }
+        obj.mm.refresh();
+    });
 
-  obj.bind('delmarker', function (marker) {
-    obj.mm.removeMarker(marker.marker);
-  });
+    obj.bind('delmarker', function (marker) {
+        obj.mm.removeMarker(marker.marker);
+    });
 
-  obj.bind('clearmarkers', function () {
-    obj.mm.clearMarkers();
-  });
+    obj.bind('clearmarkers', function () {
+        obj.mm.clearMarkers();
+    });
 });

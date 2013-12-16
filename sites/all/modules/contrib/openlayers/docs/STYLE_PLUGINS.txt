@@ -127,7 +127,7 @@ in the class prototype:
  Drupal.openlayers.style_plugin.modulename_pluginname.prototype = {
 
    // Style context function
-   'getLabel' = function(feature) {
+   'getLabel' : function(feature) {
       return feature.attributes.length;
    }
 

@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap.php,v 1.2.2.1 2010/01/09 22:03:36 bdragon Exp $
 
 /**
  * @file
@@ -49,9 +48,9 @@ function hook_gmap($op, &$map) {
         ),
       );
     case 'pre_theme_map':
-      $path = drupal_get_path('module', 'gmap') .'/js/';
+      $path = drupal_get_path('module', 'gmap') . '/js/';
       if (is_array($map['feed'])) {
-        drupal_add_js($path .'markerloader_georss.js');
+        drupal_add_js($path . 'markerloader_georss.js');
       }
       break;
     case 'macro_multiple':

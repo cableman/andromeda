@@ -1,5 +1,4 @@
 <?php
-// $Id: gmap_settings_ui.inc,v 1.12.2.5 2010/06/08 20:49:13 bdragon Exp $
 
 /**
  * @file
@@ -19,23 +18,23 @@ function gmap_admin_settings(&$form_state) {
   );
 
   if (!module_exists('keys_api') && !module_exists('keys')) {
-    $form['initialization']['googlemap_api_key'] = array(
+    $form['initialization']['gmap_api_key'] = array(
       '#type' => 'textfield',
-      '#default_value' => variable_get('googlemap_api_key', ''),
+      '#default_value' => variable_get('gmap_api_key', ''),
       '#size' => 50,
       '#maxlength' => 255,
     );
   }
   else {
-    $form['initialization']['googlemap_api_key'] = array(
+    $form['initialization']['gmap_api_key'] = array(
       '#type' => 'item',
-      '#title' => t('Google Maps API Key'),
+      '#title' => t('Your Google maps API Version 3 key'),
       '#value' => t('Managed by <a href="@url">Keys</a>.', array('@url' => url('admin/settings/keys'))),
     );
   }
 
-  $form['initialization']['googlemap_api_key']['#title'] = t('Google Maps API Key');
-  $form['initialization']['googlemap_api_key']['#description'] = t('Your personal Googlemaps API key.  You must get this for each separate website at <a href="http://www.google.com/apis/maps/">Google Map API website</a>.');
+  $form['initialization']['gmap_api_key']['#title'] = t('Google Maps API Key');
+  $form['initialization']['gmap_api_key']['#description'] = t('This key is currently not required by Google.  Entering a Key will allow you to track map usage in Google.  If you want to use an API key, you can get one at <a href="http://code.google.com/apis/maps/signup.html">Google Map API website</a>.');
 
   if (variable_get('file_downloads', FILE_DOWNLOADS_PUBLIC) != FILE_DOWNLOADS_PUBLIC) {
     $form['initialization']['gmap_private_markerfile'] = array(
@@ -212,7 +211,6 @@ function gmap_admin_settings(&$form_state) {
         '#type' => 'checkbox',
         '#title' => $layer['title'],
         '#parents' => array('gmap_default', 'baselayers', $key),
-
         '#description' => $layer['help'],
         '#default_value' => isset($defaults['baselayers'][$key]) ? $defaults['baselayers'][$key] : $layer['default'],
       );
@@ -294,8 +292,7 @@ function gmap_admin_settings(&$form_state) {
     $opts['clustermarker'] = array();
   }
 
-  $opts['gmap'] = array_merge(array(
-    // None.
+  $opts['gmap'] = array_merge(array(// None.
   ), $opts['gmap']);
 
   $opts['gmarkermanager'] = array_merge(array(
@@ -314,7 +311,7 @@ function gmap_admin_settings(&$form_state) {
     'markerMinZoom' => 4,
     'markerMaxZoom' => 0,
   ), $opts['markermanager']);
-  
+
   $opts['markerclusterer'] = array_merge(array(
     'filename' => 'markerclusterer_packed.js',
     'gridSize' => 60,
